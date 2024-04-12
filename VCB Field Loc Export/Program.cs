@@ -1,6 +1,11 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Calendar.v3;
+using Google.Apis.Calendar.v3.Data;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
 using System;
 using System.Globalization;
 using System.Net.Http.Headers;
@@ -8,6 +13,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
+using static System.Formats.Asn1.AsnWriter;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace VcbFieldExport
@@ -57,12 +63,13 @@ namespace VcbFieldExport
                 return false;
             }
 
-            if (Object.ReferenceEquals(this, e)) {
+            if (Object.ReferenceEquals(this, e))
+            {
                 return true;
             }
 
             return eventType == e.eventType &&
-                homeTeam == e.homeTeam && 
+                homeTeam == e.homeTeam &&
                 visitingTeamOrDescription == e.visitingTeamOrDescription &&
                 startTime == e.startTime &&
                 endTime == e.endTime;
@@ -157,10 +164,96 @@ namespace VcbFieldExport
                     }
                 });
 
+                PostNewEventsToGoogleCalendar(eventsToAdd, locationIds[locationId]);
+
                 SaveEvents(currentEvents, locationIds[locationId]);
             }
 
             return returnValue;
+        }
+
+        // If modifying these scopes, delete your previously saved credentials
+        // at ~/.credentials/calendar-dotnet-quickstart.json
+        static string[] Scopes = { CalendarService.Scope.Calendar };
+        static string ApplicationName = "Google Calendar API .NET Quickstart";
+
+        static void PostNewEventsToGoogleCalendar(List<VcbFieldEvent> newEvents, string locationName)
+        {
+            UserCredential credential;
+
+            using (var stream =
+                new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+            {
+                // The file token.json stores the user's access and refresh tokens, and is created
+                // automatically when the authorization flow completes for the first time.
+                string credPath = $"{locationName}.json";
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.FromStream(stream).Secrets,
+                    Scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(credPath, true)).Result;
+            }
+
+            // Create Google Calendar API service.
+            var service = new CalendarService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = ApplicationName,
+            });
+
+            foreach (VcbFieldEvent e in newEvents) {
+                Event googleCalendarEvent = new();
+
+                googleCalendarEvent.Start = new EventDateTime()
+                { DateTimeDateTimeOffset = e.startTime };
+
+                googleCalendarEvent.End = new EventDateTime()
+                { DateTimeDateTimeOffset = e.endTime };
+
+                googleCalendarEvent.Summary = e.homeTeam + " : " + e.eventType.ToString();
+                googleCalendarEvent.Description = (e.eventType == EventType.Practice ? string.Empty : "vs. ") + e.visitingTeamOrDescription;
+
+                var calendarId = "primary"; //Always primary.
+
+                Event result = new();
+
+                try {
+                    result = service.Events.Insert(googleCalendarEvent, calendarId).Execute();
+                } catch(Exception ex) {
+                    Console.WriteLine(ex.ToString());
+                }
+
+                Thread.Sleep(250);  // to comply with rate limits
+            }
+            //// Define parameters of request.
+            //EventsResource.ListRequest request = service.Events.List("primary");
+            //request.TimeMin = DateTime.Now;
+            //request.ShowDeleted = false;
+            //request.SingleEvents = true;
+            //request.MaxResults = 10;
+            //request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
+
+            //// List events.
+            //Events events = request.Execute();
+            //Console.WriteLine("Upcoming events:");
+            //if (events.Items != null && events.Items.Count > 0)
+            //{
+            //    foreach (var eventItem in events.Items)
+            //    {
+            //        string when = eventItem.Start.DateTime.ToString();
+            //        if (String.IsNullOrEmpty(when))
+            //        {
+            //            when = eventItem.Start.Date;
+            //        }
+            //        Console.WriteLine("{0} ({1})", eventItem.Summary, when);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine("No upcoming events found.");
+            //}
+            //Console.Read();
         }
 
         static List<VcbFieldEvent> FetchEvents(string sessionId, int locationId)
@@ -288,7 +381,7 @@ namespace VcbFieldExport
         {
             if (!File.Exists($"{location}.csv"))
             {
-                return new List<VcbFieldEvent>();
+                return [];
             }
 
             using (StreamReader reader = new StreamReader($"{location}.csv"))

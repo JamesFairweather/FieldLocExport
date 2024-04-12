@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="31.0.3" />
+	<PackageReference Include="Google.Apis.Calendar.v3" Version="1.67.0.3297" />
   </ItemGroup>
 
 </Project>
