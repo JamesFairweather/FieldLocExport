@@ -124,7 +124,14 @@ namespace VcbFieldExport
         private static partial Regex PaginationRegex();
 
         static readonly Dictionary<int, string> locationIds = new Dictionary<int, string> {
+            { 69829171, "Chaldecott Park N diamond" },
+            { 69829169, "Chaldecott Park S diamond" },
+            { 69829163, "Hillcrest Park NE diamond" },
+            { 69829157, "Hillcrest Park SW diamond" },
             { 69829182, "Killarney Park W diamond" },
+            { 69829177, "Nanaimo Park N diamond" },
+            { 69829180, "Nanaimo Park SE diamond" },
+            { 69829186, "Trafalgar Park" },
         };
 
         static int Main(string[] args)
