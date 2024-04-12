@@ -34,6 +34,7 @@ namespace VcbFieldExport
             visitingTeamOrDescription = string.Empty;
             startTime = DateTime.MinValue;
             endTime = DateTime.MinValue;
+            googleEventId = string.Empty;
         }
 
         public VcbFieldEvent(EventType _eventType, string _homeTeam, string _visitingTeam, DateTime start, DateTime end)
@@ -43,6 +44,7 @@ namespace VcbFieldExport
             visitingTeamOrDescription = _visitingTeam;
             startTime = start;
             endTime = end;
+            googleEventId = string.Empty;
         }
 
         public EventType eventType { get; set; }
@@ -50,6 +52,7 @@ namespace VcbFieldExport
         public string visitingTeamOrDescription { get; set; }
         public DateTime startTime { get; set; }
         public DateTime endTime { get; set; }
+        public string googleEventId { get; set; }
 
         public override bool Equals(object? obj)
         {
@@ -86,7 +89,8 @@ namespace VcbFieldExport
             Map(m => m.homeTeam).Index(1).Name("homeTeam");
             Map(m => m.visitingTeamOrDescription).Index(2).Name("visitingTeamOrDescription");
             Map(m => m.startTime).Index(3).Name("startTime");
-            Map(m => m.endTime).Index(4).Name("endTime"); //.TypeConverter<CalendarExceptionEnumConverter<CalendarExceptionEntityType>>();
+            Map(m => m.endTime).Index(4).Name("endTime");
+            Map(m => m.googleEventId).Index(5).Name("googleEventId");
         }
     }
 
@@ -157,9 +161,20 @@ namespace VcbFieldExport
                 {
                     if (!currentEvents.Contains(e))
                     {
-                        eventsToRemove.Add(e);
+                        if (e.googleEventId != string.Empty) {
+                            eventsToRemove.Add(e);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Warning event deleted that doesn't have an event ID ({locationIds[locationId]}: {e.eventType} {e.homeTeam}, {e.startTime}).  This event should be manually removed from the Google calendar and the CSV file.");
+                        }
                     }
                 });
+
+                if (eventsToRemove.Count > 0)
+                {
+                    RemoveEventsFromGoogleCalendar(eventsToRemove, locationIds[locationId]);
+                }
 
                 // find events to add and insert them into the Google calendar
                 List<VcbFieldEvent> eventsToAdd = new List<VcbFieldEvent>();
@@ -171,7 +186,9 @@ namespace VcbFieldExport
                     }
                 });
 
-                PostNewEventsToGoogleCalendar(eventsToAdd, locationIds[locationId]);
+                if (eventsToAdd.Count > 0) {
+                    PostNewEventsToGoogleCalendar(eventsToAdd, locationIds[locationId]);
+                }
 
                 SaveEvents(currentEvents, locationIds[locationId]);
             }
@@ -183,6 +200,49 @@ namespace VcbFieldExport
         // at ~/.credentials/calendar-dotnet-quickstart.json
         static string[] Scopes = { CalendarService.Scope.Calendar };
         static string ApplicationName = "Google Calendar API .NET Quickstart";
+
+        static void RemoveEventsFromGoogleCalendar(List<VcbFieldEvent> eventsToRemove, string locationName)
+        {
+            UserCredential credential;
+
+            using (var stream =
+                new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+            {
+                // The file token.json stores the user's access and refresh tokens, and is created
+                // automatically when the authorization flow completes for the first time.
+                string credPath = $"{locationName}.json";
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.FromStream(stream).Secrets,
+                    Scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(credPath, true)).Result;
+            }
+
+            // Create Google Calendar API service.
+            var service = new CalendarService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = ApplicationName,
+            });
+
+            foreach (VcbFieldEvent e in eventsToRemove)
+            {
+                var calendarId = "primary"; //Always primary.
+
+                try
+                {
+                    service.Events.Delete(calendarId, e.googleEventId).Execute();
+                    Console.WriteLine($"Deleted eventId {e.googleEventId}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+
+                Thread.Sleep(250);  // to comply with rate limits
+            }
+        }
 
         static void PostNewEventsToGoogleCalendar(List<VcbFieldEvent> newEvents, string locationName)
         {
@@ -227,40 +287,13 @@ namespace VcbFieldExport
 
                 try {
                     result = service.Events.Insert(googleCalendarEvent, calendarId).Execute();
+                    e.googleEventId = result.Id;
                 } catch(Exception ex) {
                     Console.WriteLine(ex.ToString());
                 }
 
                 Thread.Sleep(250);  // to comply with rate limits
             }
-            //// Define parameters of request.
-            //EventsResource.ListRequest request = service.Events.List("primary");
-            //request.TimeMin = DateTime.Now;
-            //request.ShowDeleted = false;
-            //request.SingleEvents = true;
-            //request.MaxResults = 10;
-            //request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
-
-            //// List events.
-            //Events events = request.Execute();
-            //Console.WriteLine("Upcoming events:");
-            //if (events.Items != null && events.Items.Count > 0)
-            //{
-            //    foreach (var eventItem in events.Items)
-            //    {
-            //        string when = eventItem.Start.DateTime.ToString();
-            //        if (String.IsNullOrEmpty(when))
-            //        {
-            //            when = eventItem.Start.Date;
-            //        }
-            //        Console.WriteLine("{0} ({1})", eventItem.Summary, when);
-            //    }
-            //}
-            //else
-            //{
-            //    Console.WriteLine("No upcoming events found.");
-            //}
-            //Console.Read();
         }
 
         static List<VcbFieldEvent> FetchEvents(string sessionId, int locationId)
