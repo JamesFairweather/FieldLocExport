@@ -6,10 +6,6 @@ using System.Xml;
 using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
-// TODO:
-// 1.  Upload the delta to the Google calendars
-// 2.  Compute a delta (added entries, removed entries) to upload to Google for future updates.
-
 namespace VcbFieldExport
 {
     enum EventType
@@ -28,6 +24,15 @@ namespace VcbFieldExport
             visitingTeamOrDescription = _visitingTeam;
             startTime = start;
             endTime = end;
+        }
+
+        public string toString()
+        {
+            return $"{eventType.ToString()},{homeTeam},{visitingTeamOrDescription},{startTime},{endTime}";
+        }
+        public static VcbFieldEvent fromString(string s)
+        {
+            return new VcbFieldEvent(EventType.Practice, s, s, DateTime.Now, DateTime.Now);
         }
 
         public EventType eventType;
@@ -72,6 +77,12 @@ namespace VcbFieldExport
 
             foreach (int locationId in locationIds.Keys) {
                 List<VcbFieldEvent> newEvents = FetchEvents(sessionId, locationId);
+                List<VcbFieldEvent> currentEvents = LoadEvents(locationIds[locationId]);
+
+                // find events to remove and delete them from the Google calendar
+                // find events to add and insert them into the Google calendar
+
+                SaveEvents(newEvents, locationIds[locationId]);
             }
 
             return returnValue;
@@ -108,9 +119,6 @@ namespace VcbFieldExport
             int expectedPageCount = m.Success ? Int32.Parse(m.Groups[1].Value) : 1;
 
             Console.WriteLine($"Expecting {expectedPageCount} pages of events for this location.");
-
-            StreamWriter outputFile = new($"{locationIds[locationId]}.csv");
-            outputFile.WriteLine("Event/Game,Home Team,Event title or Visiting Team,Start Time,End Time");
 
             while (currentPage <= expectedPageCount) {
                 Console.WriteLine($"Processing page {currentPage} ...");
@@ -183,9 +191,41 @@ namespace VcbFieldExport
                 }
             }
 
-            outputFile.Close();
+            return events;
+        }
+
+        static List<VcbFieldEvent> LoadEvents(string location)
+        {
+            List<VcbFieldEvent> events = new List<VcbFieldEvent>();
+
+            StreamReader inputFile = new($"{location}.csv");
+            inputFile.ReadLine();
+            while (!inputFile.EndOfStream)
+            {
+                var line = inputFile.ReadLine();
+
+                if (string.IsNullOrEmpty(line))
+                {
+                    break;
+                }
+
+                events.Add(new VcbFieldEvent.fromString(line));
+
+            }
+            inputFile.Close();
 
             return events;
+        }
+
+        static void SaveEvents(List<VcbFieldEvent> events, string location)
+        {
+            StreamWriter outputFile = new($"{location}.csv");
+            outputFile.WriteLine("Event/Game,Home Team,Event title or Visiting Team,Start Time,End Time");
+
+            events.ForEach(e => {
+                outputFile.WriteLine(e.toString());
+            });
+            outputFile.Close();
         }
 
         static string GetVcbFieldEvents(HttpClient client, int locationId, int page)
