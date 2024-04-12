@@ -35,7 +35,6 @@ namespace VcbFieldExport
             { 69829163, "Hillcrest Park NE diamond" },
             { 69829157, "Hillcrest Park SW diamond" },
             { 69829182, "Killarney Park W diamond" },
-            { 69829208, "Latrace Field" },
             { 69829177, "Nanaimo Park N diamond" },
             { 69829180, "Nanaimo Park SE diamond" },
             { 69829186, "Trafalgar Park" },
