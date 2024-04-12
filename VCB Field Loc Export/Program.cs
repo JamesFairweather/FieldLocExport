@@ -36,11 +36,11 @@ namespace VcbFieldExport
             endTime = end;
         }
 
-        public EventType eventType;
-        public string homeTeam;
-        public string visitingTeamOrDescription;
-        public DateTime startTime;
-        public DateTime endTime;
+        public EventType eventType { get; set; }
+        public string homeTeam { get; set; }
+        public string visitingTeamOrDescription { get; set; }
+        public DateTime startTime { get; set; }
+        public DateTime endTime { get; set; }
     };
 
     public class FieldEventMap : ClassMap<VcbFieldEvent>
@@ -89,13 +89,26 @@ namespace VcbFieldExport
             }
 
             foreach (int locationId in locationIds.Keys) {
-                // List<VcbFieldEvent> newEvents = FetchEvents(sessionId, locationId);
-                List<VcbFieldEvent> currentEvents = LoadEvents(locationIds[locationId]);
+                List<VcbFieldEvent> currentEvents = FetchEvents(sessionId, locationId);
+                List<VcbFieldEvent> savedEvents = LoadEvents(locationIds[locationId]);
 
                 // find events to remove and delete them from the Google calendar
-                // find events to add and insert them into the Google calendar
+                List<VcbFieldEvent> eventsToRemove = new List<VcbFieldEvent>();
+                savedEvents.ForEach(e => {
+                    if (!currentEvents.Contains(e)) {
+                        eventsToRemove.Add(e);
+                    }
+                });
 
-                // SaveEvents(newEvents, locationIds[locationId]);
+                // find events to add and insert them into the Google calendar
+                List<VcbFieldEvent> eventsToAdd = new List<VcbFieldEvent>();
+                currentEvents.ForEach(e => {
+                    if (!savedEvents.Contains(e)) {
+                        eventsToAdd.Add(e);
+                    }
+                });
+
+                SaveEvents(currentEvents, locationIds[locationId]);
             }
 
             return returnValue;
@@ -224,6 +237,10 @@ namespace VcbFieldExport
 
         static List<VcbFieldEvent> LoadEvents(string location)
         {
+            if (!File.Exists($"{location}.csv")) {
+                return new List<VcbFieldEvent>();
+            }
+
             using (StreamReader reader = new StreamReader($"{location}.csv")) {
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
@@ -236,7 +253,7 @@ namespace VcbFieldExport
 
         static void SaveEvents(List<VcbFieldEvent> events, string location)
         {
-            using (StreamWriter writer = new($"{location}.csv")) {
+            using (StreamWriter writer = new($"{location}.csv", false)) {
                 using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
                 {
                     csv.WriteHeader<VcbFieldEvent>();
