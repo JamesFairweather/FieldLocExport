@@ -1,7 +1,4 @@
 .vs/
 **/obj/
 **/bin/
-**/*.csv
-**/launchSettings.json
-**/credentials.json
-**/token.json
+**/*.json
