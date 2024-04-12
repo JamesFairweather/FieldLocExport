@@ -1,6 +1,7 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
+using System;
 using System.Globalization;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -18,9 +19,10 @@ namespace VcbFieldExport
         TeamControlledGame,
     };
 
-    public class VcbFieldEvent
+    public class VcbFieldEvent : IEquatable<VcbFieldEvent>
     {
-        public VcbFieldEvent() {
+        public VcbFieldEvent()
+        {
             eventType = EventType.Practice;
             homeTeam = string.Empty;
             visitingTeamOrDescription = string.Empty;
@@ -28,7 +30,8 @@ namespace VcbFieldExport
             endTime = DateTime.MinValue;
         }
 
-        public VcbFieldEvent(EventType _eventType, string _homeTeam, string _visitingTeam, DateTime start, DateTime end) {
+        public VcbFieldEvent(EventType _eventType, string _homeTeam, string _visitingTeam, DateTime start, DateTime end)
+        {
             eventType = _eventType;
             homeTeam = _homeTeam;
             visitingTeamOrDescription = _visitingTeam;
@@ -41,6 +44,31 @@ namespace VcbFieldExport
         public string visitingTeamOrDescription { get; set; }
         public DateTime startTime { get; set; }
         public DateTime endTime { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            return this.Equals(obj as VcbFieldEvent);
+        }
+
+        public bool Equals(VcbFieldEvent? e)
+        {
+            if (e is null)
+            {
+                return false;
+            }
+
+            if (Object.ReferenceEquals(this, e)) {
+                return true;
+            }
+
+            return eventType == e.eventType &&
+                homeTeam == e.homeTeam && 
+                visitingTeamOrDescription == e.visitingTeamOrDescription &&
+                startTime == e.startTime &&
+                endTime == e.endTime;
+        }
+
+        public override int GetHashCode() => base.GetHashCode();
     };
 
     public class FieldEventMap : ClassMap<VcbFieldEvent>
@@ -52,6 +80,22 @@ namespace VcbFieldExport
             Map(m => m.visitingTeamOrDescription).Index(2).Name("visitingTeamOrDescription");
             Map(m => m.startTime).Index(3).Name("startTime");
             Map(m => m.endTime).Index(4).Name("endTime"); //.TypeConverter<CalendarExceptionEnumConverter<CalendarExceptionEntityType>>();
+        }
+    }
+
+    class IdEqualityComparer : IEqualityComparer<VcbFieldEvent>
+    {
+        public bool Equals(VcbFieldEvent? a, VcbFieldEvent? b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a is null || b is null) return false;
+            return a.eventType == b.eventType;
+        }
+
+        public int GetHashCode(VcbFieldEvent obj)
+        {
+            if (obj is null) return 0;
+            return obj.GetHashCode();
         }
     }
 
@@ -88,22 +132,27 @@ namespace VcbFieldExport
                 return -1;
             }
 
-            foreach (int locationId in locationIds.Keys) {
+            foreach (int locationId in locationIds.Keys)
+            {
                 List<VcbFieldEvent> currentEvents = FetchEvents(sessionId, locationId);
                 List<VcbFieldEvent> savedEvents = LoadEvents(locationIds[locationId]);
 
                 // find events to remove and delete them from the Google calendar
                 List<VcbFieldEvent> eventsToRemove = new List<VcbFieldEvent>();
-                savedEvents.ForEach(e => {
-                    if (!currentEvents.Contains(e)) {
+                savedEvents.ForEach(e =>
+                {
+                    if (!currentEvents.Contains(e))
+                    {
                         eventsToRemove.Add(e);
                     }
                 });
 
                 // find events to add and insert them into the Google calendar
                 List<VcbFieldEvent> eventsToAdd = new List<VcbFieldEvent>();
-                currentEvents.ForEach(e => {
-                    if (!savedEvents.Contains(e)) {
+                currentEvents.ForEach(e =>
+                {
+                    if (!savedEvents.Contains(e))
+                    {
                         eventsToAdd.Add(e);
                     }
                 });
@@ -237,11 +286,13 @@ namespace VcbFieldExport
 
         static List<VcbFieldEvent> LoadEvents(string location)
         {
-            if (!File.Exists($"{location}.csv")) {
+            if (!File.Exists($"{location}.csv"))
+            {
                 return new List<VcbFieldEvent>();
             }
 
-            using (StreamReader reader = new StreamReader($"{location}.csv")) {
+            using (StreamReader reader = new StreamReader($"{location}.csv"))
+            {
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
                     csv.Context.RegisterClassMap<FieldEventMap>();
@@ -253,7 +304,9 @@ namespace VcbFieldExport
 
         static void SaveEvents(List<VcbFieldEvent> events, string location)
         {
-            using (StreamWriter writer = new($"{location}.csv", false)) {
+            Console.WriteLine($"Saving events to file {location}.csv");
+            using (StreamWriter writer = new($"{location}.csv", false))
+            {
                 using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
                 {
                     csv.WriteHeader<VcbFieldEvent>();
