@@ -3,3 +3,5 @@
 **/bin/
 **/*.csv
 **/launchSettings.json
+**/credentials.json
+**/token.json
