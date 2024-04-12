@@ -1,4 +1,7 @@
-﻿using System.Globalization;
+﻿using CsvHelper;
+using CsvHelper.Configuration;
+using CsvHelper.TypeConversion;
+using System.Globalization;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -8,31 +11,29 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace VcbFieldExport
 {
-    enum EventType
+    public enum EventType
     {
         Practice,
         LeagueControlledGame,
         TeamControlledGame,
     };
 
-    class VcbFieldEvent
+    public class VcbFieldEvent
     {
-        public VcbFieldEvent(EventType _eventType, string _homeTeam, string _visitingTeam, DateTime start, DateTime end)
-        {
+        public VcbFieldEvent() {
+            eventType = EventType.Practice;
+            homeTeam = string.Empty;
+            visitingTeamOrDescription = string.Empty;
+            startTime = DateTime.MinValue;
+            endTime = DateTime.MinValue;
+        }
+
+        public VcbFieldEvent(EventType _eventType, string _homeTeam, string _visitingTeam, DateTime start, DateTime end) {
             eventType = _eventType;
             homeTeam = _homeTeam;
             visitingTeamOrDescription = _visitingTeam;
             startTime = start;
             endTime = end;
-        }
-
-        public string toString()
-        {
-            return $"{eventType.ToString()},{homeTeam},{visitingTeamOrDescription},{startTime},{endTime}";
-        }
-        public static VcbFieldEvent fromString(string s)
-        {
-            return new VcbFieldEvent(EventType.Practice, s, s, DateTime.Now, DateTime.Now);
         }
 
         public EventType eventType;
@@ -41,6 +42,18 @@ namespace VcbFieldExport
         public DateTime startTime;
         public DateTime endTime;
     };
+
+    public class FieldEventMap : ClassMap<VcbFieldEvent>
+    {
+        public FieldEventMap()
+        {
+            Map(m => m.eventType).Index(0).Name("eventType");
+            Map(m => m.homeTeam).Index(1).Name("homeTeam");
+            Map(m => m.visitingTeamOrDescription).Index(2).Name("visitingTeamOrDescription");
+            Map(m => m.startTime).Index(3).Name("startTime");
+            Map(m => m.endTime).Index(4).Name("endTime"); //.TypeConverter<CalendarExceptionEnumConverter<CalendarExceptionEntityType>>();
+        }
+    }
 
     internal partial class Program
     {
@@ -76,19 +89,20 @@ namespace VcbFieldExport
             }
 
             foreach (int locationId in locationIds.Keys) {
-                List<VcbFieldEvent> newEvents = FetchEvents(sessionId, locationId);
+                // List<VcbFieldEvent> newEvents = FetchEvents(sessionId, locationId);
                 List<VcbFieldEvent> currentEvents = LoadEvents(locationIds[locationId]);
 
                 // find events to remove and delete them from the Google calendar
                 // find events to add and insert them into the Google calendar
 
-                SaveEvents(newEvents, locationIds[locationId]);
+                // SaveEvents(newEvents, locationIds[locationId]);
             }
 
             return returnValue;
         }
 
-        static List<VcbFieldEvent> FetchEvents(string sessionId, int locationId) {
+        static List<VcbFieldEvent> FetchEvents(string sessionId, int locationId)
+        {
 
             string eventPattern = @"<tr.+>\s" +
             @"<td (colspan=""2"" )?class=""l-Schedule__col-game-event"">\s(<a .+>)?(?<EventName>[^<]+)(</a>)?\s</td>\s" +
@@ -110,7 +124,8 @@ namespace VcbFieldExport
 
             int contentStartIndex = responseHtml.IndexOf("<div id=\"content\">");
 
-            if (contentStartIndex == -1) {
+            if (contentStartIndex == -1)
+            {
                 throw new Exception("Error - did not find the expected event table start tag - check the returned HTML content and update the script");
             }
 
@@ -120,24 +135,29 @@ namespace VcbFieldExport
 
             Console.WriteLine($"Expecting {expectedPageCount} pages of events for this location.");
 
-            while (currentPage <= expectedPageCount) {
+            while (currentPage <= expectedPageCount)
+            {
                 Console.WriteLine($"Processing page {currentPage} ...");
 
                 int eventCount = 0;
                 Match eventMatches = eventRegex.Match(responseHtml, contentStartIndex);
 
-                while (eventMatches.Success) {
+                while (eventMatches.Success)
+                {
                     DateTime startTime, endTime;
 
                     Match timeMatch = TimeRegex().Match(eventMatches.Groups["Time"].Value);
 
-                    if (timeMatch.Success) {
+                    if (timeMatch.Success)
+                    {
                         startTime = DateTime.Parse(eventMatches.Groups["Date"].Value) + DateTime.Parse(timeMatch.Groups[1].Value).TimeOfDay;
 
-                        if (!string.IsNullOrEmpty(timeMatch.Groups[4].Value)) {
+                        if (!string.IsNullOrEmpty(timeMatch.Groups[4].Value))
+                        {
                             endTime = DateTime.Parse(eventMatches.Groups["Date"].Value) + DateTime.Parse(timeMatch.Groups[4].Value).TimeOfDay;
                         }
-                        else {
+                        else
+                        {
                             endTime = startTime.AddHours(3);
                         }
 
@@ -149,21 +169,27 @@ namespace VcbFieldExport
 
                         Match teamEvent = TeamEventRegex().Match(gameOrEventString);
 
-                        if (teamEvent.Success) {
-                            events.Add(new VcbFieldEvent(EventType.Practice, teamEvent.Groups["TeamName"].Value,teamEvent.Groups["EventTitle"].Value,startTime,endTime));
+                        if (teamEvent.Success)
+                        {
+                            events.Add(new VcbFieldEvent(EventType.Practice, teamEvent.Groups["TeamName"].Value, teamEvent.Groups["EventTitle"].Value, startTime, endTime));
                         }
-                        else {
+                        else
+                        {
                             Match leagueControlledGame = LeagueControlledGameRegex().Match(gameOrEventString);
 
-                            if (leagueControlledGame.Success) {
-                                events.Add(new VcbFieldEvent(EventType.LeagueControlledGame, leagueControlledGame.Groups["HomeTeamName"].Value,leagueControlledGame.Groups["VisitorTeamName"].Value,startTime,endTime));
+                            if (leagueControlledGame.Success)
+                            {
+                                events.Add(new VcbFieldEvent(EventType.LeagueControlledGame, leagueControlledGame.Groups["HomeTeamName"].Value, leagueControlledGame.Groups["VisitorTeamName"].Value, startTime, endTime));
                             }
-                            else {
+                            else
+                            {
                                 Match teamControlledGame = TeamControlledGameRegex().Match(gameOrEventString);
-                                if (teamControlledGame.Success) {
-                                    events.Add(new VcbFieldEvent(EventType.TeamControlledGame, teamControlledGame.Groups["VcbTeamName"].Value,teamControlledGame.Groups["OpponentName"].Value,startTime,endTime));
+                                if (teamControlledGame.Success)
+                                {
+                                    events.Add(new VcbFieldEvent(EventType.TeamControlledGame, teamControlledGame.Groups["VcbTeamName"].Value, teamControlledGame.Groups["OpponentName"].Value, startTime, endTime));
                                 }
-                                else {
+                                else
+                                {
                                     Console.WriteLine($"Warning: unable to parse the event string for the event {gameOrEventString}.  Check the returned HTML");
                                     events.Add(new VcbFieldEvent(EventType.Practice, gameOrEventString, "", startTime, endTime));
                                 }
@@ -172,7 +198,8 @@ namespace VcbFieldExport
 
                         eventCount++;
                     }
-                    else {
+                    else
+                    {
                         Console.WriteLine($"Warning: Event {eventMatches.Groups["EventName"].Value.Trim()} on {eventMatches.Groups["Date"].Value} has an unparsable time value ({eventMatches.Groups["Time"].Value}).  Skipping...");
                     }
 
@@ -186,7 +213,8 @@ namespace VcbFieldExport
                 responseHtml = GetVcbFieldEvents(client, locationId, currentPage);
                 contentStartIndex = responseHtml.IndexOf("<div id=\"content\">");
 
-                if (contentStartIndex == -1) {
+                if (contentStartIndex == -1)
+                {
                     throw new Exception("Error - did not find the expected event table start tag - check the returned HTML content and update the script");
                 }
             }
@@ -196,36 +224,26 @@ namespace VcbFieldExport
 
         static List<VcbFieldEvent> LoadEvents(string location)
         {
-            List<VcbFieldEvent> events = new List<VcbFieldEvent>();
-
-            StreamReader inputFile = new($"{location}.csv");
-            inputFile.ReadLine();
-            while (!inputFile.EndOfStream)
-            {
-                var line = inputFile.ReadLine();
-
-                if (string.IsNullOrEmpty(line))
+            using (StreamReader reader = new StreamReader($"{location}.csv")) {
+                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
-                    break;
+                    csv.Context.RegisterClassMap<FieldEventMap>();
+                    var events = csv.GetRecords<VcbFieldEvent>();
+                    return events.ToList();
                 }
-
-                events.Add(new VcbFieldEvent.fromString(line));
-
             }
-            inputFile.Close();
-
-            return events;
         }
 
         static void SaveEvents(List<VcbFieldEvent> events, string location)
         {
-            StreamWriter outputFile = new($"{location}.csv");
-            outputFile.WriteLine("Event/Game,Home Team,Event title or Visiting Team,Start Time,End Time");
-
-            events.ForEach(e => {
-                outputFile.WriteLine(e.toString());
-            });
-            outputFile.Close();
+            using (StreamWriter writer = new($"{location}.csv")) {
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteHeader<VcbFieldEvent>();
+                    csv.NextRecord();
+                    csv.WriteRecords(events);
+                }
+            }
         }
 
         static string GetVcbFieldEvents(HttpClient client, int locationId, int page)
