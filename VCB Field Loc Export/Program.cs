@@ -295,6 +295,42 @@ namespace VcbFieldExport
             }
         }
 
+        static void DeleteAllCalendarEvents(Google.Apis.Calendar.v3.CalendarService service)
+        {
+            // Define parameters of request.
+            EventsResource.ListRequest request = service.Events.List("primary");
+            request.TimeMinDateTimeOffset = DateTime.Now.AddYears(-2);
+            request.ShowDeleted = true;
+            request.SingleEvents = true;
+            request.MaxResults = 300;
+            request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
+
+            // List events.
+            Events events = request.Execute();
+            if (events.Items != null && events.Items.Count > 0)
+            {
+                Console.WriteLine($"Removing {events.Items.Count} event(s) from this calendar.");
+                foreach (var eventItem in events.Items)
+                {
+                    try
+                    {
+                        Console.WriteLine($"Deleted eventId {eventItem.Id}");
+                        service.Events.Delete("primary", eventItem.Id).Execute();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.ToString());
+                    }
+
+                    Thread.Sleep(250);  // to comply with rate limits
+                }
+            }
+            else
+            {
+                Console.WriteLine("Found no events on this account calendar.");
+            }
+        }
+
         static List<VcbFieldEvent> FetchEvents(string sessionId, int locationId)
         {
 
