@@ -37,14 +37,14 @@ namespace VcbFieldExport
             googleEventId = string.Empty;
         }
 
-        public VcbFieldEvent(EventType _eventType, string _homeTeam, string _visitingTeam, DateTime start, DateTime end)
+        public VcbFieldEvent(EventType _eventType, string _homeTeam, string _visitingTeam, DateTime start, DateTime end, string _googleEventId)
         {
             eventType = _eventType;
             homeTeam = _homeTeam;
             visitingTeamOrDescription = _visitingTeam;
             startTime = start;
             endTime = end;
-            googleEventId = string.Empty;
+            googleEventId = _googleEventId;
         }
 
         public EventType eventType { get; set; }
@@ -376,7 +376,7 @@ namespace VcbFieldExport
 
                         if (teamEvent.Success)
                         {
-                            events.Add(new VcbFieldEvent(EventType.Practice, teamEvent.Groups["TeamName"].Value, teamEvent.Groups["EventTitle"].Value, startTime, endTime));
+                            events.Add(new VcbFieldEvent(EventType.Practice, teamEvent.Groups["TeamName"].Value, teamEvent.Groups["EventTitle"].Value, startTime, endTime, string.Empty));
                         }
                         else
                         {
@@ -384,19 +384,19 @@ namespace VcbFieldExport
 
                             if (leagueControlledGame.Success)
                             {
-                                events.Add(new VcbFieldEvent(EventType.LeagueControlledGame, leagueControlledGame.Groups["HomeTeamName"].Value, leagueControlledGame.Groups["VisitorTeamName"].Value, startTime, endTime));
+                                events.Add(new VcbFieldEvent(EventType.LeagueControlledGame, leagueControlledGame.Groups["HomeTeamName"].Value, leagueControlledGame.Groups["VisitorTeamName"].Value, startTime, endTime, string.Empty));
                             }
                             else
                             {
                                 Match teamControlledGame = TeamControlledGameRegex().Match(gameOrEventString);
                                 if (teamControlledGame.Success)
                                 {
-                                    events.Add(new VcbFieldEvent(EventType.TeamControlledGame, teamControlledGame.Groups["VcbTeamName"].Value, teamControlledGame.Groups["OpponentName"].Value, startTime, endTime));
+                                    events.Add(new VcbFieldEvent(EventType.TeamControlledGame, teamControlledGame.Groups["VcbTeamName"].Value, teamControlledGame.Groups["OpponentName"].Value, startTime, endTime, string.Empty));
                                 }
                                 else
                                 {
                                     Console.WriteLine($"Warning: unable to parse the event string for the event {gameOrEventString}.  Check the returned HTML");
-                                    events.Add(new VcbFieldEvent(EventType.Practice, gameOrEventString, "", startTime, endTime));
+                                    events.Add(new VcbFieldEvent(EventType.Practice, gameOrEventString, "", startTime, endTime, string.Empty));
                                 }
                             }
                         }
