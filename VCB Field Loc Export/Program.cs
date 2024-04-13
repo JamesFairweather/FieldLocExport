@@ -21,8 +21,7 @@ namespace VcbFieldExport
     public enum EventType
     {
         Practice,
-        LeagueControlledGame,
-        TeamControlledGame,
+        Game,
     };
 
     public class VcbFieldEvent : IEquatable<VcbFieldEvent>
@@ -409,14 +408,14 @@ namespace VcbFieldExport
 
                             if (leagueControlledGame.Success)
                             {
-                                events.Add(new VcbFieldEvent(EventType.LeagueControlledGame, leagueControlledGame.Groups["HomeTeamName"].Value, leagueControlledGame.Groups["VisitorTeamName"].Value, startTime, endTime, string.Empty));
+                                events.Add(new VcbFieldEvent(EventType.Game, leagueControlledGame.Groups["HomeTeamName"].Value, leagueControlledGame.Groups["VisitorTeamName"].Value, startTime, endTime, string.Empty));
                             }
                             else
                             {
                                 Match teamControlledGame = TeamControlledGameRegex().Match(gameOrEventString);
                                 if (teamControlledGame.Success)
                                 {
-                                    events.Add(new VcbFieldEvent(EventType.TeamControlledGame, teamControlledGame.Groups["VcbTeamName"].Value, teamControlledGame.Groups["OpponentName"].Value, startTime, endTime, string.Empty));
+                                    events.Add(new VcbFieldEvent(EventType.Game, teamControlledGame.Groups["VcbTeamName"].Value, teamControlledGame.Groups["OpponentName"].Value, startTime, endTime, string.Empty));
                                 }
                                 else
                                 {
