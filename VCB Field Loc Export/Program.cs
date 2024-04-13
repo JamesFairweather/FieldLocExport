@@ -152,7 +152,12 @@ namespace VcbFieldExport
 
             foreach (int locationId in locationIds.Keys)
             {
+                Console.WriteLine($"Processing events for location {locationIds[locationId]}");
+
                 List<VcbFieldEvent> currentEvents = FetchEvents(sessionId, locationId);
+
+                Console.WriteLine($"Found {currentEvents.Count} events, reconciling with last snapshot...");
+
                 List<VcbFieldEvent> savedEvents = LoadEvents(locationIds[locationId]);
 
                 // find events to remove and delete them from the Google calendar
@@ -173,7 +178,12 @@ namespace VcbFieldExport
 
                 if (eventsToRemove.Count > 0)
                 {
+                    Console.WriteLine($"Removing {eventsToRemove.Count} event(s) from the calendar...");
                     RemoveEventsFromGoogleCalendar(eventsToRemove, locationIds[locationId]);
+                }
+                else
+                {
+                    Console.WriteLine($"No events to remove found");
                 }
 
                 // find events to add and insert them into the Google calendar
@@ -187,7 +197,12 @@ namespace VcbFieldExport
                 });
 
                 if (eventsToAdd.Count > 0) {
+                    Console.WriteLine($"Adding {eventsToAdd.Count} event(s) to the calendar...");
                     PostNewEventsToGoogleCalendar(eventsToAdd, locationIds[locationId]);
+                }
+                else
+                {
+                    Console.WriteLine($"No events to add found");
                 }
 
                 SaveEvents(currentEvents, locationIds[locationId]);
@@ -312,7 +327,6 @@ namespace VcbFieldExport
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Add("Cookie", $"_ts_session={sessionId}");
 
-            Console.WriteLine($"Processing events for location {locationIds[locationId]}");
             int currentPage = 1;
 
             string responseHtml = GetVcbFieldEvents(client, locationId, currentPage);
@@ -328,12 +342,8 @@ namespace VcbFieldExport
 
             int expectedPageCount = m.Success ? Int32.Parse(m.Groups[1].Value) : 1;
 
-            Console.WriteLine($"Expecting {expectedPageCount} pages of events for this location.");
-
             while (currentPage <= expectedPageCount)
             {
-                Console.WriteLine($"Processing page {currentPage} ...");
-
                 int eventCount = 0;
                 Match eventMatches = eventRegex.Match(responseHtml, contentStartIndex);
 
@@ -401,8 +411,6 @@ namespace VcbFieldExport
                     eventMatches = eventMatches.NextMatch();
                 }
 
-                Console.WriteLine($"Parsed {eventCount} events from this page.");
-
                 currentPage++;
 
                 responseHtml = GetVcbFieldEvents(client, locationId, currentPage);
@@ -437,7 +445,6 @@ namespace VcbFieldExport
 
         static void SaveEvents(List<VcbFieldEvent> events, string location)
         {
-            Console.WriteLine($"Saving events to file {location}.csv");
             using (StreamWriter writer = new($"{location}.csv", false))
             {
                 using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
