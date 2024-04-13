@@ -281,7 +281,7 @@ namespace VcbFieldExport
                 googleCalendarEvent.End = new EventDateTime()
                 { DateTimeDateTimeOffset = e.endTime };
 
-                googleCalendarEvent.Summary = e.homeTeam + " : " + e.eventType.ToString();
+                googleCalendarEvent.Summary = e.eventType.ToString() + " : " + e.homeTeam;
                 googleCalendarEvent.Description = (e.eventType == EventType.Practice ? string.Empty : "vs. ") + e.visitingTeamOrDescription;
 
                 var calendarId = "primary"; //Always primary.
