@@ -1,31 +1,31 @@
 eventType,homeTeam,visitingTeamOrDescription,startTime,endTime,googleEventId
-TeamControlledGame,VCB 13U A Giants,VCB 13U A Red Sox,04/14/2024 14:30:00,04/14/2024 16:00:00,k7o5429tud7b37f8pofp5ge6ko
-TeamControlledGame,VCB 13U A Red Sox,VCB 13U A Giants,04/14/2024 14:30:00,04/14/2024 17:00:00,q8rr6f3j9jm7fvqth2i7nrk20g
+Game,VCB 13U A Giants,VCB 13U A Red Sox,04/14/2024 14:30:00,04/14/2024 16:00:00,k7o5429tud7b37f8pofp5ge6ko
+Game,VCB 13U A Red Sox,VCB 13U A Giants,04/14/2024 14:30:00,04/14/2024 17:00:00,q8rr6f3j9jm7fvqth2i7nrk20g
 Practice,VCB 13U A Dodgers,13U A Dodgers practice,04/14/2024 17:00:00,04/14/2024 19:00:00,t94lt3innoerjceei9suerim80
 Practice,VCB 13U A Diamondbacks,13U A Diamondbacks practice,04/15/2024 17:30:00,04/15/2024 19:30:00,kgldd2lhjog6jf2ejs0hlg9778
 Practice,VCB 13U A Red Sox,13U A Red Sox practice,04/16/2024 16:30:00,04/16/2024 18:15:00,pfd25ks9i5t0fqm47djgik2hfo
 Practice,VCB 13U A Pirates,13U A Pirates practice,04/16/2024 18:15:00,04/16/2024 20:15:00,uupl378kifm7tpg0ntpmml1gmk
-LeagueControlledGame,VCB 13U A Diamondbacks,VCB 13U A Red Sox,04/17/2024 17:30:00,04/17/2024 20:00:00,icvnp9kf0iv4ej25sbh7kq8lnk
+Game,VCB 13U A Diamondbacks,VCB 13U A Red Sox,04/17/2024 17:30:00,04/17/2024 20:00:00,icvnp9kf0iv4ej25sbh7kq8lnk
 Practice,VCB 13U A Giants,13U A Giants practice,04/18/2024 17:30:00,04/18/2024 19:30:00,mmi6p1oevuuo9h13p30h9q0tsg
 Practice,VCB Mounties 13U AA,Practice,04/21/2024 15:00:00,04/21/2024 17:00:00,koknbs7ecu6rfl3psr0g3vmkfo
 Practice,VCB 13U A Dodgers,13U A Dodgers practice,04/21/2024 17:00:00,04/21/2024 19:00:00,mhbiec6o2rtk889pgs8tgk9jt8
 Practice,VCB 13U A Red Sox,13U A Red Sox practice,04/23/2024 16:30:00,04/23/2024 18:15:00,1jn3q8frqkel66it7ckhhmqips
 Practice,VCB 13U A Pirates,13U A Pirates practice,04/23/2024 18:15:00,04/23/2024 20:15:00,tba1lj9naajc0u3lsm9f645u94
-LeagueControlledGame,VCB 13U A Diamondbacks,VCB 13U A Dodgers,04/24/2024 17:30:00,04/24/2024 20:00:00,ghqtro2f2m27hjc7ap22hjhqsc
+Game,VCB 13U A Diamondbacks,VCB 13U A Dodgers,04/24/2024 17:30:00,04/24/2024 20:00:00,ghqtro2f2m27hjc7ap22hjhqsc
 Practice,VCB Mounties 13U AA,Practice,04/28/2024 15:00:00,04/28/2024 17:00:00,5v315cn444gu8krvputdvfc080
 Practice,VCB 13U A Dodgers,13U A Dodgers practice,04/28/2024 17:00:00,04/28/2024 19:00:00,7dnrmol4d0q6l0biktf199uhm0
 Practice,VCB 13U A Diamondbacks,13U A Diamondbacks practice,04/29/2024 18:15:00,04/29/2024 20:15:00,f6d5p8flkle0ouuluu70mh3fqc
 Practice,VCB 13U A Red Sox,13U A Red Sox practice,04/30/2024 16:30:00,04/30/2024 18:15:00,3gfdj73bhjsondmi883arq170s
 Practice,VCB 13U A Pirates,13U A Pirates practice,04/30/2024 18:15:00,04/30/2024 20:15:00,0bivg5bsqtf1pdb186kdtd0qnk
-LeagueControlledGame,VCB 13U A Dodgers,VCB 13U A Giants,05/01/2024 17:30:00,05/01/2024 20:00:00,704k95a32qefere91geahnlo38
+Game,VCB 13U A Dodgers,VCB 13U A Giants,05/01/2024 17:30:00,05/01/2024 20:00:00,704k95a32qefere91geahnlo38
 Practice,VCB 13U A Giants,13U A Giants practice,05/02/2024 17:30:00,05/02/2024 19:30:00,gb1h5qhtaagv7iahgki5tgl9es
-LeagueControlledGame,VCB 13U A Diamondbacks,SCBA3,05/04/2024 12:00:00,05/04/2024 14:30:00,l1auajrrtqv8q4435rk398uahc
+Game,VCB 13U A Diamondbacks,SCBA3,05/04/2024 12:00:00,05/04/2024 14:30:00,l1auajrrtqv8q4435rk398uahc
 Practice,VCB Mounties 13U AA,Practice,05/05/2024 15:00:00,05/05/2024 17:00:00,06vth19us5q2kb27g6bph73om4
 Practice,VCB 13U A Dodgers,13U A Dodgers practice,05/05/2024 17:00:00,05/05/2024 19:00:00,dsbu0gnoe1duqd23ts0e1j2gms
-TeamControlledGame,VCB 13U A Giants,VCB 13U A Diamondbacks,05/05/2024 18:00:00,05/05/2024 19:30:00,sbehl5914ccib9nch0oqqgri04
+Game,VCB 13U A Giants,VCB 13U A Diamondbacks,05/05/2024 18:00:00,05/05/2024 19:30:00,sbehl5914ccib9nch0oqqgri04
 Practice,VCB 13U A Red Sox,13U A Red Sox practice,05/07/2024 16:45:00,05/07/2024 18:45:00,3vcelfui4hrj5tagmo5hjhrtp0
 Practice,VCB 13U A Pirates,13U A Pirates practice,05/07/2024 18:45:00,05/07/2024 20:45:00,97949lre84qpo5cq6551k9jv48
-LeagueControlledGame,VCB 13U A Dodgers,VCB 13U A Diamondbacks,05/08/2024 18:00:00,05/08/2024 20:30:00,rt2pfnd8nvboac5gd003tgn624
+Game,VCB 13U A Dodgers,VCB 13U A Diamondbacks,05/08/2024 18:00:00,05/08/2024 20:30:00,rt2pfnd8nvboac5gd003tgn624
 Practice,VCB Mounties 13U AA,Practice,05/12/2024 15:00:00,05/12/2024 17:00:00,6lhlnd0aj5i0nr6sjrb1456hk0
 Practice,VCB 13U A Dodgers,13U A Dodgers practice,05/12/2024 17:00:00,05/12/2024 19:00:00,k5vluuf7hbnocu2bpt2ih5acgc
 Practice,VCB 13U A Diamondbacks,13U A Diamondbacks practice,05/13/2024 18:45:00,05/13/2024 20:45:00,b1tkfslr2sfuauvndvo9000n1g
