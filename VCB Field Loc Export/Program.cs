@@ -150,6 +150,11 @@ namespace VcbFieldExport
                 return -1;
             }
 
+            // Uncomment these lines to remove all the events for a specific calendar
+            // string removeAllEventsFromFieldCalendar = "Chaldecott Park N diamond";
+            // DeleteAllCalendarEvents(GetGoogleCalendarService(removeAllEventsFromFieldCalendar));
+            // return 0;
+
             foreach (int locationId in locationIds.Keys)
             {
                 Console.WriteLine($"Processing events for location {locationIds[locationId]}");
