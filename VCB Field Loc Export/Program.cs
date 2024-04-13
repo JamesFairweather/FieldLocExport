@@ -160,6 +160,8 @@ namespace VcbFieldExport
 
                 List<VcbFieldEvent> savedEvents = LoadEvents(locationIds[locationId]);
 
+                var googleCalendarService = GetGoogleCalendarService(locationIds[locationId]);
+
                 // find events to remove and delete them from the Google calendar
                 List<VcbFieldEvent> eventsToRemove = new List<VcbFieldEvent>();
                 savedEvents.ForEach(e =>
@@ -179,7 +181,7 @@ namespace VcbFieldExport
                 if (eventsToRemove.Count > 0)
                 {
                     Console.WriteLine($"Removing {eventsToRemove.Count} event(s) from the calendar...");
-                    RemoveEventsFromGoogleCalendar(eventsToRemove, locationIds[locationId]);
+                    RemoveEventsFromGoogleCalendar(eventsToRemove, googleCalendarService);
                 }
                 else
                 {
@@ -198,7 +200,7 @@ namespace VcbFieldExport
 
                 if (eventsToAdd.Count > 0) {
                     Console.WriteLine($"Adding {eventsToAdd.Count} event(s) to the calendar...");
-                    PostNewEventsToGoogleCalendar(eventsToAdd, locationIds[locationId]);
+                    PostNewEventsToGoogleCalendar(eventsToAdd, googleCalendarService);
                 }
                 else
                 {
@@ -211,14 +213,14 @@ namespace VcbFieldExport
             return returnValue;
         }
 
-        // If modifying these scopes, delete your previously saved credentials
-        // at ~/.credentials/calendar-dotnet-quickstart.json
-        static string[] Scopes = { CalendarService.Scope.Calendar };
-        static string ApplicationName = "Google Calendar API .NET Quickstart";
-
-        static void RemoveEventsFromGoogleCalendar(List<VcbFieldEvent> eventsToRemove, string locationName)
+        static Google.Apis.Calendar.v3.CalendarService GetGoogleCalendarService(string locationName)
         {
             UserCredential credential;
+
+            // If the scopes are modified, you will need a new credentials.json file and re-generate the tokens.
+
+            string[] Scopes = { CalendarService.Scope.Calendar };
+            string ApplicationName = "Google Calendar API .NET Quickstart";
 
             using (var stream =
                 new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
@@ -241,6 +243,11 @@ namespace VcbFieldExport
                 ApplicationName = ApplicationName,
             });
 
+            return service;
+        }
+
+        static void RemoveEventsFromGoogleCalendar(List<VcbFieldEvent> eventsToRemove, Google.Apis.Calendar.v3.CalendarService service)
+        {
             foreach (VcbFieldEvent e in eventsToRemove)
             {
                 var calendarId = "primary"; //Always primary.
@@ -259,31 +266,8 @@ namespace VcbFieldExport
             }
         }
 
-        static void PostNewEventsToGoogleCalendar(List<VcbFieldEvent> newEvents, string locationName)
+        static void PostNewEventsToGoogleCalendar(List<VcbFieldEvent> newEvents, Google.Apis.Calendar.v3.CalendarService service)
         {
-            UserCredential credential;
-
-            using (var stream =
-                new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
-            {
-                // The file token.json stores the user's access and refresh tokens, and is created
-                // automatically when the authorization flow completes for the first time.
-                string credPath = $"{locationName}.json";
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.FromStream(stream).Secrets,
-                    Scopes,
-                    "user",
-                    CancellationToken.None,
-                    new FileDataStore(credPath, true)).Result;
-            }
-
-            // Create Google Calendar API service.
-            var service = new CalendarService(new BaseClientService.Initializer()
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = ApplicationName,
-            });
-
             foreach (VcbFieldEvent e in newEvents) {
                 Event googleCalendarEvent = new();
 
