@@ -99,7 +99,11 @@ namespace VcbFieldExport
         {
             if (ReferenceEquals(a, b)) return true;
             if (a is null || b is null) return false;
-            return a.eventType == b.eventType;
+            return a.eventType == b.eventType &&
+                a.homeTeam == b.homeTeam &&
+                a.visitingTeamOrDescription == b.visitingTeamOrDescription &&
+                a.startTime == b.startTime && 
+                a.endTime == b.endTime;
         }
 
         public int GetHashCode(VcbFieldEvent obj)
