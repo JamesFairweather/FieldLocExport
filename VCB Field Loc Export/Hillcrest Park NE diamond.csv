@@ -1,10 +1,4 @@
 eventType,homeTeam,visitingTeamOrDescription,startTime,endTime,googleEventId
-Game,VCB 15U A Girls - Royals,VCB 15U A - Red Sox,04/12/2024 17:30:00,04/12/2024 20:00:00,196ad2q74s4lh8pnhef8n30psc
-Game,VCB 15U A - Giants,VCB 15U A - Mariners,04/13/2024 11:30:00,04/13/2024 14:00:00,j2l0vb0c93vga4dv1vapvob0pk
-Game,VCB 15U A - Rangers,VCB 15U A - Yankees,04/13/2024 14:30:00,04/13/2024 17:00:00,8pdv7297k69bno6vui951h5re0
-Game,VCB 15U A - Rockies,VCB 15U A - Tigers,04/13/2024 17:30:00,04/13/2024 20:00:00,t5fjrerdq2vk181oa07asp1ang
-Game,VCB 15U A - Blue Jays,VCB 15U A - Red Sox,04/14/2024 11:30:00,04/14/2024 14:00:00,2emaf24a7bpr80fvdmnqm71avk
-Game,VCB 15U A - Athletics,VCB 15U A - Expos,04/14/2024 14:30:00,04/14/2024 17:00:00,h37kv3068kcf95nk80thrkq2ho
 Practice,VCB 15U A - Tigers,Tigers Practice,04/15/2024 18:15:00,04/15/2024 20:15:00,51q043qc0silvulgnmvtg2i0rs
 Practice,VCB 15U A - Athletics,Practice,04/16/2024 16:30:00,04/16/2024 18:30:00,h835iep86ve3bdocf9ije7t29g
 Practice,VCB Mounties 15U AAA,Practice,04/16/2024 18:15:00,04/16/2024 20:15:00,hs9rl6jidup57p9c2scl6h97n0
@@ -158,3 +152,7 @@ Practice,VCB Mounties 15U AAA,Practice,07/23/2024 18:45:00,07/23/2024 21:15:00,e
 Practice,VCB Mounties 15U AAA,Practice,07/25/2024 16:15:00,07/25/2024 18:45:00,equ4scm8pckj1abcb1qvd3dcmc
 Practice,VCB Mounties 15U AA - Red,Practice,07/25/2024 18:45:00,07/25/2024 20:30:00,sq53ohk5kmtkr6e1b1j3lnrphs
 Practice,VCB Mounties 15U AAA,Practice,07/30/2024 18:45:00,07/30/2024 21:15:00,ji6ghjh3kln4lkbe4qi15rbdn8
+Game,VCB 15U A - Giants,VCB 15U A Girls - Royals,04/15/2024 17:45:00,04/15/2024 20:15:00,c459lg88j7qed4660uln9dtov0
+Game,VCB 15U A - Rockies,VCB 15U A - Mariners,04/16/2024 17:30:00,04/16/2024 20:00:00,i4s483orf86m1krq4040rquqg8
+Game,VCB 15U A - Tigers,VCB 15U A - Rangers,04/18/2024 17:30:00,04/18/2024 20:00:00,4aoha1mt958h9k16d6if8s56gc
+Game,VCB 15U A - Athletics,VCB 15U A - Blue Jays,04/19/2024 17:30:00,04/19/2024 20:00:00,iumnme3cvujekta28kom5cbsu4

@@ -1,9 +1,4 @@
 eventType,homeTeam,visitingTeamOrDescription,startTime,endTime,googleEventId
-Practice,VCB Mounties 13U AAA,Batting practice,04/12/2024 16:00:00,04/12/2024 17:30:00,2he3mr9fp09ob7dnidr52s9dt4
-Game,VCB 13U A Pirates,TC3,04/13/2024 11:30:00,04/13/2024 14:00:00,1gg5am64s2f8neneh8e82kma8c
-Game,VCB 13U A Dodgers,BBA1,04/13/2024 14:30:00,04/13/2024 17:00:00,8m0g7596ebte3vt8mv01l3b6j8
-Practice,VCB 18U AA Athletics,A's Welcome BBQ (Weather Permitting),04/14/2024 14:00:00,04/14/2024 15:30:00,gu5ll4q3qho1d01m0t9h1vadmg
-Practice,VCB Mounties 13U AA,Practice,04/14/2024 14:00:00,04/14/2024 16:00:00,bahejc3257532j517u5jd9mt78
 Practice,VCB Mounties 13U AAA,Practice,04/16/2024 17:00:00,04/16/2024 18:45:00,mb2v7t397v86bb9e4rk25aierg
 Game,VCB Mounties 13U AA,Richmond,04/16/2024 17:30:00,04/16/2024 20:30:00,5b8h7e386cc9pnn60lns619jng
 Practice,VCB Mounties 13U AA,Practice,04/16/2024 18:00:00,04/16/2024 19:45:00,69fr0nee9ap9pu570qfsodldac
@@ -72,3 +67,29 @@ Practice,VCB Mounties 13U AA,Practice,07/11/2024 17:00:00,07/11/2024 18:45:00,9n
 Practice,VCB Mounties 13U AAA,Practice,07/16/2024 17:00:00,07/16/2024 18:45:00,ikmqjgsrtfiboe76ggesv2q95g
 Practice,VCB Mounties 13U AA,Practice,07/18/2024 17:00:00,07/18/2024 18:45:00,5p4fgqdsqj5434gk5m3o73mpg0
 Practice,VCB Mounties 13U AAA,Practice,07/23/2024 17:00:00,07/23/2024 18:45:00,bea9m48kalbhcnpve9e7fsd8f8
+Game,VCB Mounties 13U AAA,North Shore,04/17/2024 17:30:00,04/17/2024 20:30:00,3k7oti6nilc3chcqb5ujm2o0h8
+Game,VCB 13U A Dodgers,VCB 13U A Pirates,04/18/2024 17:30:00,04/18/2024 20:00:00,19ld9r4tcn61b32q8rf33g8huk
+Game,VCB 13U A Pirates,VCB 13U A Dodgers,04/18/2024 17:30:00,04/18/2024 20:30:00,kabt113ip7nb4h3si5qsd1kamg
+Game,VCB 13U A Red Sox,NSBA2,04/20/2024 11:30:00,04/20/2024 13:30:00,1kqgqbrkve3m9tts7octu2scag
+Game,VCB 13U A Pirates,VCB 13U A Diamondbacks,04/20/2024 14:30:00,04/20/2024 16:30:00,rt6sfrqe5dmlr19q5mhaugnjfc
+Game,VCB 13U A Diamondbacks,VCB 13U A Pirates,04/20/2024 14:30:00,04/20/2024 17:00:00,3onkrsv3eg9bqeqvvkj3bvqrss
+Game,VCB 13U A Giants,VCB 13U A Pirates,04/24/2024 17:30:00,04/24/2024 19:30:00,c7eo33dgh59et12ks6red6n3ao
+Game,VCB 13U A Pirates,VCB 13U A Giants,04/24/2024 17:30:00,04/24/2024 19:30:00,jpmal07k19jmucvcrllo5ri24g
+Game,VCB 13U A Red Sox,SBMC1,04/27/2024 11:30:00,04/27/2024 13:30:00,f5m6l6hhulfv95b45ensej3vfk
+Game,VCB 13U A Pirates,VCB 13U A Dodgers,04/28/2024 11:30:00,04/28/2024 13:30:00,roc2e2lh4m07k9irm6maaeespo
+Game,VCB 13U A Dodgers,VCB 13U A Pirates,04/28/2024 11:30:00,04/28/2024 13:30:00,0nr2cld3epu1cldicjnu5vooss
+Game,VCB 13U A Pirates,VCB 13U A Diamondbacks,05/01/2024 17:30:00,05/01/2024 19:30:00,coktm3i8u65rngq73comje3dco
+Game,VCB 13U A Pirates,VCB 13U A Giants,05/04/2024 18:00:00,05/04/2024 20:00:00,40n1b9pth9ph4gsflquckd279k
+Game,VCB 13U A Red Sox,VCB 13U A Giants,05/08/2024 18:00:00,05/08/2024 20:00:00,raer28o9v08d20h39r89mk7mfk
+Game,VCB 13U A Giants,TC5,05/11/2024 12:00:00,05/11/2024 14:00:00,mnl62e8869h4dtigob1jt3nvmc
+Game,VCB 13U A Pirates,SBMC2,05/11/2024 15:00:00,05/11/2024 17:00:00,ia2sllu9kgmsneeadg8pnqkl54
+Game,VCB 13U A Dodgers,VCB 13U A Red Sox,05/11/2024 18:00:00,05/11/2024 20:00:00,bscneidk0p56t93odt1nc4btqc
+Game,VCB 13U A Pirates,VCB 13U A Red Sox,05/15/2024 18:00:00,05/15/2024 20:00:00,dn9ic9di9kpd565egkh9c9h72s
+Game,VCB 13U A Dodgers,VCB 13U A Giants,05/22/2024 18:00:00,05/22/2024 20:30:00,ijccjcqpcmmeg79g5l0vrtm48k
+Game,VCB 13U A Giants,VCB 13U A Dodgers,05/22/2024 18:00:00,05/22/2024 20:00:00,icvb7dvltfkvfi51jp8la0v3ss
+Game,VCB 13U A Giants,NSBA1,05/25/2024 18:00:00,05/25/2024 20:00:00,246ghnkak0eimu0clfm1dniq8c
+Game,VCB 13U A Red Sox,VCB 13U A Dodgers,05/26/2024 12:00:00,05/26/2024 14:00:00,kue3134qml1opg0bmn6rd49lv4
+Game,VCB 13U A Dodgers,VCB 13U A Red Sox,05/26/2024 12:00:00,05/26/2024 14:30:00,j1s8ij2uk95vhud6rftutr7dt4
+Game,VCB 13U A Diamondbacks,VCB 13U A Giants,05/29/2024 18:00:00,05/29/2024 20:00:00,ffiq3i5qhkp7gdc3lr1brhm6os
+Game,VCB Mounties 13U AAA,Nanaimo,06/01/2024 12:00:00,06/01/2024 15:00:00,upju0fqbrs9ff7l6ncidafkse0
+Practice,VCB Mounties 13U AAA,Nanaimo vs NS,06/01/2024 15:00:00,06/01/2024 17:30:00,qhjh5o7vq85gqiogjapt2hao50
