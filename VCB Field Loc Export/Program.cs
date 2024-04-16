@@ -156,9 +156,15 @@ namespace VcbFieldExport
 
             foreach (int locationId in locationIds.Keys)
             {
-                Console.WriteLine($"Processing events for location {locationIds[locationId]}");
+                Console.WriteLine($"Processing events for location {locationIds[locationId]} ...");
 
                 List<VcbFieldEvent> currentEvents = FetchEvents(sessionId, locationId);
+
+                if (currentEvents.Count == 0)
+                {
+                    Console.WriteLine("Found no events for this field in the returned event list.  Skipping.");
+                    continue;
+                }
 
                 Console.WriteLine($"Found {currentEvents.Count} events, reconciling with last snapshot...");
 
