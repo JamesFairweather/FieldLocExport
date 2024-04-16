@@ -206,7 +206,13 @@ namespace VcbFieldExport
                 List<VcbFieldEvent> eventsToAdd = new List<VcbFieldEvent>();
                 currentEvents.ForEach(e =>
                 {
-                    if (!savedEvents.Contains(e))
+                    var existingEvent = savedEvents.Find(savedEvent => savedEvent.Equals(e));
+                    if (existingEvent != null)
+                    {
+                        // copy the event Id from the old list to the new one
+                        e.googleEventId = existingEvent.googleEventId;
+                    }
+                    else
                     {
                         eventsToAdd.Add(e);
                     }
