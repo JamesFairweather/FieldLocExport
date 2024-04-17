@@ -1,13 +1,8 @@
 eventType,homeTeam,visitingTeamOrDescription,startTime,endTime,googleEventId
-Practice,VCB 15U A - Tigers,Tigers Practice,04/15/2024 18:15:00,04/15/2024 20:15:00,ggr2l877bk9n9f6drbcf7o94sk
 Practice,VCB 15U A - Athletics,Practice,04/16/2024 16:30:00,04/16/2024 18:30:00,pmtiasi4r1n14d1ar4f1e029fk
 Practice,VCB Mounties 15U AAA,Practice,04/16/2024 18:15:00,04/16/2024 20:15:00,mg18mf1g1bp9hu5q93niskqe2o
+Practice,VCB Mounties 15U AA - Red,Practice,04/18/2024 18:15:00,04/18/2024 20:00:00,9a4t86t9boep5ak29isa3lassk
 Practice,VCB 15U A - Expos,Practice,04/19/2024 16:30:00,04/19/2024 18:15:00,fkncvam70ihvorc2tdfftsvddc
-Game,VCB 15U A - Giants,VCB 15U A Girls - Royals,04/15/2024 05:30:00,04/15/2024 08:00:00,dnb4peob463hn831rn7t3lk4jo
-Game,VCB 15U A - Rockies,VCB 15U A - Mariners,04/16/2024 17:30:00,04/16/2024 20:00:00,8hlhrg7osl634tm9kcuth1c8l4
-Game,VCB Mounties 13U AAA,North Shore,04/17/2024 17:30:00,04/17/2024 20:30:00,tn6adr4621fo2a81g0vqk5vbl4
-Game,VCB 15U A - Tigers,VCB 15U A - Rangers,04/18/2024 17:30:00,04/18/2024 20:00:00,4jn032sd853g8k8alkotanpddk
-Game,VCB 15U A - Athletics,VCB 15U A - Blue Jays,04/19/2024 17:30:00,04/19/2024 20:00:00,o5h8v6jvp7klcei7q1scct7p6o
 Game,VCB 15U A - Tigers,VCB 15U A - Athletics,04/20/2024 11:30:00,04/20/2024 14:00:00,ir8t6efdnn9ap9lj6na91jcqd8
 Game,VCB 15U A - Expos,VCB 15U A - Yankees,04/20/2024 14:30:00,04/20/2024 17:00:00,1gn37kmmdp6cd9g7epet68qfl0
 Game,VCB 15U A - Giants,VCB 15U A - Rockies,04/20/2024 17:30:00,04/20/2024 20:00:00,qdvr88iu8ots41gliur93kmeig
@@ -16,7 +11,6 @@ Game,VCB 15U A - Yankees,VCB 15U A - Mariners,04/21/2024 14:30:00,04/21/2024 17:
 Game,VCB 15U A - Athletics,VCB 15U A - Rockies,04/22/2024 17:30:00,04/22/2024 20:00:00,o40frbker9cjru1s30t7s1apl4
 Game,VCB 15U A - Blue Jays,VCB 15U A - Tigers,04/23/2024 17:30:00,04/23/2024 20:00:00,46dge0ekjbolipguhpqap0gtb8
 Game,VCB 15U A - Expos,VCB 15U A - Red Sox,04/24/2024 17:30:00,04/24/2024 20:00:00,0dj1cjek2e0g1d8e4avj0kk6cs
-Game,VCB Mounties 13U AA,Ladner,04/25/2024 17:30:00,04/25/2024 20:30:00,qoallnapstlj9tnpam33h22joc
 Game,VCB 15U A - Giants,VCB 15U A - Rangers,04/25/2024 17:30:00,04/25/2024 20:00:00,akdls5d75a2hifk7gub51rjpd4
 Game,VCB 15U A - Mariners,VCB 15U A Girls - Royals,04/26/2024 17:30:00,04/26/2024 20:00:00,2va7979do640tdu3q9rqobeafg
 Game,VCB 15U A - Yankees,VCB 15U A - Rockies,04/27/2024 11:30:00,04/27/2024 14:00:00,nprt9i08n7hgof656snhsb9crk
@@ -37,7 +31,6 @@ Game,VCB 15U A Girls - Royals,VCB 15U A - Athletics,05/05/2024 18:00:00,05/05/20
 Game,VCB 15U A - Rockies,VCB 15U A - Expos,05/06/2024 18:00:00,05/06/2024 20:30:00,okohomjkoqgnrah9d9m785obs8
 Game,VCB 15U A - Tigers,VCB 15U A - Yankees,05/07/2024 18:00:00,05/07/2024 20:30:00,6bha2kgvgslrvn4rn5a9gmiguo
 Game,VCB 15U A - Rangers,VCB 15U A - Blue Jays,05/08/2024 18:00:00,05/08/2024 20:30:00,sajsvll7rlemgc3l37b56t5g4g
-Game,VCB Mounties 13U AA,North Delta,05/09/2024 18:00:00,05/09/2024 21:00:00,78h38rb5k9f8u0ghgu9feggd00
 Game,VCB 15U A - Red Sox,VCB 15U A - Athletics,05/09/2024 18:00:00,05/09/2024 20:30:00,ah8poiaqlnav5rlvhg4slhqpdc
 Game,VCB 15U A - Giants,VCB 15U A - Yankees,05/10/2024 18:00:00,05/10/2024 20:30:00,ehk9fvkaq1vhupqrm4a9jopbo8
 Game,VCB 15U A Girls - Royals,VCB 15U A - Rockies,05/11/2024 12:00:00,05/11/2024 14:30:00,4e1jrmuq4i963cb2116sunrd2s
@@ -53,7 +46,6 @@ Game,VCB 15U A - Rangers,VCB 15U A - Expos,05/17/2024 18:00:00,05/17/2024 20:30:
 Game,VCB 15U A - Tigers,VCB 15U A Girls - Royals,05/19/2024 12:00:00,05/19/2024 14:30:00,j3hb6dv9kejui8svh3epl4nhds
 Game,VCB 15U A - Giants,VCB 15U A - Expos,05/21/2024 18:00:00,05/21/2024 20:30:00,q2as01gu98ao05bphl8sgugdj8
 Game,VCB 15U A - Rockies,VCB 15U A - Red Sox,05/22/2024 18:00:00,05/22/2024 20:30:00,aav7umpo4j9gshdqhjibb2mjhc
-Game,VCB Mounties 13U AA,Richmond,05/23/2024 18:00:00,05/23/2024 21:00:00,dqjhaq3ascdpsfqjjl62e2grgc
 Game,VCB 15U A - Rangers,VCB 15U A - Mariners,05/23/2024 18:00:00,05/23/2024 20:30:00,4e0s2idfo69i21etidr8n21dlc
 Game,VCB 15U A - Athletics,VCB 15U A - Yankees,05/25/2024 12:00:00,05/25/2024 14:30:00,q293jice4i66g9bhb6fh967l68
 Game,VCB 15U A - Expos,VCB 15U A - Blue Jays,05/25/2024 15:00:00,05/25/2024 17:30:00,an5k94fgf3om87e7tfumfn15oc
@@ -61,12 +53,10 @@ Game,VCB 15U A - Mariners,VCB 15U A - Giants,05/25/2024 18:00:00,05/25/2024 20:3
 Game,VCB 15U A - Red Sox,VCB 15U A Girls - Royals,05/26/2024 12:00:00,05/26/2024 14:30:00,to4n5th421q8ud6q1v77l0ot38
 Game,VCB 15U A - Tigers,VCB 15U A - Rockies,05/26/2024 15:00:00,05/26/2024 17:30:00,m9lkajei4ouchglmni31s0fjv4
 Game,VCB 15U A - Yankees,VCB 15U A - Rangers,05/27/2024 18:00:00,05/27/2024 20:30:00,k1aoo7bgrfcqafhnabge046490
-Game,VCB Mounties 13U AA,White Rock,05/28/2024 18:00:00,05/28/2024 21:00:00,in3oh586opg49o96l7oeo7bpqo
 Game,VCB 15U A Girls - Royals,VCB 15U A - Blue Jays,05/28/2024 18:00:00,05/28/2024 20:30:00,npcvc271mgb5l9dckkpaauk4ec
 Game,VCB 15U A - Expos,VCB 15U A - Athletics,05/29/2024 18:00:00,05/29/2024 20:30:00,nlgjl7pkbn4el123u8nc9n3k7k
 Game,VCB 15U A - Giants,VCB 15U A - Red Sox,05/30/2024 18:00:00,05/30/2024 20:30:00,v5ev0php28f2686g3onrlapopg
 Game,VCB 15U A - Mariners,VCB 15U A - Rockies,05/31/2024 18:00:00,05/31/2024 20:30:00,dk1a31u9gbevp8c32e07nb545o
-Game,VCB Mounties 13U AAA,Nanaimo,06/01/2024 13:00:00,06/01/2024 16:00:00,n8or8op1q1mi1tti5fghn4jvak
 Game,VCB 15U A - Athletics,VCB 15U A - Tigers,06/01/2024 18:00:00,06/01/2024 20:30:00,onijgs895uvq36k3tfnf3df7ok
 Game,VCB 15U A - Blue Jays,VCB 15U A - Yankees,06/02/2024 12:00:00,06/02/2024 14:30:00,j76288t160g566ng1je7l3fpak
 Game,VCB 15U A - Rockies,VCB 15U A - Giants,06/02/2024 15:00:00,06/02/2024 17:30:00,s15kikrrshk4hhhb862k3pos4o
