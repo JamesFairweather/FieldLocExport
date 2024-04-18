@@ -443,10 +443,8 @@ namespace VcbFieldExport
 
                         eventCount++;
                     }
-                    else
-                    {
-                        Console.WriteLine($"Warning: Event {eventMatches.Groups["EventName"].Value.Trim()} on {eventMatches.Groups["Date"].Value} has an unparsable time value ({eventMatches.Groups["Time"].Value}).  Skipping...");
-                    }
+
+                    // If the time regex fails to match the time field, the event has been cancelled so just ignore it.
 
                     eventMatches = eventMatches.NextMatch();
                 }
