@@ -1,9 +1,7 @@
 eventType,homeTeam,visitingTeamOrDescription,startTime,endTime,googleEventId
-Game,VCB Mounties 13U AA,Richmond,04/16/2024 17:30:00,04/16/2024 20:30:00,5b8h7e386cc9pnn60lns619jng
 Game,VCB Mounties 13U AAA,North Shore,04/17/2024 17:30:00,04/17/2024 20:30:00,3k7oti6nilc3chcqb5ujm2o0h8
 Game,VCB 13U A Dodgers,VCB 13U A Pirates,04/18/2024 17:30:00,04/18/2024 20:00:00,19ld9r4tcn61b32q8rf33g8huk
 Game,VCB 13U A Pirates,VCB 13U A Dodgers,04/18/2024 17:30:00,04/18/2024 20:30:00,kabt113ip7nb4h3si5qsd1kamg
-Practice,VCB Mounties 13U AAA,Practice,04/18/2024 18:00:00,04/18/2024 19:45:00,76ikhnuvugp36tmoueh31kftt4
 Game,VCB 13U A Red Sox,NSBA2,04/20/2024 11:30:00,04/20/2024 13:30:00,1kqgqbrkve3m9tts7octu2scag
 Game,VCB 13U A Pirates,VCB 13U A Diamondbacks,04/20/2024 14:30:00,04/20/2024 16:30:00,rt6sfrqe5dmlr19q5mhaugnjfc
 Game,VCB 13U A Diamondbacks,VCB 13U A Pirates,04/20/2024 14:30:00,04/20/2024 17:00:00,3onkrsv3eg9bqeqvvkj3bvqrss
@@ -52,7 +50,7 @@ Practice,VCB Mounties 13U AA,Practice,05/23/2024 17:00:00,05/23/2024 18:45:00,rt
 Game,VCB Mounties 13U AA,Tsawwassen,05/25/2024 12:00:00,05/25/2024 15:00:00,bin0v55rb6u6qph24256dtt7s4
 Game,VCB 13U A Giants,NSBA1,05/25/2024 18:00:00,05/25/2024 20:00:00,246ghnkak0eimu0clfm1dniq8c
 Game,VCB 13U A Red Sox,VCB 13U A Dodgers,05/26/2024 15:00:00,05/26/2024 17:00:00,mf21r725pbc6fgjr2aa2d29kkg
-Game,VCB 13U A Dodgers,VCB 13U A Red Sox,05/26/2024 16:00:00,05/26/2024 18:30:00,plcm0mtjqeupifaeqlsup51128
+Game,VCB 13U A Dodgers,VCB 13U A Red Sox,05/26/2024 15:00:00,05/26/2024 17:30:00,17pdceo1cucflgd10jpdvkaarc
 Practice,VCB Mounties 13U AAA,Practice,05/28/2024 17:00:00,05/28/2024 18:45:00,d453f98gsotf3q5iv1s3099bn4
 Game,VCB 13U A Diamondbacks,VCB 13U A Giants,05/29/2024 18:00:00,05/29/2024 20:00:00,ffiq3i5qhkp7gdc3lr1brhm6os
 Practice,VCB Mounties 13U AA,Practice,05/30/2024 17:00:00,05/30/2024 18:45:00,n5v3ii7s9flo5uofkeiftl62rs
