@@ -16,6 +16,23 @@ using System.Xml.Linq;
 using static System.Formats.Asn1.AsnWriter;
 using static System.Net.Mime.MediaTypeNames;
 
+// TODO: ensure service has its schedule mode set to:
+// * Hide past games/events checked (true)
+// * Show: Games and Events
+
+// GET https://go.teamsnap.com/774786/league_schedule/preferences?height=220&location_id=69829182&modal=true&mode=list&width=300&random=1713540533176 HTTP/1.1
+// > returns some HTML to display the dialog box and an authenticity token.
+
+// POST https://go.teamsnap.com/774786/league_schedule/save_preferences HTTP/1.1
+
+// request body:
+// Events only:
+// authenticity_token=XP2%2FHCKgRgENhecb4EMUqs68JgZ3pbDMvjeTJrES%2B5g%3D&mode=list&location_id=69829182&roster_entry%5Bhide_old_events%5D=0&roster_entry%5Bhide_old_events%5D=1&roster_entry%5Bgame_filter%5D=3&x=57&y=20
+// Games only:
+// authenticity_token=XP2%2FHCKgRgENhecb4EMUqs68JgZ3pbDMvjeTJrES%2B5g%3D&mode=list&location_id=69829182&roster_entry%5Bhide_old_events%5D=0&roster_entry%5Bhide_old_events%5D=1&roster_entry%5Bgame_filter%5D=2&x=39&y=17
+// Games & Events:
+// authenticity_token=XP2%2FHCKgRgENhecb4EMUqs68JgZ3pbDMvjeTJrES%2B5g%3D&mode=list&location_id=69829182&roster_entry%5Bhide_old_events%5D=0&roster_entry%5Bhide_old_events%5D=1&roster_entry%5Bgame_filter%5D=1&x=42&y=9
+
 namespace VcbFieldExport
 {
     public enum EventType
