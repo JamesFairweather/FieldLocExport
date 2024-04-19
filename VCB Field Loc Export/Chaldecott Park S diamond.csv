@@ -1,6 +1,4 @@
 eventType,homeTeam,visitingTeamOrDescription,startTime,endTime,googleEventId
-Game,VCB 13U A Red Sox,VCB 13U A Diamondbacks,04/17/2024 17:30:00,04/17/2024 20:00:00,ok85nlkelcd6lhur73r2cois10
-Game,VCB 13U A Diamondbacks,VCB 13U A Red Sox,04/17/2024 17:30:00,04/17/2024 19:30:00,qh7ksm88i0u6vra6mqvoq02ac0
 Practice,VCB 13U A Giants,13U A Giants practice,04/18/2024 17:30:00,04/18/2024 19:30:00,mmi6p1oevuuo9h13p30h9q0tsg
 Practice,VCB Mounties 13U AA,Practice,04/21/2024 15:00:00,04/21/2024 17:00:00,koknbs7ecu6rfl3psr0g3vmkfo
 Practice,VCB 13U A Dodgers,13U A Dodgers practice,04/21/2024 17:00:00,04/21/2024 19:00:00,mhbiec6o2rtk889pgs8tgk9jt8
@@ -15,11 +13,11 @@ Practice,VCB 13U A Diamondbacks,13U A Diamondbacks practice,04/29/2024 18:15:00,
 Practice,VCB 13U A Red Sox,13U A Red Sox practice,04/30/2024 16:30:00,04/30/2024 18:15:00,3gfdj73bhjsondmi883arq170s
 Practice,VCB 13U A Pirates,13U A Pirates practice,04/30/2024 18:15:00,04/30/2024 20:15:00,0bivg5bsqtf1pdb186kdtd0qnk
 Game,VCB 13U A Dodgers,VCB 13U A Giants,05/01/2024 17:30:00,05/01/2024 19:30:00,sc94dlujv3evhnc9lce4tj818o
+Game,VCB 13U A Giants,VCB 13U A Dodgers,05/01/2024 17:30:00,05/01/2024 20:30:00,q1c68mbgbv6t0soa8bt4rvf0ks
 Practice,VCB 13U A Giants,13U A Giants practice,05/02/2024 17:30:00,05/02/2024 19:30:00,gb1h5qhtaagv7iahgki5tgl9es
 Game,VCB 13U A Diamondbacks,SCBA3,05/04/2024 12:00:00,05/04/2024 14:30:00,l1auajrrtqv8q4435rk398uahc
 Practice,VCB Mounties 13U AA,Practice,05/05/2024 15:00:00,05/05/2024 17:00:00,06vth19us5q2kb27g6bph73om4
 Practice,VCB 13U A Dodgers,13U A Dodgers practice,05/05/2024 17:00:00,05/05/2024 19:00:00,dsbu0gnoe1duqd23ts0e1j2gms
-Game,VCB 13U A Giants,VCB 13U A Diamondbacks,05/05/2024 18:00:00,05/05/2024 19:30:00,sbehl5914ccib9nch0oqqgri04
 Practice,VCB 13U A Red Sox,13U A Red Sox practice,05/07/2024 16:45:00,05/07/2024 18:45:00,3vcelfui4hrj5tagmo5hjhrtp0
 Practice,VCB 13U A Pirates,13U A Pirates practice,05/07/2024 18:45:00,05/07/2024 20:45:00,97949lre84qpo5cq6551k9jv48
 Game,VCB 13U A Dodgers,VCB 13U A Diamondbacks,05/08/2024 18:00:00,05/08/2024 20:00:00,d2jh7k04d3nb34d1gs6e2m9l94
@@ -31,32 +29,32 @@ Practice,VCB 13U A Diamondbacks,13U A Diamondbacks practice,05/13/2024 18:45:00,
 Practice,VCB 13U A Red Sox,13U A Red Sox practice,05/14/2024 16:45:00,05/14/2024 18:45:00,bv40ssq24flf73qbi4qigf28hs
 Practice,VCB 13U A Pirates,13U A Pirates practice,05/14/2024 18:45:00,05/14/2024 20:45:00,ufu885svjfmlrob0fvb7ptqdr4
 Game,VCB 13U A Diamondbacks,VCB 13U A Giants,05/15/2024 18:00:00,05/15/2024 20:30:00,3jc7mo5c4ob4b5rpn9il6r6po0
-Practice,VCB 13U A Giants,13U A Giants practice,05/16/2024 17:30:00,05/16/2024 19:30:00,qb7im6emem417l1qnn1j91rqho
-Practice,VCB Mounties 13U AA,Practice,05/19/2024 15:00:00,05/19/2024 17:00:00,kto83a2iuhlvonf3hpfloiugb0
-Practice,VCB 13U A Dodgers,13U A Dodgers practice,05/19/2024 17:00:00,05/19/2024 19:00:00,qo1jqlfka3qu90h5v2vhh3sim4
-Practice,VCB 13U A Red Sox,13U A Red Sox practice,05/21/2024 16:45:00,05/21/2024 18:45:00,avu843o08e0en93m0vtqobrl64
-Practice,VCB 13U A Pirates,13U A Pirates practice,05/21/2024 18:45:00,05/21/2024 20:45:00,02g52c7si4otfftmlm0mhmdoko
-Game,VCB Mounties 13U AA,Richmond,05/23/2024 18:00:00,05/23/2024 21:00:00,o6ksh7b1kr7tth1kmdu75bksvo
-Game,VCB 13U A Red Sox,VCB 13U A Diamondbacks,05/24/2024 18:00:00,05/24/2024 20:00:00,ds8svp45npkgcgmshnem88s734
-Practice,VCB Mounties 13U AA,Practice,05/26/2024 15:00:00,05/26/2024 17:00:00,oggj3uplipp0571fbl0huns9os
-Practice,VCB 13U A Diamondbacks,13U A Diamondbacks practice,05/27/2024 18:45:00,05/27/2024 20:45:00,4nvtip0q7kfgqbtd8ffbpg8l04
-Game,VCB Mounties 13U AA,White Rock,05/28/2024 18:00:00,05/28/2024 21:00:00,c5a0eol4f1cnu173h5s3e0fbo8
-Game,VCB 13U A Red Sox,VCB 13U A Pirates,05/28/2024 18:00:00,05/28/2024 20:00:00,s5td9h6vpcl9bv0trkv282hsfg
-Practice,VCB 13U A Pirates,13U A Pirates practice,05/28/2024 18:45:00,05/28/2024 20:45:00,9r5i70ji6iknmg69l9rjq7r3qg
-Practice,VCB 13U A Red Sox,13U A Red Sox practice,05/29/2024 16:45:00,05/29/2024 18:45:00,4jh2kajpq09a0qfld4nbb0l2v4
-Game,VCB 13U A Pirates,VCB 13U A Red Sox,05/29/2024 18:00:00,05/29/2024 20:00:00,3l5on3mvhs6b3a72bfhi5tcrc4
-Practice,VCB 13U A Giants,13U A Giants practice,05/30/2024 17:30:00,05/30/2024 19:30:00,s3dqg0vqh54636e9t2ufdcd9p8
-Practice,VCB Mounties 13U AA,Practice,06/02/2024 15:00:00,06/02/2024 17:00:00,s2ioqstgrm4jk5qc8rj5hoejqg
-Practice,VCB 13U A Dodgers,13U A Dodgers practice,06/02/2024 17:00:00,06/02/2024 19:00:00,vh86nu4j2b718rgr9pk6kd1vt8
-Practice,VCB 13U A Red Sox,13U A Red Sox practice,06/04/2024 16:45:00,06/04/2024 18:45:00,cejobsv0fn1fpademj33arjpno
-Practice,VCB 13U A Pirates,13U A Pirates practice,06/04/2024 18:45:00,06/04/2024 20:45:00,9v9st21estcktbuqr4cm9mlm98
-Practice,VCB 13U A Giants,13U A Giants practice,06/06/2024 17:30:00,06/06/2024 19:30:00,gforkrnskomoiuu0okpm9qslk8
-Practice,VCB 13U A Dodgers,13U A Dodgers practice,06/09/2024 17:00:00,06/09/2024 19:00:00,9cei7od2384jkdl492mqvvboic
-Practice,VCB 13U A Red Sox,13U A Red Sox practice,06/11/2024 16:45:00,06/11/2024 18:45:00,6qjtl9h5pvjidjnennlh6gja68
-Practice,VCB 13U A Pirates,13U A Pirates practice,06/11/2024 18:45:00,06/11/2024 20:45:00,sct3rb7k8ouqtga4lsois7aapc
-Practice,VCB 13U A Giants,13U A Giants practice,06/13/2024 17:30:00,06/13/2024 19:30:00,qg3ushqaa7ls1j546abchoe3qs
-Practice,VCB 13U A Dodgers,13U A Dodgers practice,06/16/2024 17:00:00,06/16/2024 19:00:00,j5u9d61s5agcs422sfrolj9gu4
-Practice,VCB 13U A Red Sox,13U A Red Sox practice,06/18/2024 16:45:00,06/18/2024 18:45:00,ah77hielh0hkjnaic6fd21k8fg
-Practice,VCB 13U A Pirates,13U A Pirates practice,06/18/2024 18:45:00,06/18/2024 20:45:00,9l4fm4alpumfpms8ije62s5od4
-Practice,VCB 13U A Giants,13U A Giants practice,06/20/2024 17:30:00,06/20/2024 19:30:00,b8ic14q23h3qavrnrbqclj0iq0
-Practice,VCB 13U A Dodgers,13U A Dodgers practice,06/23/2024 17:00:00,06/23/2024 19:00:00,f9tu3ib8afud5tp4hj64r34e4g
+Practice,VCB 13U A Giants,13U A Giants practice,05/16/2024 17:30:00,05/16/2024 19:30:00,g2fmg1pv4norp7fln45to5jbl8
+Practice,VCB Mounties 13U AA,Practice,05/19/2024 15:00:00,05/19/2024 17:00:00,4ufjn0kgpcg6bvi46i93j4uh80
+Practice,VCB 13U A Dodgers,13U A Dodgers practice,05/19/2024 17:00:00,05/19/2024 19:00:00,ec9h2chohheg5uru0rpdkpbcek
+Practice,VCB 13U A Red Sox,13U A Red Sox practice,05/21/2024 16:45:00,05/21/2024 18:45:00,ge8dqq6tscse19gh8bqmb8hd6c
+Practice,VCB 13U A Pirates,13U A Pirates practice,05/21/2024 18:45:00,05/21/2024 20:45:00,0voqck1dta3pfqgbqgp9hug52k
+Game,VCB Mounties 13U AA,Richmond,05/23/2024 18:00:00,05/23/2024 21:00:00,ferga1uej4sd2q0ngs03vga6v8
+Game,VCB 13U A Red Sox,VCB 13U A Diamondbacks,05/24/2024 18:00:00,05/24/2024 20:00:00,patceo7rqj5bhev0v5cp5nb7h8
+Practice,VCB Mounties 13U AA,Practice,05/26/2024 15:00:00,05/26/2024 17:00:00,j6t3e22m3saa7bibhl4hkdit98
+Practice,VCB 13U A Diamondbacks,13U A Diamondbacks practice,05/27/2024 18:45:00,05/27/2024 20:45:00,qqsufen398f7eb7fphrpfgp37c
+Game,VCB Mounties 13U AA,White Rock,05/28/2024 18:00:00,05/28/2024 21:00:00,c7sbnfamdbrjntj8a89s4qpaug
+Game,VCB 13U A Red Sox,VCB 13U A Pirates,05/28/2024 18:00:00,05/28/2024 20:00:00,dlk7i1ljefgae5vaji5r5vngr0
+Practice,VCB 13U A Pirates,13U A Pirates practice,05/28/2024 18:45:00,05/28/2024 20:45:00,prq97gi1qirsn4pqtuq16uaqts
+Practice,VCB 13U A Red Sox,13U A Red Sox practice,05/29/2024 16:45:00,05/29/2024 18:45:00,7540i59o8ngh2m2qh9amt0f7is
+Game,VCB 13U A Pirates,VCB 13U A Red Sox,05/29/2024 18:00:00,05/29/2024 20:00:00,7grghe8u8a9ijpdlke10ds2emk
+Practice,VCB 13U A Giants,13U A Giants practice,05/30/2024 17:30:00,05/30/2024 19:30:00,pauqnvshtm3dgq34ct6r2mtn3s
+Practice,VCB Mounties 13U AA,Practice,06/02/2024 15:00:00,06/02/2024 17:00:00,s9jvq3phjpa3uqg43mb88khit0
+Practice,VCB 13U A Dodgers,13U A Dodgers practice,06/02/2024 17:00:00,06/02/2024 19:00:00,3u06pv0dg93vuaikr000vku8dc
+Practice,VCB 13U A Red Sox,13U A Red Sox practice,06/04/2024 16:45:00,06/04/2024 18:45:00,9mm0fajpikci1bho81c357654k
+Practice,VCB 13U A Pirates,13U A Pirates practice,06/04/2024 18:45:00,06/04/2024 20:45:00,vpelu54llibup462n3cmsh1ub0
+Practice,VCB 13U A Giants,13U A Giants practice,06/06/2024 17:30:00,06/06/2024 19:30:00,fu1r1brhf6cdp00egm13bpe5u0
+Practice,VCB 13U A Dodgers,13U A Dodgers practice,06/09/2024 17:00:00,06/09/2024 19:00:00,377jg5j8fbncucobsgue9u4h8k
+Practice,VCB 13U A Red Sox,13U A Red Sox practice,06/11/2024 16:45:00,06/11/2024 18:45:00,ea8eau9jkoiqqnbcmfjrlrao3s
+Practice,VCB 13U A Pirates,13U A Pirates practice,06/11/2024 18:45:00,06/11/2024 20:45:00,3e6ieuejqsb633jadiacumm2e8
+Practice,VCB 13U A Giants,13U A Giants practice,06/13/2024 17:30:00,06/13/2024 19:30:00,iu8ilq2necpdj85lpfshc2uv58
+Practice,VCB 13U A Dodgers,13U A Dodgers practice,06/16/2024 17:00:00,06/16/2024 19:00:00,6lg7veo85um2ifa1esme1mrtu8
+Practice,VCB 13U A Red Sox,13U A Red Sox practice,06/18/2024 16:45:00,06/18/2024 18:45:00,bkn6mkk2au0a6v357ppgecet5k
+Practice,VCB 13U A Pirates,13U A Pirates practice,06/18/2024 18:45:00,06/18/2024 20:45:00,n9sdim6u5bal8m1nsbhv5he0sc
+Practice,VCB 13U A Giants,13U A Giants practice,06/20/2024 17:30:00,06/20/2024 19:30:00,44qi2d5f4c7lco3b66hfld914g
+Practice,VCB 13U A Dodgers,13U A Dodgers practice,06/23/2024 17:00:00,06/23/2024 19:00:00,u23gmnu4b7kk56ojligne2q1mc

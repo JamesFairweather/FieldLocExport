@@ -1,5 +1,4 @@
 eventType,homeTeam,visitingTeamOrDescription,startTime,endTime,googleEventId
-Game,VCB Mounties 13U AAA,North Shore,04/17/2024 17:30:00,04/17/2024 20:30:00,3k7oti6nilc3chcqb5ujm2o0h8
 Game,VCB 13U A Dodgers,VCB 13U A Pirates,04/18/2024 17:30:00,04/18/2024 20:00:00,19ld9r4tcn61b32q8rf33g8huk
 Game,VCB 13U A Pirates,VCB 13U A Dodgers,04/18/2024 17:30:00,04/18/2024 20:30:00,kabt113ip7nb4h3si5qsd1kamg
 Game,VCB 13U A Red Sox,NSBA2,04/20/2024 11:30:00,04/20/2024 13:30:00,1kqgqbrkve3m9tts7octu2scag
@@ -31,6 +30,7 @@ Practice,VCB 13U A Diamondbacks,13U A Diamondbacks practice,05/06/2024 18:45:00,
 Practice,VCB Mounties 13U AAA,Practice,05/07/2024 17:00:00,05/07/2024 18:45:00,nv5rou1sjg7au2r2ivk3kb7tio
 Practice,VCB Mounties 13U AA,Practice,05/07/2024 18:00:00,05/07/2024 19:45:00,usntbvt5r6t9svqh1s84e3h5n0
 Game,VCB 13U A Red Sox,VCB 13U A Giants,05/08/2024 18:00:00,05/08/2024 20:00:00,raer28o9v08d20h39r89mk7mfk
+Game,VCB 13U A Giants,VCB 13U A Red Sox,05/08/2024 18:00:00,05/08/2024 21:00:00,o2lahjg8kiakqd7q63r0a9p370
 Practice,VCB 13U A Giants,13U A Giants practice,05/09/2024 16:30:00,05/09/2024 18:30:00,u94ol2ufb186ohn170e3igobao
 Practice,VCB Mounties 13U AA,Practice,05/09/2024 17:00:00,05/09/2024 18:45:00,v3t2ps3j0g0r5ijtc7sbkhg290
 Game,VCB 13U A Giants,TC5,05/11/2024 12:00:00,05/11/2024 14:00:00,mnl62e8869h4dtigob1jt3nvmc
@@ -53,6 +53,7 @@ Game,VCB 13U A Red Sox,VCB 13U A Dodgers,05/26/2024 15:00:00,05/26/2024 17:00:00
 Game,VCB 13U A Dodgers,VCB 13U A Red Sox,05/26/2024 15:00:00,05/26/2024 17:30:00,17pdceo1cucflgd10jpdvkaarc
 Practice,VCB Mounties 13U AAA,Practice,05/28/2024 17:00:00,05/28/2024 18:45:00,d453f98gsotf3q5iv1s3099bn4
 Game,VCB 13U A Diamondbacks,VCB 13U A Giants,05/29/2024 18:00:00,05/29/2024 20:00:00,ffiq3i5qhkp7gdc3lr1brhm6os
+Game,VCB 13U A Giants,VCB 13U A Diamondbacks,05/29/2024 18:00:00,05/29/2024 21:00:00,lq6ok4ohibcruajee4m7babirc
 Practice,VCB Mounties 13U AA,Practice,05/30/2024 17:00:00,05/30/2024 18:45:00,n5v3ii7s9flo5uofkeiftl62rs
 Game,VCB Mounties 13U AAA,Nanaimo,06/01/2024 12:00:00,06/01/2024 15:00:00,upju0fqbrs9ff7l6ncidafkse0
 Practice,VCB Mounties 13U AAA,Nanaimo vs NS,06/01/2024 15:00:00,06/01/2024 17:30:00,qhjh5o7vq85gqiogjapt2hao50
