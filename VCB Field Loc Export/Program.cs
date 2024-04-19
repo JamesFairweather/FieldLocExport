@@ -144,9 +144,6 @@ namespace VcbFieldExport
         [GeneratedRegex(@"(?<VcbTeamName>.+) vs\. (?<OpponentName>.+) \(Team Controlled\)?", RegexOptions.ExplicitCapture)]
         private static partial Regex TeamControlledGameRegex();
 
-        [GeneratedRegex(@"<div class=""pagination .*<a.*\d+"">(\d+)</a>.*</a></div>")]
-        private static partial Regex PaginationRegex();
-
         static readonly Dictionary<int, string> locationIds = new Dictionary<int, string> {
             { 69829171, "Chaldecott Park N diamond" },
             { 69829169, "Chaldecott Park S diamond" },
@@ -395,13 +392,10 @@ namespace VcbFieldExport
                 throw new Exception("Error - did not find the expected event table start tag - check the returned HTML content and update the script");
             }
 
-            Match m = PaginationRegex().Match(responseHtml, contentStartIndex);
+            int eventCount = 0;
 
-            int expectedPageCount = m.Success ? Int32.Parse(m.Groups[1].Value) : 1;
-
-            while (currentPage <= expectedPageCount)
+            while (true)
             {
-                int eventCount = 0;
                 Match eventMatches = eventRegex.Match(responseHtml, contentStartIndex);
 
                 while (eventMatches.Success)
@@ -457,16 +451,20 @@ namespace VcbFieldExport
                                 }
                             }
                         }
-
-                        eventCount++;
                     }
-
                     // If the time regex fails to match the time field, the event has been cancelled so just ignore it.
+
+                    eventCount++;
 
                     eventMatches = eventMatches.NextMatch();
                 }
 
+                // if we get fewer than 30 events, we've reached the last page so terminate the while (true) loop above.
+                if (eventCount < 30)
+                    break;
+
                 currentPage++;
+                eventCount = 0;
 
                 responseHtml = GetVcbFieldEvents(client, locationId, currentPage);
                 contentStartIndex = responseHtml.IndexOf("<div id=\"content\">");
