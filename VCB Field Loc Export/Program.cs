@@ -496,7 +496,7 @@ namespace VcbFieldExport
 
         static string GetVcbFieldEvents(HttpClient client, int locationId, int page)
         {
-            return client.GetStringAsync($"https://go.teamsnap.com/774786/league_schedule?location_id={locationId}&page={page}").Result;
+            return client.GetStringAsync($"https://go.teamsnap.com/774786/league_schedule?mode=list&location_id={locationId}&page={page}").Result;
         }
     }
 }
