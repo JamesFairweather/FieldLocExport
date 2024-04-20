@@ -4,7 +4,9 @@ using CsvHelper.TypeConversion;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
+using Google.Apis.Logging;
 using Google.Apis.Services;
+using Google.Apis.Util;
 using Google.Apis.Util.Store;
 using System;
 using System.Globalization;
@@ -13,10 +15,19 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
+using static Google.Apis.Requests.BatchRequest;
 using static System.Formats.Asn1.AsnWriter;
 using static System.Net.Mime.MediaTypeNames;
 
-// TODO: ensure service has its schedule mode set to:
+// TODO:
+// * improve handling of failures from the Google service
+//   e.g. after a few days, the field account tokens expire and we get exceptions like this:
+// Google.Apis.Auth.OAuth2.Responses.TokenResponseException: Error: "invalid_grant", Description: "Token has been expired or revoked.", Uri: ""
+//    at Google.Apis.Auth.OAuth2.Responses.TokenResponse.FromHttpResponseAsync(HttpResponseMessage response, IClock clock, ILogger logger)
+// 
+// * there's probably some way to refresh the local tokens automatically.
+// 
+// * Before syncing the event list from TeamSnap, ensure service has its schedule mode set to:
 // * Hide past games/events checked (true)
 // * Show: Games and Events
 
@@ -159,13 +170,13 @@ namespace VcbFieldExport
         {
             int returnValue = 0;
 
-            string sessionId = args[0];
-
-            if (string.IsNullOrEmpty(sessionId))
+            if (args.Length < 1)
             {
                 Console.WriteLine("Usage VcbFieldExport.exe <TeamSnap session Id>");
                 return -1;
             }
+
+            string sessionId = args[0];
 
             // Uncomment these lines to remove all the events for a specific calendar
             // string removeAllEventsFromFieldCalendar = "Chaldecott Park N diamond";
