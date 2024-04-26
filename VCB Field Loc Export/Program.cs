@@ -130,7 +130,7 @@ namespace VcbFieldExport
             return a.eventType == b.eventType &&
                 a.homeTeam == b.homeTeam &&
                 a.visitingTeamOrDescription == b.visitingTeamOrDescription &&
-                a.startTime == b.startTime && 
+                a.startTime == b.startTime &&
                 a.endTime == b.endTime;
         }
 
@@ -155,15 +155,33 @@ namespace VcbFieldExport
         [GeneratedRegex(@"(?<VcbTeamName>.+) vs\. (?<OpponentName>.+) \(Team Controlled\)?", RegexOptions.ExplicitCapture)]
         private static partial Regex TeamControlledGameRegex();
 
-        static readonly Dictionary<int, string> locationIds = new Dictionary<int, string> {
-            { 69829171, "Chaldecott Park N diamond" },
-            { 69829169, "Chaldecott Park S diamond" },
-            { 69829163, "Hillcrest Park NE diamond" },
-            { 69829157, "Hillcrest Park SW diamond" },
-            { 69829182, "Killarney Park W diamond" },
-            { 69829177, "Nanaimo Park N diamond" },
-            { 69829180, "Nanaimo Park SE diamond" },
-            { 69829186, "Trafalgar Park" },
+        // OrgIds: 
+        // Minor: 774786
+        // 26U: 817084
+
+        class TeamSnapFieldInfo
+        {
+            public TeamSnapFieldInfo(int o, int f)
+            {
+                OrgId = o;
+                FieldId = f;
+            }
+
+            public int OrgId;
+            public int FieldId;
+        }
+
+        // map a list of fields to a list of TeamSnap OrgId& FieldId pairs.
+
+        static readonly Dictionary<string, TeamSnapFieldInfo[]> locationIds = new Dictionary<string, TeamSnapFieldInfo[]> {
+            { "Chaldecott Park N diamond", new TeamSnapFieldInfo[] { new (774786, 69829171) } },
+            { "Chaldecott Park S diamond", new TeamSnapFieldInfo[] { new(774786, 69829169) } },
+            { "Hillcrest Park NE diamond", new TeamSnapFieldInfo[] { new(774786, 69829163) } },
+            { "Hillcrest Park SW diamond", new TeamSnapFieldInfo[] { new(774786, 69829157) } },
+            { "Killarney Park W diamond", new TeamSnapFieldInfo[] { new(774786, 69829182), new(817084, 70511218) } },
+            { "Nanaimo Park N diamond", new TeamSnapFieldInfo[] { new(774786, 69829177) } },
+            { "Nanaimo Park SE diamond",  new TeamSnapFieldInfo[] { new(774786, 69829180), new(817084, 70511212) } },
+            { "Trafalgar Park", new TeamSnapFieldInfo[] { new(774786, 69829186) } },
         };
 
         static int Main(string[] args)
@@ -183,11 +201,20 @@ namespace VcbFieldExport
             // DeleteAllCalendarEvents(GetGoogleCalendarService(removeAllEventsFromFieldCalendar));
             // return 0;
 
-            foreach (int locationId in locationIds.Keys)
+            foreach (string locationId in locationIds.Keys)
             {
-                Console.WriteLine($"Processing events for location {locationIds[locationId]} ...");
+                Console.WriteLine($"Processing events for location {locationId} ...");
 
-                List<VcbFieldEvent> currentEvents = FetchEvents(sessionId, locationId);
+                List<VcbFieldEvent> savedEvents = LoadEvents(locationId);
+
+                var googleCalendarService = GetGoogleCalendarService(locationId);
+
+                List<VcbFieldEvent> currentEvents = [];
+
+                foreach (TeamSnapFieldInfo fieldInfo in locationIds[locationId])
+                {
+                    currentEvents = FetchEvents(currentEvents, sessionId, fieldInfo);
+                }
 
                 if (currentEvents.Count == 0)
                 {
@@ -197,17 +224,14 @@ namespace VcbFieldExport
 
                 Console.WriteLine($"Found {currentEvents.Count} events, reconciling with last snapshot...");
 
-                List<VcbFieldEvent> savedEvents = LoadEvents(locationIds[locationId]);
-
-                var googleCalendarService = GetGoogleCalendarService(locationIds[locationId]);
-
                 // find events to remove and delete them from the Google calendar
                 List<VcbFieldEvent> eventsToRemove = new List<VcbFieldEvent>();
                 savedEvents.ForEach(e =>
                 {
                     if (!currentEvents.Contains(e))
                     {
-                        if (e.googleEventId != string.Empty) {
+                        if (e.googleEventId != string.Empty)
+                        {
                             eventsToRemove.Add(e);
                         }
                         else
@@ -243,7 +267,8 @@ namespace VcbFieldExport
                     }
                 });
 
-                if (eventsToAdd.Count > 0) {
+                if (eventsToAdd.Count > 0)
+                {
                     Console.WriteLine($"Adding {eventsToAdd.Count} event(s) to the calendar...");
                     PostNewEventsToGoogleCalendar(eventsToAdd, googleCalendarService);
                 }
@@ -252,7 +277,10 @@ namespace VcbFieldExport
                     Console.WriteLine($"No events to add found");
                 }
 
-                SaveEvents(currentEvents, locationIds[locationId]);
+                if (currentEvents.Count != 0)
+                {
+                    SaveEvents(currentEvents, locationId);
+                }
             }
 
             return returnValue;
@@ -313,7 +341,8 @@ namespace VcbFieldExport
 
         static void PostNewEventsToGoogleCalendar(List<VcbFieldEvent> newEvents, Google.Apis.Calendar.v3.CalendarService service)
         {
-            foreach (VcbFieldEvent e in newEvents) {
+            foreach (VcbFieldEvent e in newEvents)
+            {
                 Event googleCalendarEvent = new();
 
                 googleCalendarEvent.Start = new EventDateTime()
@@ -329,10 +358,13 @@ namespace VcbFieldExport
 
                 Event result = new();
 
-                try {
+                try
+                {
                     result = service.Events.Insert(googleCalendarEvent, calendarId).Execute();
                     e.googleEventId = result.Id;
-                } catch(Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     Console.WriteLine(ex.ToString());
                 }
 
@@ -376,9 +408,8 @@ namespace VcbFieldExport
             }
         }
 
-        static List<VcbFieldEvent> FetchEvents(string sessionId, int locationId)
+        static List<VcbFieldEvent> FetchEvents(List<VcbFieldEvent> events, string sessionId, TeamSnapFieldInfo fieldInfo)
         {
-
             string eventPattern = @"<tr.+>\s" +
             @"<td (colspan=""2"" )?class=""l-Schedule__col-game-event"">\s(<a .+>)?(?<EventName>[^<]+)(</a>)?\s</td>\s" +
             @"(<td class=""l-Schedule__col-result"">\s(.+\s){3}</td>\s)?<td class=""l-Schedule__col-date"">\s(?<Date>.+)\s</td>\s" +
@@ -386,15 +417,13 @@ namespace VcbFieldExport
 
             Regex eventRegex = new(eventPattern, RegexOptions.ExplicitCapture | RegexOptions.NonBacktracking | RegexOptions.Compiled);
 
-            List<VcbFieldEvent> events = new List<VcbFieldEvent>();
-
             using HttpClient client = new();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Add("Cookie", $"_ts_session={sessionId}");
 
             int currentPage = 1;
 
-            string responseHtml = GetVcbFieldEvents(client, locationId, currentPage);
+            string responseHtml = GetVcbFieldEvents(client, fieldInfo, currentPage);
 
             int contentStartIndex = responseHtml.IndexOf("<div id=\"content\">");
 
@@ -477,7 +506,7 @@ namespace VcbFieldExport
                 currentPage++;
                 eventCount = 0;
 
-                responseHtml = GetVcbFieldEvents(client, locationId, currentPage);
+                responseHtml = GetVcbFieldEvents(client, fieldInfo, currentPage);
                 contentStartIndex = responseHtml.IndexOf("<div id=\"content\">");
 
                 if (contentStartIndex == -1)
@@ -520,9 +549,9 @@ namespace VcbFieldExport
             }
         }
 
-        static string GetVcbFieldEvents(HttpClient client, int locationId, int page)
+        static string GetVcbFieldEvents(HttpClient client, TeamSnapFieldInfo fieldInfo, int page)
         {
-            return client.GetStringAsync($"https://go.teamsnap.com/774786/league_schedule?mode=list&location_id={locationId}&page={page}").Result;
+            return client.GetStringAsync($"https://go.teamsnap.com/{fieldInfo.OrgId}/league_schedule?mode=list&location_id={fieldInfo.FieldId}&page={page}").Result;
         }
     }
 }
