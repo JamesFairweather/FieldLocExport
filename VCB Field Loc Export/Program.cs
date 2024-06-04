@@ -188,13 +188,7 @@ namespace VcbFieldExport
         {
             int returnValue = 0;
 
-            if (args.Length < 1)
-            {
-                Console.WriteLine("Usage VcbFieldExport.exe <TeamSnap session Id>");
-                return -1;
-            }
-
-            string sessionId = args[0];
+            string sessionId = File.ReadAllText("_ts_session_cookie");
 
             // Uncomment these lines to remove all the events for a specific calendar
             // string removeAllEventsFromFieldCalendar = "Chaldecott Park N diamond";
