@@ -2,3 +2,4 @@
 **/obj/
 **/bin/
 **/*.json
+**/_ts_session_cookie
