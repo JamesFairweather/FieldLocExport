@@ -174,12 +174,12 @@ namespace VcbFieldExport
         // map a list of fields to a list of TeamSnap OrgId& FieldId pairs.
 
         static readonly Dictionary<string, TeamSnapFieldInfo[]> locationIds = new Dictionary<string, TeamSnapFieldInfo[]> {
-            { "Chaldecott Park N diamond", new TeamSnapFieldInfo[] { new (774786, 69829171) } },
-            { "Chaldecott Park S diamond", new TeamSnapFieldInfo[] { new(774786, 69829169) } },
-            { "Hillcrest Park NE diamond", new TeamSnapFieldInfo[] { new(774786, 69829163) } },
+            // { "Chaldecott Park N diamond", new TeamSnapFieldInfo[] { new (774786, 69829171) } },
+            // { "Chaldecott Park S diamond", new TeamSnapFieldInfo[] { new(774786, 69829169) } },
+            // { "Hillcrest Park NE diamond", new TeamSnapFieldInfo[] { new(774786, 69829163) } },
             // { "Hillcrest Park SW diamond", new TeamSnapFieldInfo[] { new(774786, 69829157) } },
             // { "Killarney Park W diamond", new TeamSnapFieldInfo[] { new(774786, 69829182), new(817084, 70511218) } },
-            // { "Nanaimo Park N diamond", new TeamSnapFieldInfo[] { new(774786, 69829177) } },
+            { "Nanaimo Park N diamond", new TeamSnapFieldInfo[] { new(774786, 69829177) } },
             { "Nanaimo Park SE diamond",  new TeamSnapFieldInfo[] { new(774786, 69829180), new(817084, 70511212) } },
             // { "Trafalgar Park", new TeamSnapFieldInfo[] { new(774786, 69829186) } },
         };
@@ -192,7 +192,7 @@ namespace VcbFieldExport
 
             // Uncomment these lines to remove all the events for a specific calendar
             // string removeAllEventsFromFieldCalendar = "Chaldecott Park N diamond";
-            // DeleteAllCalendarEvents(GetGoogleCalendarService(removeAllEventsFromFieldCalendar));
+            // DeleteAllCalendarEvents(GetGoogleCalendarService("Nanaimo Park N diamond"));
             // return 0;
 
             foreach (string locationId in locationIds.Keys)
