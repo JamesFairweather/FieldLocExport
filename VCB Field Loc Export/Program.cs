@@ -178,7 +178,6 @@ namespace VcbFieldExport
             // { "Chaldecott Park S diamond", new TeamSnapFieldInfo[] { new(774786, 69829169) } },
             // { "Hillcrest Park NE diamond", new TeamSnapFieldInfo[] { new(774786, 69829163) } },
             // { "Hillcrest Park SW diamond", new TeamSnapFieldInfo[] { new(774786, 69829157) } },
-            // { "Killarney Park W diamond", new TeamSnapFieldInfo[] { new(774786, 69829182), new(817084, 70511218) } },
             { "Nanaimo Park N diamond", new TeamSnapFieldInfo[] { new(774786, 69829177) } },
             { "Nanaimo Park SE diamond",  new TeamSnapFieldInfo[] { new(774786, 69829180), new(817084, 70511212) } },
             // { "Trafalgar Park", new TeamSnapFieldInfo[] { new(774786, 69829186) } },
