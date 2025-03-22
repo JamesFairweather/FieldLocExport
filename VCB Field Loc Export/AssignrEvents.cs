@@ -150,7 +150,7 @@ namespace VcbFieldExport
                         }
                         // The visiting team is a non-VCB team, TeamSnap & Assignr should have the same name
                     }
-                    if (ageGroup == "15U A")
+                    else if (ageGroup == "15U A")
                     {
                         if (ASSIGNR_TO_TEAMSNAP_NAMEMAP[ageGroup].ContainsKey(homeTeam))
                         {
