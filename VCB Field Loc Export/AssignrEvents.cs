@@ -139,6 +139,11 @@ namespace VcbFieldExport
                     string homeTeam = game["home_team"].ToString();
                     string awayTeam = game["away_team"].ToString();
                     string assignrVenue = game["_embedded"]["venue"]["name"].ToString();
+                    string gameType = game["game_type"].ToString();
+
+                    if (gameType == "Playoffs") {
+                        continue;       // Ignore playoff games until the placeholders are added to TeamSnap.
+                    }
 
                     if (ageGroup == "13U A")
                     {
