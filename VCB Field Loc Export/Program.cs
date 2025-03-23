@@ -9,23 +9,26 @@ namespace VcbFieldExport
             TeamSnapEvents teamSnap = new();
             teamSnap.FetchEvents();
 
+            // Find conflicts in the game/practice schedule
+            int errors = teamSnap.FindConflicts();
+
             Console.WriteLine("Fetching games from Assignr...");
             AssignrEvents assignr = new();
             assignr.Authenticate();
             assignr.FetchEventsFromService();
 
-            // Now, cross-check the game list in TeamSnap with Assignr.  Inconsistencies are output to the console window
-            assignr.Reconcile(teamSnap.getEventList());
+            // Cross-check the game list in TeamSnap with Assignr.  Any inconsistencies are output to the console window
+            errors += assignr.Reconcile(teamSnap.getEventList());
 
-            // Add or removed events to the Google field calendars.
+            // Add or remove events to the Google field calendars
             GoogleEvents googleEvents = new(teamSnap.getEventList());
             googleEvents.Reconcile();
 
             // save out the updated events
             googleEvents.SaveEvents();
 
-            // If there are problems, the exception handler takes care of them
-            return 0;
+            // If there are problems, the exception handler takes care of them.  Conflicts are reported on the console window
+            return errors;
         }
     }
 }

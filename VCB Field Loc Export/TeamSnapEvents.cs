@@ -42,15 +42,17 @@ namespace VcbFieldExport
                 "74226230", // Nanaimo Park N diamond
                 "74226231", // Nanaimo Park SE diamond
                 "74226232", // Trafalgar Park
-             };
+                "74242257", // Nanaimo Park batting cage
+            };
 
             using HttpClient client = new();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {mBearerToken}");
+            string dateString = DateTime.Now.ToString("yyyy-MM-dd");
 
             foreach (string teamSnapLocationId in TEAMSNAP_LOCATION_IDS)
             {
-                string jsonResponse = client.GetStringAsync($"https://api.teamsnap.com/v3/events/search?location_id={teamSnapLocationId}").Result;
+                string jsonResponse = client.GetStringAsync($"https://api.teamsnap.com/v3/events/search?location_id={teamSnapLocationId}&started_after={dateString}").Result;
 
                 // string jsonResponse = File.ReadAllText("teamSnapApiResponse.json");
 
@@ -149,6 +151,15 @@ namespace VcbFieldExport
                     mEvents.Add(new VcbFieldEvent(eventType, location, startTime, homeTeam, visitingTeam, endTime, eventDescription));
                 }
             }
+        }
+
+        public int FindConflicts()
+        {
+            int conflicts = 0;
+
+            // TODO
+
+            return conflicts;
         }
 
         public List<VcbFieldEvent> getEventList() {
