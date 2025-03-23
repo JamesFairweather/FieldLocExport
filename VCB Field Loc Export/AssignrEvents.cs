@@ -200,8 +200,11 @@ namespace VcbFieldExport
 
                     DateTime start = DateTime.Parse(startTime);
 
-                    if (IGNORED_GAMES.Find(e => e.location == assignrVenue && e.startTime == start) != null)
-                    {
+                    if (IGNORED_GAMES.Find(e => e.location == assignrVenue && e.startTime == start) != null) {
+                        continue;
+                    }
+
+                    if (!ASSIGNR_TO_TEAMSNAP_VENUE_MAP.ContainsKey(assignrVenue)) {
                         Console.WriteLine($"Warning: A game in Assignr is hosted on a field not tracked in TeamSnap: {assignrVenue} on {startTime}.");
                         continue;
                     }
@@ -262,7 +265,7 @@ namespace VcbFieldExport
         string? mBearerToken;
 
         List<VcbFieldEvent> IGNORED_GAMES = new List<VcbFieldEvent> {
-            new VcbFieldEvent(VcbFieldEvent.Type.Game, "UBC Stadium", new DateTime(2025, 03, 28, 5, 0, 0), "", "", DateTime.Now),               // This location isn't tracked in TeamSnap, so we can ignore the Assignr game
+            new VcbFieldEvent(VcbFieldEvent.Type.Game, "UBC Stadium", new DateTime(2025, 03, 28, 17, 0, 0), "", "", DateTime.Now),               // This location isn't tracked in TeamSnap, so we can ignore the Assignr game
             new VcbFieldEvent(VcbFieldEvent.Type.Game, "Hillcrest Park SW diamond", new DateTime(2025, 04, 5, 10, 0, 0), "", "", DateTime.Now), // Mike Marlatt says the teams don't need umpires for this practice game
         };
 
