@@ -72,6 +72,18 @@ namespace VcbFieldExport
 
         public void SaveEvents()
         {
+            // Sort the event list by start time, then by location
+            mNewEventList.Sort(
+                delegate(VcbFieldEvent a, VcbFieldEvent b)
+                {
+                    int startTime = a.startTime.CompareTo(b.startTime);
+                    if (startTime != 0) {
+                        return startTime;
+                    }
+
+                    return a.location.CompareTo(b.location);
+                });
+
             using (StreamWriter writer = new(SAVED_EVENT_FILENAME, false)) {
                 using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture)) {
                     csv.WriteHeader<VcbFieldEvent>();
