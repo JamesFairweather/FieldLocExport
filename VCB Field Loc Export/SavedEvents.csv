@@ -1,16 +1,13 @@
 eventType,location,startTime,homeTeam,visitingTeam,endTime,description,googleEventId
-Practice,Nanaimo Park SE diamond,03/25/2025 17:00:00,VCB Expos 15U AA Blue,,03/25/2025 18:40:10,Field Practice w/15U AAA,c5t4f5rd97sqe243kd1g7na8f4
-Practice,Nanaimo Park SE diamond,03/25/2025 17:00:00,VCB 15U AAA,,03/25/2025 19:00:00,Practice w/ AA Blue,an2h3miu7m1sjnvpolf76v75e0
-Practice,Nanaimo Park N diamond,03/25/2025 17:30:00,VCB 18U Mariners,,03/25/2025 19:30:48,Practice,d1sn2jqcj759n91p75lpfnsel8
-Practice,Nanaimo Park batting cage,03/26/2025 16:00:00,VCB 13U AAA,,03/26/2025 17:00:00,Batting Practice (Group 1),
 Practice,Nanaimo Park batting cage,03/26/2025 17:00:00,VCB 13U AAA,,03/26/2025 18:00:00,Batting Practice (Group 2),
-Practice,Nanaimo Park SE diamond,03/26/2025 17:00:00,VCB 15U AAA,,03/26/2025 19:00:00,Practice,ofmdodbd8na678ghd1v593m4kc
 Practice,Nanaimo Park batting cage,03/27/2025 16:00:00,VCB 15U AA Red,,03/27/2025 18:00:00,Pre-Season Batting Practice,
 Practice,Hillcrest Park NE diamond,03/28/2025 10:00:00,VCB 15U AAA,,03/28/2025 12:00:00,Field Set up @ Hillcrest,7344tc59tjimmmjdkkqiie7db4
 Practice,Nanaimo Park batting cage,03/28/2025 17:00:00,VCB Expos 15U AA Blue,,03/28/2025 19:00:00,Batting Cage,
-Practice,Chaldecott Park N diamond,03/29/2025 10:00:00,VCB Expos 15U AA Blue,,03/29/2025 11:00:00,Fields Day - Chaldecott,3eeps7r6nac1tl1b543t0hvhpc
 Practice,Chaldecott Park N diamond,03/29/2025 10:00:00,VCB 15U AA Red,,03/29/2025 11:00:00,Fence Set Up,1qchsejb4r0t2lueemek5j3p70
+Practice,Chaldecott Park N diamond,03/29/2025 10:00:00,VCB Expos 15U AA Blue,,03/29/2025 11:00:00,Fields Day - Chaldecott,3eeps7r6nac1tl1b543t0hvhpc
 Practice,Chaldecott Park N diamond,03/29/2025 12:00:00,VCB 15U AA Red,,03/29/2025 14:00:00,Pre-Season Practice,9u47iaiq72f4drs63s1lt93a3c
+Practice,Nanaimo Park batting cage,03/29/2025 14:00:00,VCB 13U Expos,,03/29/2025 16:00:49,Optional Batting Practice and Warm Up,
+Practice,Nanaimo Park batting cage,03/30/2025 14:00:00,VCB 13U Expos,,03/30/2025 16:00:49,Optional Batting Practice and Warm Up,
 Practice,Nanaimo Park SE diamond,03/30/2025 14:00:00,VCB 18U Dodgers,,03/30/2025 16:00:00,Practice Game,h79hnmgj9c43glo91sni0f22ss
 Practice,Nanaimo Park SE diamond,03/30/2025 14:00:00,VCB 18U Diamondbacks,,03/30/2025 16:30:00,Practice/Ex Game vs Dodgers,vd0oa8amh0rehvc7o63j7k4edo
 Practice,Nanaimo Park N diamond,03/30/2025 16:00:00,VCB 13U AA,,03/30/2025 18:00:10,Practice,8ru58u8ubav12tgq1e9hl1bsfc
@@ -41,12 +38,12 @@ Practice,Chaldecott Park N diamond,04/03/2025 18:15:00,VCB 15U AA Red,,04/03/202
 Practice,Chaldecott Park S diamond,04/03/2025 18:30:00,VCB 13U AAA,,04/03/2025 20:00:00,Team Practice,415t83toiedsq53ckfrmhij9o8
 Practice,Chaldecott Park S diamond,04/04/2025 16:00:00,VCB 13U Diamondbacks,,04/04/2025 17:30:48,Team Practice,pesircgelui5v0777dfo695akk
 Practice,Nanaimo Park batting cage,04/04/2025 17:00:00,VCB Expos 15U AA Blue,,04/04/2025 19:00:00,Batting Cage,
+Practice,Hillcrest Park NE diamond,04/04/2025 18:15:00,VCB 16U Red Sox-Girls,,04/04/2025 19:45:00,Practice,0jirbnkh8oms4d7pm12fp3sp4o
 Practice,Nanaimo Park SE diamond,04/05/2025 09:30:00,VCB 18U Pirates,,04/05/2025 11:30:00,VCB 18U AA Pirates fielding practice,mujgeq16qtued7ic8usgntt9es
-Practice,Hillcrest Park NE diamond,04/05/2025 10:00:00,VCB Expos 15U AA Blue,,04/05/2025 11:00:00,Fence Day - Hillcrest North,n4rjhupbbu0uob588740ohaun8
 Practice,Hillcrest Park NE diamond,04/05/2025 10:00:00,VCB 15U AA Red,,04/05/2025 11:00:00,Fence Set Up,7bnn7nqb3aqop1jpsar0o5hig8
-Practice,Hillcrest Park SW diamond,04/05/2025 10:00:00,VCB 18U AAA Blue,,04/05/2025 11:00:27,Fence Build Hillcrest,2bki1009nkikarg7b0hn225cjk
+Practice,Hillcrest Park NE diamond,04/05/2025 10:00:00,VCB Expos 15U AA Blue,,04/05/2025 11:00:00,Fence Day - Hillcrest North,n4rjhupbbu0uob588740ohaun8
 Practice,Hillcrest Park SW diamond,04/05/2025 10:00:00,VCB 18U Diamondbacks,,04/05/2025 12:00:00,Hillcrest Fence Installation,3qhl5agu00lonoo3h6a2p78968
-Practice,Nanaimo Park SE diamond,04/05/2025 11:30:00,VCB 18U Dodgers,,04/05/2025 13:00:00,VCB 18U AA Dodgers fielding practice,22j7ejud966j3jaqgku0te4po8
+Practice,Hillcrest Park SW diamond,04/05/2025 10:00:00,VCB 18U AAA Blue,,04/05/2025 11:00:27,Fence Build Hillcrest,2bki1009nkikarg7b0hn225cjk
 Practice,Nanaimo Park SE diamond,04/05/2025 11:30:00,VCB 18U A's,,04/05/2025 14:00:00,VCB 18U AA A's fielding practice,rigifqc084ol0t75k85197a5ak
 Practice,Nanaimo Park SE diamond,04/05/2025 11:30:00,VCB 18U Marlins,,04/05/2025 14:00:00,VCB 18U AA Marlins fielding practice,tc8igugir33r6fvm27vg8t6kfk
 Game,Hillcrest Park SW diamond,04/05/2025 12:00:00,VCB 18U AAA Blue,VCB 18U AAA White,04/05/2025 14:00:00,,251dfegat289ls4g9lirl56dc0
@@ -57,7 +54,7 @@ Practice,Nanaimo Park SE diamond,04/05/2025 14:30:00,VCB 18U Yankees,,04/05/2025
 Practice,Nanaimo Park SE diamond,04/05/2025 14:30:00,VCB 18U Mariners,,04/05/2025 17:00:00,VCB 18U AA Mariners fielding practice,8fvbnttpd5l5512k3hhvqkstcs
 Practice,Hillcrest Park SW diamond,04/05/2025 15:00:00,VCB 18U Rangers,,04/05/2025 17:00:00,VCB 18U AA Rangers practice,embd4sk2sdidc759gskaoruou4
 Practice,Hillcrest Park SW diamond,04/05/2025 15:00:00,VCB 18U Reds,,04/05/2025 17:00:00,VCB 18U AA Reds fielding practice,9g29mv6ur67bot5g484262nnb8
-Practice,Hillcrest Park SW diamond,04/05/2025 17:00:00,VCB 18U Giants,,04/05/2025 20:00:00,VCB 18U AA Giants fielding practice,feclv7jrub78ualcm20ipu11ps
+Practice,Nanaimo Park SE diamond,04/05/2025 17:00:00,VCB 18U Giants,,04/05/2025 19:30:00,VCB 18U AA Giants fielding practice,cur7nquob8a6h61v98dr56d4e8
 Game,Chaldecott Park N diamond,04/05/2025 17:30:00,VCB 15U Mariners,VCB 15U Rockies,04/05/2025 19:30:00,,buej7cldnk66dnq36hqs27d4uo
 Practice,Hillcrest Park SW diamond,04/05/2025 17:30:00,VCB 18U Dodgers,,04/05/2025 19:30:00,Practice Game,2mkjmitnur3uboas5gdb4ods64
 Practice,Hillcrest Park SW diamond,04/05/2025 17:30:00,VCB 18U Diamondbacks,,04/05/2025 19:30:00,VCB 18U AA Diamondbacks fielding practice,c39fpq5h7t17fi8o2uiaafq6r0
@@ -76,8 +73,8 @@ Practice,Hillcrest Park NE diamond,04/07/2025 16:15:00,VCB 15U AA Red,,04/07/202
 Practice,Chaldecott Park N diamond,04/07/2025 16:30:00,VCB 15U A's,,04/07/2025 18:15:00,15U A's fielding practice,93primp7tqu6efm06vq5ncf33g
 Practice,Hillcrest Park SW diamond,04/07/2025 17:00:00,VCB 18U Rangers,,04/07/2025 18:45:00,VCB 18U AA Rangers practice,mipmt94cjsu00qmu63ntvnboh8
 Practice,Chaldecott Park S diamond,04/07/2025 17:30:00,VCB 13U Dodgers,,04/07/2025 19:00:00,Dodgers Practice,dprg0ccde79mn0suhtr9tcua98
-Practice,Chaldecott Park N diamond,04/07/2025 18:15:00,VCB 15U Red Sox,,04/07/2025 20:15:00,15U A Red Sox fielding practice,0j4cbafvlcei97bololtoiei4c
 Practice,Chaldecott Park N diamond,04/07/2025 18:15:00,VCB 15U Mariners,,04/07/2025 20:15:00,15U A Mariners fielding practice,reofkfduq671onl5aahgl8tuac
+Practice,Chaldecott Park N diamond,04/07/2025 18:15:00,VCB 15U Red Sox,,04/07/2025 20:15:00,15U A Red Sox fielding practice,0j4cbafvlcei97bololtoiei4c
 Practice,Hillcrest Park NE diamond,04/07/2025 18:15:00,VCB 15U Blue Jays,,04/07/2025 20:15:00,15U A Blue Jays fielding practice,ifak30p23meimtcs2iv5fe24k4
 Practice,Hillcrest Park SW diamond,04/07/2025 18:30:00,VCB 18U A's,,04/07/2025 21:00:00,VCB 18U AA A's fielding practice,7s4rlct84abn38jh6aks63438c
 Practice,Hillcrest Park SW diamond,04/07/2025 18:30:00,VCB 18U Reds,,04/07/2025 21:00:00,VCB 18U AA Reds fielding practice,1q336851he8r70shd18mpedv00
@@ -92,8 +89,8 @@ Practice,Chaldecott Park N diamond,04/09/2025 16:30:00,VCB 15U Yankees,,04/09/20
 Practice,Hillcrest Park SW diamond,04/09/2025 17:30:00,VCB 18U Dodgers,,04/09/2025 19:00:00,VCB 18U AA Dodgers fielding practice,1qf1bqqkv5sl3f0l5kggjh440c
 Game,Nanaimo Park N diamond,04/09/2025 17:30:00,VCB 13U Expos,VCB 13U Dodgers,04/09/2025 19:30:00,,87ns49lr1hderv278a0llmb2ok
 Practice,Chaldecott Park N diamond,04/09/2025 18:00:00,VCB 15U Expos,,04/09/2025 19:30:11,VCB 15U Expos Baseball Practice,djvp4jt9q5env1nh4r1r1g6o8k
-Practice,Hillcrest Park SW diamond,04/09/2025 18:30:00,VCB 18U Pirates,,04/09/2025 21:00:00,VCB 18U AA Pirates fielding practice,bhp8cgnsg8asflrugqteb59mak
 Practice,Hillcrest Park SW diamond,04/09/2025 18:30:00,VCB 18U Marlins,,04/09/2025 21:00:00,VCB 18U AA Marlins fielding practice,b71jcrb36cak95ha70nedqh03k
+Practice,Hillcrest Park SW diamond,04/09/2025 18:30:00,VCB 18U Pirates,,04/09/2025 21:00:00,VCB 18U AA Pirates fielding practice,bhp8cgnsg8asflrugqteb59mak
 Practice,Hillcrest Park SW diamond,04/10/2025 16:30:00,VCB 18U AAA Blue,,04/10/2025 18:15:00,Practice,tjdlkt4urst1m3vortvvout3co
 Practice,Chaldecott Park S diamond,04/10/2025 17:00:00,VCB 13U AA,,04/10/2025 18:30:55,Practice,s02ukebapg0j8up5h78tj8k3ls
 Practice,Chaldecott Park N diamond,04/10/2025 18:15:00,VCB 15U AA Red,,04/10/2025 20:15:00,Practice,o0c5j1rdvo5htfmpm1sdtc62os
@@ -158,10 +155,10 @@ Game,Hillcrest Park NE diamond,04/16/2025 17:30:00,VCB 15U Rockies,VCB 15U Expos
 Game,Hillcrest Park SW diamond,04/16/2025 17:30:00,VCB 18U Reds,VCB 18U Dodgers,04/16/2025 19:30:00,,d5a8db66cpb8kpai2acj58id9o
 Game,Nanaimo Park N diamond,04/16/2025 17:30:00,VCB 13U Red Sox,VCB 13U Dodgers,04/16/2025 19:30:00,,qv87nn3619j8nv9pfee6s1ssbo
 Practice,Trafalgar Park,04/16/2025 17:30:00,VCB 18U Dodgers,,04/16/2025 19:00:00,VCB 18U AA Dodgers fielding practice,4p95gjrpo6inop0jafopiev30k
-Practice,Chaldecott Park N diamond,04/16/2025 18:00:00,VCB 15U Dodgers,,04/16/2025 19:30:00,Practice,71fh9qf9vg167m71hjefsojrd4
 Practice,Chaldecott Park N diamond,04/16/2025 18:00:00,VCB 15U Expos,,04/16/2025 19:30:11,VCB 15U Expos Baseball Practice,2msf7lfernbaiale6ok4drr9e4
-Practice,Trafalgar Park,04/16/2025 18:30:00,VCB 18U Pirates,,04/16/2025 21:00:00,VCB 18U AA Pirates fielding practice,sp2vkpqp24dgr76evofb6ooghs
+Practice,Chaldecott Park N diamond,04/16/2025 18:00:00,VCB 15U Dodgers,,04/16/2025 19:30:00,Practice,71fh9qf9vg167m71hjefsojrd4
 Practice,Trafalgar Park,04/16/2025 18:30:00,VCB 18U Marlins,,04/16/2025 21:00:00,VCB 18U AA Marlins fielding practice,pjb2uh2t0irskplgstt3egtuv4
+Practice,Trafalgar Park,04/16/2025 18:30:00,VCB 18U Pirates,,04/16/2025 21:00:00,VCB 18U AA Pirates fielding practice,sp2vkpqp24dgr76evofb6ooghs
 Practice,Hillcrest Park NE diamond,04/17/2025 16:15:00,VCB 15U AAA,,04/17/2025 18:15:00,Practice,elsiku74b9ud61hckkckh40mt0
 Practice,Hillcrest Park SW diamond,04/17/2025 16:30:00,VCB 18U AAA Blue,,04/17/2025 18:15:00,Practice,di11fs4do0ntdcvp7nku56evo8
 Game,Trafalgar Park,04/17/2025 17:30:00,VCB 18U Rangers,VCB 18U A's,04/17/2025 19:30:00,,vumt0ro9useho03p07tlqlk8q8
@@ -227,8 +224,8 @@ Game,Nanaimo Park N diamond,04/23/2025 17:30:00,VCB 13U Diamondbacks,VCB 13U Blu
 Practice,Trafalgar Park,04/23/2025 17:30:00,VCB 18U Dodgers,,04/23/2025 19:00:00,VCB 18U AA Dodgers fielding practice,b86v8eaf7s1ulhvqv7stind3k8
 Practice,Chaldecott Park N diamond,04/23/2025 18:00:00,VCB 15U Expos,,04/23/2025 19:30:11,VCB 15U Expos Baseball Practice,t3m6344tepuoa9ju7ulfujl5oc
 Practice,Chaldecott Park N diamond,04/23/2025 18:00:00,VCB 15U Dodgers,,04/23/2025 19:30:00,Practice,dtbhht8urntcsai7l0lnv9gn80
-Practice,Trafalgar Park,04/23/2025 18:30:00,VCB 18U Marlins,,04/23/2025 21:00:00,VCB 18U AA Marlins fielding practice,49gg5ktce72mmaq513n9um59qo
 Practice,Trafalgar Park,04/23/2025 18:30:00,VCB 18U Pirates,,04/23/2025 21:00:00,VCB 18U AA Pirates fielding practice,6ql3045j7thv25eu7q1340gtf0
+Practice,Trafalgar Park,04/23/2025 18:30:00,VCB 18U Marlins,,04/23/2025 21:00:00,VCB 18U AA Marlins fielding practice,49gg5ktce72mmaq513n9um59qo
 Practice,Hillcrest Park NE diamond,04/24/2025 16:15:00,VCB 15U AAA,,04/24/2025 18:15:00,Practice,lpf6qrtsppbqa6oiilpkssr1co
 Practice,Hillcrest Park SW diamond,04/24/2025 16:30:00,VCB 18U AAA Blue,,04/24/2025 18:15:00,Practice,kevtj0n5u7vsenvs7hqs8n0j3g
 Game,Trafalgar Park,04/24/2025 17:30:00,VCB 18U Dodgers,VCB 18U Rangers,04/24/2025 19:30:00,,rv5t3lfco265gsknhci0hqcno4
@@ -274,11 +271,11 @@ Practice,Chaldecott Park N diamond,04/28/2025 16:30:00,VCB 15U A's,,04/28/2025 1
 Practice,Trafalgar Park,04/28/2025 17:00:00,VCB 18U Rangers,,04/28/2025 18:45:00,VCB 18U AA Rangers practice,s52mn96a0kfsu1di7p94vm0uo4
 Practice,Chaldecott Park S diamond,04/28/2025 17:30:00,VCB 13U Dodgers,,04/28/2025 19:00:00,Dodgers Practice,ffik17c6d9qft70idkfft4m7m8
 Game,Hillcrest Park SW diamond,04/28/2025 17:30:00,VCB 18U Diamondbacks,VCB 18U Giants,04/28/2025 19:30:00,,in2kg8p7littovjo903c0f10hs
-Practice,Chaldecott Park N diamond,04/28/2025 18:15:00,VCB 15U Mariners,,04/28/2025 20:15:00,15U A Mariners fielding practice,3ten3pv7v7s0p1a2m26le37tjo
 Practice,Chaldecott Park N diamond,04/28/2025 18:15:00,VCB 15U Red Sox,,04/28/2025 20:15:00,15U A Red Sox fielding practice,7tbp8t37a7al2g0nntt7vo49dc
+Practice,Chaldecott Park N diamond,04/28/2025 18:15:00,VCB 15U Mariners,,04/28/2025 20:15:00,15U A Mariners fielding practice,3ten3pv7v7s0p1a2m26le37tjo
 Practice,Hillcrest Park NE diamond,04/28/2025 18:15:00,VCB 15U Blue Jays,,04/28/2025 20:15:00,15U A Blue Jays fielding practice,phs14su2p3av06ase8ig4sggdg
-Practice,Trafalgar Park,04/28/2025 18:30:00,VCB 18U Reds,,04/28/2025 21:00:00,VCB 18U AA Reds fielding practice,0mf5n4cfhj8vef0tugspvhgib4
 Practice,Trafalgar Park,04/28/2025 18:30:00,VCB 18U A's,,04/28/2025 21:00:00,VCB 18U AA A's fielding practice,rkf7c924tkjdeq7ghni82ki4i8
+Practice,Trafalgar Park,04/28/2025 18:30:00,VCB 18U Reds,,04/28/2025 21:00:00,VCB 18U AA Reds fielding practice,0mf5n4cfhj8vef0tugspvhgib4
 Practice,Chaldecott Park N diamond,04/29/2025 16:15:00,VCB Expos 15U AA Blue,,04/29/2025 18:15:00,Practice,9bbji514g5vev0nup1ptv00j8g
 Practice,Hillcrest Park SW diamond,04/29/2025 16:15:00,VCB 18U AAA White,,04/29/2025 18:00:00,Practice,mv9g2r4785fhrljtrit3aae58c
 Practice,Hillcrest Park NE diamond,04/29/2025 16:30:00,VCB 15U Rockies,,04/29/2025 18:15:00,15U A Rockies fielding practice,g2bcreg3s5qaj74m2umd3u2mt8
@@ -351,12 +348,12 @@ Practice,Chaldecott Park S diamond,05/06/2025 18:30:00,VCB 13U AA,,05/06/2025 20
 Practice,Hillcrest Park SW diamond,05/06/2025 18:45:00,VCB 18U AAA Blue,,05/06/2025 20:45:00,Practice,fuh9gjhu6lkm7qr98unacdv56c
 Practice,Chaldecott Park N diamond,05/07/2025 16:30:00,VCB 15U Yankees,,05/07/2025 18:00:00,15U A Yankees fielding practice,jmthv1l655vk184jbjan0smpp0
 Practice,Trafalgar Park,05/07/2025 17:30:00,VCB 18U Dodgers,,05/07/2025 19:00:00,VCB 18U AA Dodgers fielding practice,hctn7kiealqksiac16le62b7c4
-Practice,Chaldecott Park N diamond,05/07/2025 18:00:00,VCB 15U Dodgers,,05/07/2025 19:30:00,Practice,55prbio3mgqms3v3r0r8ku17ek
 Practice,Chaldecott Park N diamond,05/07/2025 18:00:00,VCB 15U Expos,,05/07/2025 19:30:11,VCB 15U Expos Baseball Practice,18vii5k7ei3i7d9dd7oa6coh90
+Practice,Chaldecott Park N diamond,05/07/2025 18:00:00,VCB 15U Dodgers,,05/07/2025 19:30:00,Practice,55prbio3mgqms3v3r0r8ku17ek
 Game,Hillcrest Park SW diamond,05/07/2025 18:00:00,VCB 18U A's,VCB 18U Marlins,05/07/2025 20:00:00,,vp38s1u6j42jbco8jsca96ehig
 Game,Nanaimo Park N diamond,05/07/2025 18:00:00,VCB 13U Red Sox,VCB 13U Diamondbacks,05/07/2025 20:00:00,,nodatmcreamm2v2dt1r31rpgh0
-Practice,Trafalgar Park,05/07/2025 18:30:00,VCB 18U Marlins,,05/07/2025 21:00:00,VCB 18U AA Marlins fielding practice,3c9mqh8p03sfpvsu08knc2hsjs
 Practice,Trafalgar Park,05/07/2025 18:30:00,VCB 18U Pirates,,05/07/2025 21:00:00,VCB 18U AA Pirates fielding practice,997tse0m3q1jpgbv4s9f539he8
+Practice,Trafalgar Park,05/07/2025 18:30:00,VCB 18U Marlins,,05/07/2025 21:00:00,VCB 18U AA Marlins fielding practice,3c9mqh8p03sfpvsu08knc2hsjs
 Practice,Hillcrest Park NE diamond,05/08/2025 16:15:00,VCB 15U AAA,,05/08/2025 18:15:00,Practice,hatst0ve085io37v2hjqf3asd0
 Practice,Hillcrest Park SW diamond,05/08/2025 16:45:00,VCB 18U AAA Blue,,05/08/2025 18:45:00,Practice,uvkjdq25obqpbvog27bnk1hqrs
 Game,Trafalgar Park,05/08/2025 18:00:00,VCB 18U Marlins,VCB 18U Giants,05/08/2025 20:00:00,,qq4f2dq22qrviropvue09n4jtg
@@ -408,8 +405,8 @@ Game,Hillcrest Park SW diamond,05/12/2025 18:00:00,VCB 18U Reds,VCB 18U Diamondb
 Practice,Chaldecott Park N diamond,05/12/2025 18:15:00,VCB 15U Mariners,,05/12/2025 20:15:00,15U A Mariners fielding practice,rgrntuj784f6r35vidqe7069bk
 Practice,Chaldecott Park N diamond,05/12/2025 18:15:00,VCB 15U Red Sox,,05/12/2025 20:15:00,15U A Red Sox fielding practice,043e8o5impu0f4l3e80crmbg28
 Practice,Hillcrest Park NE diamond,05/12/2025 18:15:00,VCB 15U Blue Jays,,05/12/2025 20:15:00,15U A Blue Jays fielding practice,trm34g8171883pcvdihai1h6k8
-Practice,Trafalgar Park,05/12/2025 18:30:00,VCB 18U Reds,,05/12/2025 21:00:00,VCB 18U AA Reds fielding practice,qc0jvo26a44g18r5tfp4jv606s
 Practice,Trafalgar Park,05/12/2025 18:30:00,VCB 18U A's,,05/12/2025 21:00:00,VCB 18U AA A's fielding practice,oja5gj66iq25v3adkvk3kp51mg
+Practice,Trafalgar Park,05/12/2025 18:30:00,VCB 18U Reds,,05/12/2025 21:00:00,VCB 18U AA Reds fielding practice,qc0jvo26a44g18r5tfp4jv606s
 Practice,Hillcrest Park SW diamond,05/13/2025 16:15:00,VCB 18U AAA White,,05/13/2025 18:00:00,Practice,8fs133b0ekjfqab4isf22p7hkg
 Practice,Chaldecott Park N diamond,05/13/2025 16:30:00,VCB Expos 15U AA Blue,,05/13/2025 18:30:00,Practice,dvdoa0goh1f8j97iq76cdp2qbg
 Practice,Hillcrest Park NE diamond,05/13/2025 16:30:00,VCB 15U Rockies,,05/13/2025 18:15:00,15U A Rockies fielding practice,vbpovv0b6buqrmek2jmp7mu85k
@@ -420,8 +417,8 @@ Practice,Hillcrest Park NE diamond,05/13/2025 18:15:00,VCB 15U AAA,,05/13/2025 2
 Practice,Hillcrest Park SW diamond,05/13/2025 18:45:00,VCB 18U AAA Blue,,05/13/2025 20:45:00,Practice,4abmuiu5mc2lciaqm831sjcs08
 Practice,Chaldecott Park N diamond,05/14/2025 16:30:00,VCB 15U Yankees,,05/14/2025 18:00:00,15U A Yankees fielding practice,5hcn1itbdl6bk25o5j25h10k68
 Practice,Trafalgar Park,05/14/2025 17:30:00,VCB 18U Dodgers,,05/14/2025 19:00:00,VCB 18U AA Dodgers fielding practice,bvgtt71k3odfad65a1jrbtsm4k
-Practice,Chaldecott Park N diamond,05/14/2025 18:00:00,VCB 15U Expos,,05/14/2025 19:30:11,VCB 15U Expos Baseball Practice,rn2e31rjoppougg6kafvksk208
 Practice,Chaldecott Park N diamond,05/14/2025 18:00:00,VCB 15U Dodgers,,05/14/2025 19:30:00,Practice,4alnc3cnldudbbeffcur36mcgk
+Practice,Chaldecott Park N diamond,05/14/2025 18:00:00,VCB 15U Expos,,05/14/2025 19:30:11,VCB 15U Expos Baseball Practice,rn2e31rjoppougg6kafvksk208
 Game,Hillcrest Park NE diamond,05/14/2025 18:00:00,VCB 16U Red Sox-Girls,TBD,05/14/2025 20:00:00,,r0hs6nel7i11m457t5fn3lq4i4
 Game,Hillcrest Park SW diamond,05/14/2025 18:00:00,VCB 18U Pirates,VCB 18U Diamondbacks,05/14/2025 20:00:00,,5gcm2tkoe5fjbhbsnb5quopj7o
 Game,Nanaimo Park N diamond,05/14/2025 18:00:00,VCB 13U Expos,VCB 13U Diamondbacks,05/14/2025 20:00:00,,7t9p9khtd86hlvva3qm8eroon4
@@ -464,11 +461,11 @@ Practice,Hillcrest Park NE diamond,05/20/2025 18:15:00,VCB 15U AAA,,05/20/2025 2
 Practice,Hillcrest Park SW diamond,05/20/2025 18:45:00,VCB 18U AAA Blue,,05/20/2025 20:45:00,Practice,4tsuol1f9o03c659fvcnaig1rk
 Practice,Chaldecott Park N diamond,05/21/2025 16:30:00,VCB 15U Yankees,,05/21/2025 18:00:00,15U A Yankees fielding practice,eron3rd45l3do2ls1onb85n79c
 Practice,Trafalgar Park,05/21/2025 17:30:00,VCB 18U Dodgers,,05/21/2025 19:00:00,VCB 18U AA Dodgers fielding practice,i0ad1ou0afnk58c5hv7cdkru2g
-Practice,Chaldecott Park N diamond,05/21/2025 18:00:00,VCB 15U Expos,,05/21/2025 19:30:11,VCB 15U Expos Baseball Practice,423k1hc14j4fn9vncthsmmh9qo
 Practice,Chaldecott Park N diamond,05/21/2025 18:00:00,VCB 15U Dodgers,,05/21/2025 19:30:00,Practice,rksmhdsmrkte6ejc6ni9341fm0
+Practice,Chaldecott Park N diamond,05/21/2025 18:00:00,VCB 15U Expos,,05/21/2025 19:30:11,VCB 15U Expos Baseball Practice,423k1hc14j4fn9vncthsmmh9qo
 Game,Hillcrest Park SW diamond,05/21/2025 18:00:00,VCB 18U Dodgers,VCB 18U Mariners,05/21/2025 20:00:00,,q1ejr6suasnqhur199cnu04b0g
-Practice,Trafalgar Park,05/21/2025 18:30:00,VCB 18U Marlins,,05/21/2025 21:00:00,VCB 18U AA Marlins fielding practice,p0gt47um3qjd7et7480pd62sus
 Practice,Trafalgar Park,05/21/2025 18:30:00,VCB 18U Pirates,,05/21/2025 21:00:00,VCB 18U AA Pirates fielding practice,38mfso24dlms86oa9g4ji4fnn8
+Practice,Trafalgar Park,05/21/2025 18:30:00,VCB 18U Marlins,,05/21/2025 21:00:00,VCB 18U AA Marlins fielding practice,p0gt47um3qjd7et7480pd62sus
 Practice,Hillcrest Park NE diamond,05/22/2025 16:15:00,VCB 15U AAA,,05/22/2025 18:15:00,Practice,nsgbdt8s83drqr70q09aqsihh8
 Practice,Hillcrest Park SW diamond,05/22/2025 16:45:00,VCB 18U AAA Blue,,05/22/2025 18:45:00,Practice,a0o6labuvskn2o4gsljbqfpa5k
 Game,Trafalgar Park,05/22/2025 18:00:00,VCB 18U Giants,VCB 18U Dodgers,05/22/2025 20:00:00,,a947rnp9oe200es7auk2ja21k4
@@ -514,8 +511,8 @@ Practice,Hillcrest Park NE diamond,05/26/2025 16:15:00,VCB 15U AA Red,,05/26/202
 Practice,Chaldecott Park N diamond,05/26/2025 16:30:00,VCB 15U A's,,05/26/2025 18:15:00,15U A's fielding practice,ksvotd0kuoob7smp864ornq5ic
 Practice,Trafalgar Park,05/26/2025 17:00:00,VCB 18U Rangers,,05/26/2025 18:45:00,VCB 18U AA Rangers practice,hpggrag8o41mhfr1ivt96ubu54
 Game,Hillcrest Park SW diamond,05/26/2025 18:00:00,VCB 18U Diamondbacks,VCB 18U Yankees,05/26/2025 20:00:00,,vr3r35hsvr1j14g0davv7mg3es
-Practice,Chaldecott Park N diamond,05/26/2025 18:15:00,VCB 15U Red Sox,,05/26/2025 20:15:00,15U A Red Sox fielding practice,8nm46p1dqj0qee9k0uka3r3e24
 Practice,Chaldecott Park N diamond,05/26/2025 18:15:00,VCB 15U Mariners,,05/26/2025 20:15:00,15U A Mariners fielding practice,sdpq7sgjugq25m5dqdiskvvido
+Practice,Chaldecott Park N diamond,05/26/2025 18:15:00,VCB 15U Red Sox,,05/26/2025 20:15:00,15U A Red Sox fielding practice,8nm46p1dqj0qee9k0uka3r3e24
 Practice,Hillcrest Park NE diamond,05/26/2025 18:15:00,VCB 15U Blue Jays,,05/26/2025 20:15:00,15U A Blue Jays fielding practice,q7irjmnv59prd5hno17o8mdiao
 Practice,Trafalgar Park,05/26/2025 18:30:00,VCB 18U A's,,05/26/2025 21:00:00,VCB 18U AA A's fielding practice,5fvanjfkmodjok364sv750qrtc
 Practice,Trafalgar Park,05/26/2025 18:30:00,VCB 18U Reds,,05/26/2025 21:00:00,VCB 18U AA Reds fielding practice,ppu70as85rublbmb6nk5qpiisg
@@ -573,11 +570,11 @@ Practice,Hillcrest Park NE diamond,06/02/2025 16:15:00,VCB 15U AA Red,,06/02/202
 Practice,Chaldecott Park N diamond,06/02/2025 16:30:00,VCB 15U A's,,06/02/2025 18:15:00,15U A's fielding practice,noi7eh6drvv9dlvjbq453fu3q8
 Practice,Trafalgar Park,06/02/2025 17:00:00,VCB 18U Rangers,,06/02/2025 18:45:00,VCB 18U AA Rangers practice,b0br0plqf3ku47enafnu4mese0
 Game,Hillcrest Park SW diamond,06/02/2025 18:00:00,VCB 18U Diamondbacks,VCB 18U Rangers,06/02/2025 20:00:00,,dm4m70slra9ct1tq9e9gcglacc
-Practice,Chaldecott Park N diamond,06/02/2025 18:15:00,VCB 15U Mariners,,06/02/2025 20:15:00,15U A Mariners fielding practice,8l55mk19iuk8447iklmm563jf4
 Practice,Chaldecott Park N diamond,06/02/2025 18:15:00,VCB 15U Red Sox,,06/02/2025 20:15:00,15U A Red Sox fielding practice,o1fvf6vuvneaa5d1elpbt51m3g
+Practice,Chaldecott Park N diamond,06/02/2025 18:15:00,VCB 15U Mariners,,06/02/2025 20:15:00,15U A Mariners fielding practice,8l55mk19iuk8447iklmm563jf4
 Practice,Hillcrest Park NE diamond,06/02/2025 18:15:00,VCB 15U Blue Jays,,06/02/2025 20:15:00,15U A Blue Jays fielding practice,qjd2cpekqk878hoch2mlapechg
-Practice,Trafalgar Park,06/02/2025 18:30:00,VCB 18U Reds,,06/02/2025 21:00:00,VCB 18U AA Reds fielding practice,3i43ilpnvroh5fg4qehsvsc4vk
 Practice,Trafalgar Park,06/02/2025 18:30:00,VCB 18U A's,,06/02/2025 21:00:00,VCB 18U AA A's fielding practice,35hdouj6uvnjubbfo9pjpjceks
+Practice,Trafalgar Park,06/02/2025 18:30:00,VCB 18U Reds,,06/02/2025 21:00:00,VCB 18U AA Reds fielding practice,3i43ilpnvroh5fg4qehsvsc4vk
 Practice,Hillcrest Park SW diamond,06/03/2025 16:15:00,VCB 18U AAA White,,06/03/2025 18:00:00,Practice,8t4tfqu4v7d84v2ihlfgtshv44
 Practice,Chaldecott Park N diamond,06/03/2025 16:30:00,VCB Expos 15U AA Blue,,06/03/2025 18:30:00,Practice,3e8ccbdhs8r8htq9vlej5d21k0
 Practice,Chaldecott Park S diamond,06/03/2025 16:30:00,VCB 13U AAA,,06/03/2025 18:00:00,Team Practice,frqmad4subi4pt6clifk0umqjc
@@ -640,8 +637,8 @@ Practice,Hillcrest Park NE diamond,06/09/2025 16:15:00,VCB 15U AA Red,,06/09/202
 Practice,Chaldecott Park N diamond,06/09/2025 16:30:00,VCB 15U A's,,06/09/2025 18:15:00,15U A's fielding practice,m9t16mbkih2u5m3m7g6g20igio
 Practice,Trafalgar Park,06/09/2025 17:00:00,VCB 18U Rangers,,06/09/2025 18:45:00,VCB 18U AA Rangers practice,k3b3asvjhn9q0mgtbtlo9a2dok
 Game,Hillcrest Park SW diamond,06/09/2025 18:00:00,VCB 18U Mariners,VCB 18U Yankees,06/09/2025 20:00:00,,svc08t0oual1bhe6vmue368k14
-Practice,Chaldecott Park N diamond,06/09/2025 18:15:00,VCB 15U Red Sox,,06/09/2025 20:15:00,15U A Red Sox fielding practice,d8ra9lpsr7eob3ejt2i6vaam8g
 Practice,Chaldecott Park N diamond,06/09/2025 18:15:00,VCB 15U Mariners,,06/09/2025 20:15:00,15U A Mariners fielding practice,aoauononl2ta8rjmkefpraa6fs
+Practice,Chaldecott Park N diamond,06/09/2025 18:15:00,VCB 15U Red Sox,,06/09/2025 20:15:00,15U A Red Sox fielding practice,d8ra9lpsr7eob3ejt2i6vaam8g
 Practice,Hillcrest Park NE diamond,06/09/2025 18:15:00,VCB 15U Blue Jays,,06/09/2025 20:15:00,15U A Blue Jays fielding practice,n6lj4n5589p24mannp1ti3hkk0
 Practice,Trafalgar Park,06/09/2025 18:30:00,VCB 18U Reds,,06/09/2025 21:00:00,VCB 18U AA Reds fielding practice,pmn2e52c7jncbnp88cu3jujcjc
 Practice,Trafalgar Park,06/09/2025 18:30:00,VCB 18U A's,,06/09/2025 21:00:00,VCB 18U AA A's fielding practice,hr7ibf6g3i6npa9j99ig3npbbo
@@ -658,8 +655,8 @@ Practice,Trafalgar Park,06/11/2025 17:30:00,VCB 18U Dodgers,,06/11/2025 19:00:00
 Practice,Chaldecott Park N diamond,06/11/2025 18:00:00,VCB 15U Expos,,06/11/2025 19:30:11,VCB 15U Expos Baseball Practice,k188f58e9768s9o7k1t9e8e3ko
 Game,Hillcrest Park NE diamond,06/11/2025 18:00:00,VCB 15U Dodgers,VCB 15U Rockies,06/11/2025 20:00:00,,lvu0ns32lte97i3qjo6t9u9md0
 Game,Hillcrest Park SW diamond,06/11/2025 18:00:00,VCB 18U Giants,VCB 18U Rangers,06/11/2025 20:00:00,,a6un2kmkshi4hkqgntam8sl9ko
-Practice,Trafalgar Park,06/11/2025 18:30:00,VCB 18U Pirates,,06/11/2025 21:00:00,VCB 18U AA Pirates fielding practice,if6g228j910m46680b6j8nrrpk
 Practice,Trafalgar Park,06/11/2025 18:30:00,VCB 18U Marlins,,06/11/2025 21:00:00,VCB 18U AA Marlins fielding practice,fkked2sf8c9ev7hfa2n3n8ui14
+Practice,Trafalgar Park,06/11/2025 18:30:00,VCB 18U Pirates,,06/11/2025 21:00:00,VCB 18U AA Pirates fielding practice,if6g228j910m46680b6j8nrrpk
 Practice,Hillcrest Park NE diamond,06/12/2025 16:15:00,VCB 15U AAA,,06/12/2025 18:15:00,Practice,kuu69k5phdngcnoi55hdfrf1o8
 Practice,Hillcrest Park SW diamond,06/12/2025 16:45:00,VCB 18U AAA Blue,,06/12/2025 18:45:00,Practice,br88petfqqs7363i9u60hs385g
 Game,Trafalgar Park,06/12/2025 18:00:00,VCB 18U Mariners,VCB 18U Pirates,06/12/2025 20:00:00,,smduc2ad4k899o55ue9oqo3tm8
@@ -690,8 +687,8 @@ Practice,Trafalgar Park,06/16/2025 17:00:00,VCB 18U Rangers,,06/16/2025 18:45:00
 Practice,Chaldecott Park N diamond,06/16/2025 18:15:00,VCB 15U Red Sox,,06/16/2025 20:15:00,15U A Red Sox fielding practice,jbb9eg1k1dk9tk20rgacgh1gd0
 Practice,Chaldecott Park N diamond,06/16/2025 18:15:00,VCB 15U Mariners,,06/16/2025 20:15:00,15U A Mariners fielding practice,ema3idmqi7lrlitpkdl59454ac
 Practice,Hillcrest Park NE diamond,06/16/2025 18:15:00,VCB 15U Blue Jays,,06/16/2025 20:15:00,15U A Blue Jays fielding practice,ud69132flce584h8j8nkucaopk
-Practice,Trafalgar Park,06/16/2025 18:30:00,VCB 18U Reds,,06/16/2025 21:00:00,VCB 18U AA Reds fielding practice,ealvf3dfpfeddmmfsjl9bomu6g
 Practice,Trafalgar Park,06/16/2025 18:30:00,VCB 18U A's,,06/16/2025 21:00:00,VCB 18U AA A's fielding practice,50ua259qnlesvi3o54o26nfjck
+Practice,Trafalgar Park,06/16/2025 18:30:00,VCB 18U Reds,,06/16/2025 21:00:00,VCB 18U AA Reds fielding practice,ealvf3dfpfeddmmfsjl9bomu6g
 Practice,Hillcrest Park SW diamond,06/17/2025 16:15:00,VCB 18U AAA White,,06/17/2025 18:00:00,Practice,peqrd504cr43msuokjas1njv60
 Practice,Chaldecott Park S diamond,06/17/2025 16:30:00,VCB 13U AAA,,06/17/2025 18:00:00,Team Practice,hqkq68ok5o8kmh2il5pl6qir8o
 Practice,Hillcrest Park NE diamond,06/17/2025 16:30:00,VCB 15U Rockies,,06/17/2025 18:15:00,15U A Rockies fielding practice,c92fculb92454r7l0a19gi0cts
