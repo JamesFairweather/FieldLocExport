@@ -290,7 +290,6 @@ namespace VcbFieldExport
             },
             {
                 "15U A", new Dictionary<string, string> {
-                { "White Sox", "VCB 16U White Sox" },
                 { "RS-Girls", "VCB 16U Red Sox-Girls" }, }
             },
             { "15U AA", new Dictionary<string, string>{

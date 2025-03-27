@@ -133,16 +133,18 @@ namespace VcbFieldExport
                             homeTeam = opponent_name;
                             visitingTeam = thisTeam;
 
-                            if (leageControlledGame || homeTeam.StartsWith("VCB"))
+                            if (leageControlledGame || (homeTeam.StartsWith("VCB") && homeTeam != "VCB 15U TBD"))
                             {
                                 // If the game is controlled by the league, we want to skip adding beause it will be
-                                // added by the home team
+                                // added by the home team.
 
                                 // OR, if this is the visiting team's event for a game where the home team is also a VCB team,
                                 // ignore it because the game will be added by the home team's entry.  We only want to
                                 // add this entry if this is a team-controlled game where the home team is NOT a VCB team.
                                 // There are a few games being played on VCB fields where the VCB team is the visiting
                                 // team.  Assignr has these games of course, and we want TeamSnap to show them too.
+                                // Except we still want to add the game if the home team is "VCB 15U TBD" because these are
+                                // Girls team games where their opponent is still to be decided.
                                 continue;
                             }
                         }
