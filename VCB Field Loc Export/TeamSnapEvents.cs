@@ -94,7 +94,6 @@ namespace VcbFieldExport
                         continue;   // skip canceled events
                     }
 
-                    VcbFieldEvent.Type eventType = teamSnapEventFields[(JValue)"is_game"] == "True" ? VcbFieldEvent.Type.Game : VcbFieldEvent.Type.Practice;
                     string location = teamSnapEventFields[(JValue)"location_name"];
                     DateTime startTime = DateTime.Parse(teamSnapEventFields[(JValue)"start_date"]).ToLocalTime();
                     startTime = startTime.AddSeconds(-startTime.Second);        // some 2025 13U AA home games have non-zero seconds values in their start times for some reason
@@ -117,13 +116,7 @@ namespace VcbFieldExport
                     string eventDescription = string.Empty;
                     bool addGameToEventList = true;
 
-                    if (eventType == VcbFieldEvent.Type.Practice)
-                    {
-                        eventDescription = formatted_title;
-                        homeTeam = thisTeam;
-                        mPractices.Add(new VcbFieldEvent(eventType, location, startTime, homeTeam, visitingTeam, endTime, eventDescription));
-                    }
-                    else
+                    if (teamSnapEventFields[(JValue)"is_game"] == "True")
                     {
                         if (homeGame)
                         {
@@ -160,17 +153,22 @@ namespace VcbFieldExport
 
                             if (oppositeGameFound == null) {
                                 // First instance of this game.  We should find another one in their opponent's TeamSnap schedule later
-                                nonLeagueUnmatchedGamesBetweenVcbTeams.Add(new(eventType, location, startTime, homeTeam, visitingTeam, endTime, eventDescription));
+                                nonLeagueUnmatchedGamesBetweenVcbTeams.Add(new(VcbFieldEvent.Type.Game, location, startTime, homeTeam, visitingTeam, endTime, eventDescription));
                             }
                             else {
                                 // This game was added from the other team's schedule, so we can remove it from the unmatched list
                                 nonLeagueUnmatchedGamesBetweenVcbTeams.Remove(oppositeGameFound);
                             }
                         }
-                    }
 
-                    if (addGameToEventList) {
-                        mGames.Add(new VcbFieldEvent(eventType, location, startTime, homeTeam, visitingTeam, endTime, eventDescription));
+                        if (addGameToEventList) {
+                            mGames.Add(new VcbFieldEvent(VcbFieldEvent.Type.Game, location, startTime, homeTeam, visitingTeam, endTime, eventDescription));
+                        }
+                    }
+                    else {
+                        eventDescription = formatted_title;
+                        homeTeam = thisTeam;
+                        mPractices.Add(new VcbFieldEvent(VcbFieldEvent.Type.Practice, location, startTime, homeTeam, visitingTeam, endTime, eventDescription));
                     }
                 }
             }

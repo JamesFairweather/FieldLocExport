@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VcbFieldExport;
+using System.Collections;
 
 namespace VcbFieldExport
 {
@@ -200,16 +201,19 @@ namespace VcbFieldExport
 
                     DateTime start = DateTime.Parse(startTime);
 
-                    if (IGNORED_GAMES.Find(e => e.location == assignrVenue && e.startTime == start) != null) {
+                    if (!ASSIGNR_TO_TEAMSNAP_VENUE_MAP.ContainsKey(assignrVenue))
+                    {
+                        // Console.WriteLine($"Warning: A game in Assignr is hosted on a field not tracked in TeamSnap: {assignrVenue} on {startTime}.");
                         continue;
                     }
 
-                    if (!ASSIGNR_TO_TEAMSNAP_VENUE_MAP.ContainsKey(assignrVenue)) {
-                        Console.WriteLine($"Warning: A game in Assignr is hosted on a field not tracked in TeamSnap: {assignrVenue} on {startTime}.");
+                    string teamSnapVenue = ASSIGNR_TO_TEAMSNAP_VENUE_MAP[assignrVenue];
+
+                    if (IGNORED_GAMES.Find(e => e.location == teamSnapVenue && e.startTime == start) != null) {
                         continue;
                     }
 
-                    mGames.Add(new VcbFieldEvent(VcbFieldEvent.Type.Game, ASSIGNR_TO_TEAMSNAP_VENUE_MAP[assignrVenue], start, homeTeam, awayTeam, start.AddHours(2)));
+                    mGames.Add(new VcbFieldEvent(VcbFieldEvent.Type.Game, teamSnapVenue, start, homeTeam, awayTeam, start.AddHours(2)));
                 }
 
                 currentPage = int.Parse(jsonRoot["page"]["current_page"].ToString());
@@ -220,11 +224,6 @@ namespace VcbFieldExport
         {
             int inconsistentGames = 0;
 
-            if (teamSnapGames.Count != mGames.Count)
-            {
-                Console.WriteLine($"The number of games in TeamSnap ({teamSnapGames.Count}) and Assingr ({mGames.Count}) do not match");
-            }
-
             foreach (var teamSnapEvent in teamSnapGames) {
                 VcbFieldEvent e = mGames.Find(e =>
                     e.location == teamSnapEvent.location &&
@@ -232,24 +231,20 @@ namespace VcbFieldExport
                     e.homeTeam == teamSnapEvent.homeTeam &&
                     e.visitingTeam == teamSnapEvent.visitingTeam);
 
-                if (e == null)
-                {
-                    if (IGNORED_GAMES.Find(e => e.location == teamSnapEvent.location && e.startTime == teamSnapEvent.startTime) == null)
-                    {
-                        ++inconsistentGames;
-                        Console.WriteLine($"A game in TeamSnap is missing from Assignr: {teamSnapEvent.startTime} at {teamSnapEvent.location} ({teamSnapEvent.visitingTeam} @ {teamSnapEvent.homeTeam}).");
-                    }
-
-                    continue;
+                if (e != null) {
+                    mGames.Remove(e);
                 }
-
-                mGames.Remove(e);
+                else if (IGNORED_GAMES.Find(e => e.location == teamSnapEvent.location && e.startTime == teamSnapEvent.startTime) == null) {
+                    ++inconsistentGames;
+                    Console.WriteLine($"A game in TeamSnap is missing from Assignr: {teamSnapEvent.startTime} at {teamSnapEvent.location} ({teamSnapEvent.visitingTeam} @ {teamSnapEvent.homeTeam}).");
+                }
             }
 
-            foreach (var game in mGames)
-            {
-                ++inconsistentGames;
-                Console.WriteLine($"A game in Assignr is missing from TeamSnap: {game.startTime} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
+            foreach (var game in mGames) {
+                if (IGNORED_GAMES.Find(e => e.location == game.location && e.startTime == game.startTime) != null) {
+                    ++inconsistentGames;
+                    Console.WriteLine($"A game in Assignr is missing from TeamSnap: {game.startTime} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
+                }
             }
 
             return inconsistentGames;
@@ -259,8 +254,12 @@ namespace VcbFieldExport
         string? mBearerToken;
 
         List<VcbFieldEvent> IGNORED_GAMES = new List<VcbFieldEvent> {
-            new VcbFieldEvent(VcbFieldEvent.Type.Game, "UBC Stadium", new DateTime(2025, 03, 28, 17, 0, 0), "", "", DateTime.Now),               // This location isn't tracked in TeamSnap, so we can ignore the Assignr game
+            new VcbFieldEvent(VcbFieldEvent.Type.Game, "Nanaimo Park N diamond", new DateTime(2025, 03, 30, 16, 0, 0), "", "", DateTime.Now),   // Entered as a practice in the TeamSnap schedule, IDK why
+            new VcbFieldEvent(VcbFieldEvent.Type.Game, "UBC Stadium", new DateTime(2025, 03, 28, 17, 0, 0), "", "", DateTime.Now),              // Games at UBC are not tracked by this tool
             new VcbFieldEvent(VcbFieldEvent.Type.Game, "Hillcrest Park SW diamond", new DateTime(2025, 04, 5, 10, 0, 0), "", "", DateTime.Now), // Mike Marlatt says the teams don't need umpires for this practice game
+            new VcbFieldEvent(VcbFieldEvent.Type.Game, "Hillcrest Park SW diamond", new DateTime(2025, 04, 5, 12, 0, 0), "", "", DateTime.Now), // Same game as above, but in the Blue team's schedule
+            new VcbFieldEvent(VcbFieldEvent.Type.Game, "Chaldecott Park N diamond", new DateTime(2025, 04, 13, 11, 30, 0), "", "", DateTime.Now), // Games involving the 15U A Girls team are being ignored for now
+            new VcbFieldEvent(VcbFieldEvent.Type.Game, "Chaldecott Park N diamond", new DateTime(2025, 06, 1, 12, 0, 0), "", "", DateTime.Now), // Same reason as above
         };
 
         List<VcbFieldEvent> mGames = new();
