@@ -45,6 +45,8 @@ namespace VcbFieldExport
                 "74242257", // Nanaimo Park batting cage
             };
 
+            List<VcbFieldEvent> nonLeagueUnmatchedGamesBetweenVcbTeams = new();
+
             using HttpClient client = new();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {mBearerToken}");
@@ -102,7 +104,7 @@ namespace VcbFieldExport
                     string formatted_title_for_multi_team = teamSnapEventFields[(JValue)"formatted_title_for_multi_team"];
                     string opponent_name = teamSnapEventFields[(JValue)"opponent_name"];
                     bool homeGame = teamSnapEventFields[(JValue)"game_type"] == "Home";
-                    bool leageControlledGame = teamSnapEventFields[(JValue)"is_league_controlled"] == "True";
+                    bool leagueControlledGame = teamSnapEventFields[(JValue)"is_league_controlled"] == "True";
 
                     int index = formatted_title_for_multi_team.IndexOf(formatted_title);
                     if (index == -1)
@@ -113,11 +115,13 @@ namespace VcbFieldExport
                     string homeTeam = string.Empty;
                     string visitingTeam = string.Empty;
                     string eventDescription = string.Empty;
+                    bool addGameToEventList = true;
 
                     if (eventType == VcbFieldEvent.Type.Practice)
                     {
                         eventDescription = formatted_title;
                         homeTeam = thisTeam;
+                        mPractices.Add(new VcbFieldEvent(eventType, location, startTime, homeTeam, visitingTeam, endTime, eventDescription));
                     }
                     else
                     {
@@ -133,7 +137,7 @@ namespace VcbFieldExport
                             homeTeam = opponent_name;
                             visitingTeam = thisTeam;
 
-                            if (leageControlledGame || (homeTeam.StartsWith("VCB") && homeTeam != "VCB 15U TBD"))
+                            if (leagueControlledGame || (homeTeam.StartsWith("VCB") && homeTeam != "VCB 15U TBD"))
                             {
                                 // If the game is controlled by the league, we want to skip adding beause it will be
                                 // added by the home team.
@@ -145,12 +149,37 @@ namespace VcbFieldExport
                                 // team.  Assignr has these games of course, and we want TeamSnap to show them too.
                                 // Except we still want to add the game if the home team is "VCB 15U TBD" because these are
                                 // Girls team games where their opponent is still to be decided.
-                                continue;
+                                addGameToEventList = false;
+                            }
+                        }
+
+                        if (!leagueControlledGame && homeTeam.StartsWith("VCB") && visitingTeam.StartsWith("VCB")) {
+
+                            // Check that a game between two VCB teams is in _both_ teams' TeamSnap schedules
+                            VcbFieldEvent oppositeGameFound = nonLeagueUnmatchedGamesBetweenVcbTeams.Find(e => e.location == location && e.startTime == startTime && e.homeTeam == homeTeam && e.visitingTeam == visitingTeam);
+
+                            if (oppositeGameFound == null) {
+                                // First instance of this game.  We should find another one in their opponent's TeamSnap schedule later
+                                nonLeagueUnmatchedGamesBetweenVcbTeams.Add(new(eventType, location, startTime, homeTeam, visitingTeam, endTime, eventDescription));
+                            }
+                            else {
+                                // This game was added from the other team's schedule, so we can remove it from the unmatched list
+                                nonLeagueUnmatchedGamesBetweenVcbTeams.Remove(oppositeGameFound);
                             }
                         }
                     }
 
-                    mEvents.Add(new VcbFieldEvent(eventType, location, startTime, homeTeam, visitingTeam, endTime, eventDescription));
+                    if (addGameToEventList) {
+                        mGames.Add(new VcbFieldEvent(eventType, location, startTime, homeTeam, visitingTeam, endTime, eventDescription));
+                    }
+                }
+            }
+
+            if (nonLeagueUnmatchedGamesBetweenVcbTeams.Count != 0) {
+                Console.WriteLine("Some games are missing from a VCB opponent's TeamSnap schedule");
+
+                foreach(VcbFieldEvent e in nonLeagueUnmatchedGamesBetweenVcbTeams) {
+                    Console.WriteLine($"Location {e.location} and Date: {e.startTime}.  Home team: {e.homeTeam}.  Visiting team: {e.visitingTeam}");
                 }
             }
         }
@@ -164,12 +193,18 @@ namespace VcbFieldExport
             return conflicts;
         }
 
-        public List<VcbFieldEvent> getEventList() {
-            return mEvents;
+        public List<VcbFieldEvent> getPractices()
+        {
+            return mPractices;
+        }
+        public List<VcbFieldEvent> getGames()
+        {
+            return mGames;
         }
 
-        string mBearerToken;
+        List<VcbFieldEvent> mPractices = new();
+        List<VcbFieldEvent> mGames = new();
 
-        List<VcbFieldEvent> mEvents = new();
+        string mBearerToken;        // should I steps to store this in a cryptographically secure way?
     }
 }

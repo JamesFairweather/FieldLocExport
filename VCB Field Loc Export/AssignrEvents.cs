@@ -216,40 +216,34 @@ namespace VcbFieldExport
             }
         }
 
-        public int Reconcile(List<VcbFieldEvent> teamSnapEvents)
+        public int Reconcile(List<VcbFieldEvent> teamSnapGames)
         {
             int inconsistentGames = 0;
 
-            int teamSnapGameCount = teamSnapEvents.Count(e => e.eventType == VcbFieldEvent.Type.Game);
-
-            if (teamSnapGameCount != mGames.Count)
+            if (teamSnapGames.Count != mGames.Count)
             {
-                Console.WriteLine($"The number of games in TeamSnap ({teamSnapGameCount}) and Assingr ({mGames.Count}) do not match");
+                Console.WriteLine($"The number of games in TeamSnap ({teamSnapGames.Count}) and Assingr ({mGames.Count}) do not match");
             }
 
-            foreach (var teamSnapEvent in teamSnapEvents)
-            {
-                if (teamSnapEvent.eventType == VcbFieldEvent.Type.Game)
+            foreach (var teamSnapEvent in teamSnapGames) {
+                VcbFieldEvent e = mGames.Find(e =>
+                    e.location == teamSnapEvent.location &&
+                    e.startTime == teamSnapEvent.startTime &&
+                    e.homeTeam == teamSnapEvent.homeTeam &&
+                    e.visitingTeam == teamSnapEvent.visitingTeam);
+
+                if (e == null)
                 {
-                    VcbFieldEvent e = mGames.Find(e =>
-                      e.location == teamSnapEvent.location &&
-                      e.startTime == teamSnapEvent.startTime &&
-                      e.homeTeam == teamSnapEvent.homeTeam &&
-                      e.visitingTeam == teamSnapEvent.visitingTeam);
-
-                    if (e == null)
+                    if (IGNORED_GAMES.Find(e => e.location == teamSnapEvent.location && e.startTime == teamSnapEvent.startTime) == null)
                     {
-                        if (IGNORED_GAMES.Find(e => e.location == teamSnapEvent.location && e.startTime == teamSnapEvent.startTime) == null)
-                        {
-                            ++inconsistentGames;
-                            Console.WriteLine($"A game in TeamSnap is missing from Assignr: {teamSnapEvent.startTime} at {teamSnapEvent.location} ({teamSnapEvent.visitingTeam} @ {teamSnapEvent.homeTeam}).");
-                        }
-
-                        continue;
+                        ++inconsistentGames;
+                        Console.WriteLine($"A game in TeamSnap is missing from Assignr: {teamSnapEvent.startTime} at {teamSnapEvent.location} ({teamSnapEvent.visitingTeam} @ {teamSnapEvent.homeTeam}).");
                     }
 
-                    mGames.Remove(e);
+                    continue;
                 }
+
+                mGames.Remove(e);
             }
 
             foreach (var game in mGames)

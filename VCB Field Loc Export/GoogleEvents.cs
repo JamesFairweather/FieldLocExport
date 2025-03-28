@@ -19,7 +19,6 @@ namespace VcbFieldExport
     {
         public FieldEventMap()
         {
-            Map(m => m.eventType).Index(0).Name("eventType");
             Map(m => m.location).Index(1).Name("location");
             Map(m => m.startTime).Index(2).Name("startTime");
             Map(m => m.homeTeam).Index(3).Name("homeTeam");
@@ -54,18 +53,20 @@ namespace VcbFieldExport
         List<VcbFieldEvent> mExistingEvents = new();
         List<VcbFieldEvent> mNewEventList;
 
-        public GoogleEvents(List<VcbFieldEvent> teamSnapEvents)
+        public GoogleEvents(List<VcbFieldEvent> games, List<VcbFieldEvent> practices)
         {
-            mNewEventList = teamSnapEvents;
+            if (!File.Exists(SAVED_EVENT_FILENAME)) {
+                throw new Exception($"Could not find the saved Google events file ({SAVED_EVENT_FILENAME}).  The Google event sync step will be skipped.");
+            }
 
-            if (File.Exists(SAVED_EVENT_FILENAME)) {
-                using (StreamReader reader = new StreamReader(SAVED_EVENT_FILENAME))
-                {
-                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                    {
-                        csv.Context.RegisterClassMap<FieldEventMap>();
-                        mExistingEvents = csv.GetRecords<VcbFieldEvent>().ToList();
-                    }
+            mNewEventList = new List<VcbFieldEvent>(games.Count + practices.Count);
+            mNewEventList.AddRange(games);
+            mNewEventList.AddRange(practices);
+
+            using (StreamReader reader = new StreamReader(SAVED_EVENT_FILENAME)) {
+                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture)) {
+                    csv.Context.RegisterClassMap<FieldEventMap>();
+                    mExistingEvents = csv.GetRecords<VcbFieldEvent>().ToList();
                 }
             }
         }

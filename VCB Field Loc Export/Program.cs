@@ -18,10 +18,10 @@ namespace VcbFieldExport
             assignr.FetchEventsFromService();
 
             // Cross-check the game list in TeamSnap with Assignr.  Any inconsistencies are output to the console window
-            errors += assignr.Reconcile(teamSnap.getEventList());
+            errors += assignr.Reconcile(teamSnap.getGames());
 
             // Add or remove events to the Google field calendars
-            GoogleEvents googleEvents = new(teamSnap.getEventList());
+            GoogleEvents googleEvents = new(teamSnap.getGames(), teamSnap.getPractices());
             googleEvents.Reconcile();
 
             // save out the updated events
