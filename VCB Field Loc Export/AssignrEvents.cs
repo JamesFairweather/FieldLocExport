@@ -146,6 +146,11 @@ namespace VcbFieldExport
                         continue;       // Ignore playoff games until the placeholders are added to TeamSnap.
                     }
 
+                    if (ageGroup == "Mentor") {
+                        // This is a placeholder for an umpire mentor assignment, it doesn't represent a game
+                        continue;
+                    }
+
                     if (ageGroup == "13U A")
                     {
                         homeTeam = "VCB 13U " + homeTeam;
@@ -224,24 +229,24 @@ namespace VcbFieldExport
         {
             int inconsistentGames = 0;
 
-            foreach (var teamSnapEvent in teamSnapGames) {
+            foreach (var game in teamSnapGames) {
                 VcbFieldEvent e = mGames.Find(e =>
-                    e.location == teamSnapEvent.location &&
-                    e.startTime == teamSnapEvent.startTime &&
-                    e.homeTeam == teamSnapEvent.homeTeam &&
-                    e.visitingTeam == teamSnapEvent.visitingTeam);
+                    e.location == game.location &&
+                    e.startTime == game.startTime &&
+                    e.homeTeam == game.homeTeam &&
+                    e.visitingTeam == game.visitingTeam);
 
                 if (e != null) {
                     mGames.Remove(e);
                 }
-                else if (IGNORED_GAMES.Find(e => e.location == teamSnapEvent.location && e.startTime == teamSnapEvent.startTime) == null) {
+                else if (IGNORED_GAMES.Find(e => e.location == game.location && e.startTime == game.startTime) == null) {
                     ++inconsistentGames;
-                    Console.WriteLine($"A game in TeamSnap is missing from Assignr: {teamSnapEvent.startTime} at {teamSnapEvent.location} ({teamSnapEvent.visitingTeam} @ {teamSnapEvent.homeTeam}).");
+                    Console.WriteLine($"A game in TeamSnap is missing from Assignr: {game.startTime} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
                 }
             }
 
             foreach (var game in mGames) {
-                if (IGNORED_GAMES.Find(e => e.location == game.location && e.startTime == game.startTime) != null) {
+                if (IGNORED_GAMES.Find(e => e.location == game.location && e.startTime == game.startTime) == null) {
                     ++inconsistentGames;
                     Console.WriteLine($"A game in Assignr is missing from TeamSnap: {game.startTime} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
                 }
@@ -254,8 +259,6 @@ namespace VcbFieldExport
         string? mBearerToken;
 
         List<VcbFieldEvent> IGNORED_GAMES = new List<VcbFieldEvent> {
-            new VcbFieldEvent(VcbFieldEvent.Type.Game, "Nanaimo Park N diamond", new DateTime(2025, 03, 30, 16, 0, 0), "", "", DateTime.Now),   // Entered as a practice in the TeamSnap schedule, IDK why
-            new VcbFieldEvent(VcbFieldEvent.Type.Game, "UBC Stadium", new DateTime(2025, 03, 28, 17, 0, 0), "", "", DateTime.Now),              // Games at UBC are not tracked by this tool
             new VcbFieldEvent(VcbFieldEvent.Type.Game, "Hillcrest Park SW diamond", new DateTime(2025, 04, 5, 10, 0, 0), "", "", DateTime.Now), // Mike Marlatt says the teams don't need umpires for this practice game
             new VcbFieldEvent(VcbFieldEvent.Type.Game, "Hillcrest Park SW diamond", new DateTime(2025, 04, 5, 12, 0, 0), "", "", DateTime.Now), // Same game as above, but in the Blue team's schedule
             new VcbFieldEvent(VcbFieldEvent.Type.Game, "Chaldecott Park N diamond", new DateTime(2025, 04, 13, 11, 30, 0), "", "", DateTime.Now), // Games involving the 15U A Girls team are being ignored for now
