@@ -12,24 +12,11 @@ using VcbFieldExport;
 using CsvHelper;
 using System.Globalization;
 using CsvHelper.Configuration;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace VcbFieldExport
 {
-    public class FieldEventMap : ClassMap<VcbFieldEvent>
-    {
-        public FieldEventMap()
-        {
-            Map(m => m.eventType).Index(0).Name("eventType");
-            Map(m => m.location).Index(1).Name("location");
-            Map(m => m.startTime).Index(2).Name("startTime");
-            Map(m => m.homeTeam).Index(3).Name("homeTeam");
-            Map(m => m.visitingTeam).Index(4).Name("visitingTeam");
-            Map(m => m.endTime).Index(5).Name("endTime");
-            Map(m => m.description).Index(6).Name("description");
-            Map(m => m.googleEventId).Index(7).Name("googleEventId");
-        }
-    }
-
     // TODO:
     // * improve handling of failures from the Google service
     //   e.g. after a few days, the field account tokens expire and we get exceptions like this:
@@ -37,65 +24,40 @@ namespace VcbFieldExport
     //    at Google.Apis.Auth.OAuth2.Responses.TokenResponse.FromHttpResponseAsync(HttpResponseMessage response, IClock clock, ILogger logger)
     // 
     // * there's probably some way to refresh the local tokens automatically.
+    // refer to https://www.codeproject.com/Articles/64474/How-to-Read-the-Google-Calendar-in-Csharp for a potentially better way
+    // to authenticate to the Google service
+    internal partial class Program
+    {
+        [GeneratedRegex(@"(?<EventType>.+)\s:\s(?<homeTeam>.+)")]
+        public static partial Regex SummaryRegex();
+
+        [GeneratedRegex(@"vs\.\s(?<visitingTeam>.+)")]
+        public static partial Regex DescriptionRegex();
+    }
 
     class GoogleEvents
     {
         List<string> LOCATION_NAMES = new List<string> {
             "Chaldecott Park N diamond",
-            "Chaldecott Park S diamond",
-            "Hillcrest Park NE diamond",
-            "Hillcrest Park SW diamond",
-            "Nanaimo Park N diamond",
+            "Chaldecott Park S diamond",
+            "Hillcrest Park NE diamond",
+            "Hillcrest Park SW diamond",
+            "Nanaimo Park N diamond",
             "Nanaimo Park SE diamond",
             "Trafalgar Park",
         };
 
-        string SAVED_EVENT_FILENAME = "SavedEvents.csv";
-        List<VcbFieldEvent> mExistingEvents = new();
         List<VcbFieldEvent> mNewEventList;
 
         public GoogleEvents(List<VcbFieldEvent> games, List<VcbFieldEvent> practices)
         {
-            if (!File.Exists(SAVED_EVENT_FILENAME)) {
-                throw new Exception($"Could not find the saved Google events file ({SAVED_EVENT_FILENAME}).  The Google event sync step will be skipped.");
-            }
-
             mNewEventList = new List<VcbFieldEvent>(games.Count + practices.Count);
             mNewEventList.AddRange(games);
             mNewEventList.AddRange(practices);
-
-            using (StreamReader reader = new StreamReader(SAVED_EVENT_FILENAME)) {
-                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture)) {
-                    csv.Context.RegisterClassMap<FieldEventMap>();
-                    mExistingEvents = csv.GetRecords<VcbFieldEvent>().ToList();
-                }
-            }
         }
 
-        public void SaveEvents()
-        {
-            // Sort the event list by start time, then by location
-            mNewEventList.Sort(
-                delegate(VcbFieldEvent a, VcbFieldEvent b)
-                {
-                    int startTime = a.startTime.CompareTo(b.startTime);
-                    if (startTime != 0) {
-                        return startTime;
-                    }
 
-                    return a.location.CompareTo(b.location);
-                });
-
-            using (StreamWriter writer = new(SAVED_EVENT_FILENAME, false)) {
-                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture)) {
-                    csv.WriteHeader<VcbFieldEvent>();
-                    csv.NextRecord();
-                    csv.WriteRecords(mNewEventList);
-                }
-            }
-        }
-
-        Google.Apis.Calendar.v3.CalendarService GetGoogleCalendarService(string locationName)
+        CalendarService GetGoogleCalendarService(string locationName)
         {
             UserCredential credential;
 
@@ -128,57 +90,29 @@ namespace VcbFieldExport
             return service;
         }
 
-        void RemoveEventsFromGoogleCalendar(List<VcbFieldEvent> eventsToRemove)
-        {
-            foreach (VcbFieldEvent e in eventsToRemove)
+        void addEventToGoogleCalendar(CalendarService calendarService, VcbFieldEvent vcbFieldEvent) {
+            Event googleCalendarEvent = new();
+
+            googleCalendarEvent.Start = new EventDateTime()
+            { DateTimeDateTimeOffset = vcbFieldEvent.startTime };
+
+            googleCalendarEvent.End = new EventDateTime()
+            { DateTimeDateTimeOffset = vcbFieldEvent.endTime };
+
+            googleCalendarEvent.Summary = vcbFieldEvent.eventType.ToString() + " : " + vcbFieldEvent.homeTeam;
+            googleCalendarEvent.Description = (vcbFieldEvent.eventType == VcbFieldEvent.Type.Practice ? vcbFieldEvent.description : "vs. " + vcbFieldEvent.visitingTeam);
+
+            Event result = new ();
+
+            try
             {
-                var calendarId = "primary"; //Always primary.
-
-                try
-                {
-                    mService.Events.Delete(calendarId, e.googleEventId).Execute();
-                    Console.WriteLine($"Deleted event {e.eventType} at {e.location} on {e.startTime} for team {e.homeTeam}");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
-
-                Thread.Sleep(250);  // to comply with rate limits
+                result = calendarService.Events.Insert(googleCalendarEvent, "primary").Execute();
+                // vcbFieldEvent.googleEventId = result.Id;
+                Console.WriteLine($"Added event {vcbFieldEvent.eventType} at {vcbFieldEvent.location} on {vcbFieldEvent.startTime} for team {vcbFieldEvent.homeTeam}");
             }
-        }
-
-        void PostNewEventsToGoogleCalendar(List<VcbFieldEvent> newEvents)
-        {
-            foreach (VcbFieldEvent e in newEvents)
+            catch (Exception ex)
             {
-                Event googleCalendarEvent = new();
-
-                googleCalendarEvent.Start = new EventDateTime()
-                { DateTimeDateTimeOffset = e.startTime };
-
-                googleCalendarEvent.End = new EventDateTime()
-                { DateTimeDateTimeOffset = e.endTime };
-
-                googleCalendarEvent.Summary = e.eventType.ToString() + " : " + e.homeTeam;
-                googleCalendarEvent.Description = (e.eventType == VcbFieldEvent.Type.Practice ? e.description : "vs. " + e.visitingTeam);
-
-                var calendarId = "primary"; //Always primary.
-
-                Event result = new();
-
-                try
-                {
-                    result = mService.Events.Insert(googleCalendarEvent, calendarId).Execute();
-                    e.googleEventId = result.Id;
-                    Console.WriteLine($"Added event {e.eventType} at {e.location} on {e.startTime} for team {e.homeTeam}");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
-
-                Thread.Sleep(250);  // to comply with rate limits
+                Console.WriteLine(ex.ToString());
             }
         }
 
@@ -187,10 +121,10 @@ namespace VcbFieldExport
         // DeleteAllCalendarEvents(GetGoogleCalendarService("Nanaimo Park N diamond"));
         // return 0;
 
-        void DeleteAllCalendarEvents()
+        void DeleteAllCalendarEvents(CalendarService calendarService)
         {
             // Define parameters of request.
-            EventsResource.ListRequest request = mService.Events.List("primary");
+            EventsResource.ListRequest request = calendarService.Events.List("primary");
             request.TimeMinDateTimeOffset = DateTime.Now.AddMonths(-4);
             request.ShowDeleted = false;
             request.SingleEvents = true;
@@ -207,7 +141,7 @@ namespace VcbFieldExport
                     try
                     {
                         Console.WriteLine($"Deleted eventId {eventItem.Id}");
-                        mService.Events.Delete("primary", eventItem.Id).Execute();
+                        calendarService.Events.Delete("primary", eventItem.Id).Execute();
                     }
                     catch (Exception ex)
                     {
@@ -221,76 +155,109 @@ namespace VcbFieldExport
             }
         }
 
+        List<VcbFieldEvent> fetchEvents(CalendarService calendarService, string location)
+        {
+            List<VcbFieldEvent> results = new();
+
+            // Define parameters of request.
+            EventsResource.ListRequest request = calendarService.Events.List("primary");
+            request.TimeMinDateTimeOffset = DateTime.Now.AddMonths(-4);
+            request.ShowDeleted = false;
+            request.SingleEvents = true;
+            request.MaxResults = 300;
+            request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
+
+            // List events.
+            Events events = request.Execute();
+            if (events.Items != null && events.Items.Count > 0)
+            {
+                results.Capacity = events.Items.Count;
+                Console.WriteLine($"Found {events.Items.Count} event(s) on this calendar.");
+                foreach (Event eventItem in events.Items)
+                {
+                    VcbFieldEvent vcbFieldEvent = new VcbFieldEvent();
+                    vcbFieldEvent.location = location;
+                    Match match = Program.SummaryRegex().Match(eventItem.Summary);
+                    if (match.Success)
+                    {
+                        vcbFieldEvent.eventType = match.Groups["EventType"].Value == "Practice" ? VcbFieldEvent.Type.Practice : VcbFieldEvent.Type.Game;
+                        vcbFieldEvent.homeTeam = match.Groups["homeTeam"].Value;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Could not parse the summary for a Google event");
+                    }
+
+                    vcbFieldEvent.startTime = (eventItem.Start.DateTimeDateTimeOffset ?? DateTime.MinValue).DateTime;
+                    vcbFieldEvent.endTime = (eventItem.End.DateTimeDateTimeOffset ?? DateTime.MinValue).DateTime;
+
+                    if (vcbFieldEvent.eventType == VcbFieldEvent.Type.Practice) {
+                        vcbFieldEvent.description = eventItem.Description;
+                    }
+                    else {
+                        match = Program.DescriptionRegex().Match(eventItem.Description);
+                        if (match.Success)
+                        {
+                            vcbFieldEvent.visitingTeam = match.Groups["visitingTeam"].Value ?? string.Empty;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Could not parse the description for a Google event");
+                        }
+                    }
+
+                    // Record the event Id in case we need to delete it
+                    vcbFieldEvent.googleEventId = eventItem.Id;
+
+                    results.Add(vcbFieldEvent);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Found no events on this account calendar.");
+            }
+
+            return results;
+        }
+
         public void Reconcile()
         {
             foreach (string locationId in LOCATION_NAMES)
             {
                 Console.WriteLine($"Processing events for location {locationId} ...");
 
-                mService = GetGoogleCalendarService(locationId);
+                CalendarService calendarService = GetGoogleCalendarService(locationId);
 
+                List<VcbFieldEvent> currentEvents = fetchEvents(calendarService, locationId);
                 //DeleteAllCalendarEvents();
                 //continue;
 
-                // find events to remove and delete them from the Google calendar
-                List<VcbFieldEvent> eventsToRemove = new List<VcbFieldEvent>();
-                mExistingEvents.ForEach(e =>
+                // delete existing events from the Google calendar
+                currentEvents.ForEach(e =>
                 {
                     if (e.location == locationId && !mNewEventList.Contains(e))
                     {
-                        if (e.googleEventId != string.Empty)
+                        try
                         {
-                            eventsToRemove.Add(e);
+                            calendarService.Events.Delete("primary", e.googleEventId).Execute();
+                            Console.WriteLine($"Deleted event {e.eventType} at {e.location} on {e.startTime} for team {e.homeTeam}");
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            Console.WriteLine($"Warning event deleted that doesn't have an event ID ({locationId}: {e.eventType} {e.homeTeam}, {e.startTime}).  This event should be manually removed from the Google calendar and the CSV file.");
+                            Console.WriteLine(ex.ToString());
                         }
                     }
                 });
 
-                if (eventsToRemove.Count > 0)
-                {
-                    Console.WriteLine($"Removing {eventsToRemove.Count} event(s) from the calendar...");
-                    RemoveEventsFromGoogleCalendar(eventsToRemove);
-                }
-                else
-                {
-                    Console.WriteLine($"No events to remove found for this location");
-                }
-
-                // find events to add and insert them into the Google calendar
+                // insert new events into the Google calendar
                 List<VcbFieldEvent> eventsToAdd = new List<VcbFieldEvent>();
                 mNewEventList.ForEach(e =>
                 {
-                    if (e.location == locationId)
-                    {
-                        var existingEvent = mExistingEvents.Find(savedEvent => savedEvent.Equals(e));
-                        if (existingEvent != null)
-                        {
-                            // copy the event Id from the old list to the new one
-                            e.googleEventId = existingEvent.googleEventId;
-                        }
-                        else
-                        {
-                            // otherwise add it
-                            eventsToAdd.Add(e);
-                        }
+                    if (e.location == locationId && !currentEvents.Contains(e)) {
+                        addEventToGoogleCalendar(calendarService, e);
                     }
                 });
-
-                if (eventsToAdd.Count > 0)
-                {
-                    Console.WriteLine($"Adding {eventsToAdd.Count} event(s) to the calendar...");
-                    PostNewEventsToGoogleCalendar(eventsToAdd);
-                }
-                else
-                {
-                    Console.WriteLine($"No events to add found for this location");
-                }
             }
         }
-
-        Google.Apis.Calendar.v3.CalendarService? mService;
     }
 }
