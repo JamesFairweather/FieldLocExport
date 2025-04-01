@@ -19,6 +19,7 @@ namespace VcbFieldExport
     {
         public FieldEventMap()
         {
+            Map(m => m.eventType).Index(0).Name("eventType");
             Map(m => m.location).Index(1).Name("location");
             Map(m => m.startTime).Index(2).Name("startTime");
             Map(m => m.homeTeam).Index(3).Name("homeTeam");
@@ -136,7 +137,7 @@ namespace VcbFieldExport
                 try
                 {
                     mService.Events.Delete(calendarId, e.googleEventId).Execute();
-                    Console.WriteLine($"Deleted eventId {e.googleEventId}");
+                    Console.WriteLine($"Deleted event {e.eventType} at {e.location} on {e.startTime} for team {e.homeTeam}");
                 }
                 catch (Exception ex)
                 {
@@ -170,6 +171,7 @@ namespace VcbFieldExport
                 {
                     result = mService.Events.Insert(googleCalendarEvent, calendarId).Execute();
                     e.googleEventId = result.Id;
+                    Console.WriteLine($"Added event {e.eventType} at {e.location} on {e.startTime} for team {e.homeTeam}");
                 }
                 catch (Exception ex)
                 {
