@@ -261,8 +261,6 @@ namespace VcbFieldExport
         List<VcbFieldEvent> IGNORED_GAMES = new List<VcbFieldEvent> {
             new VcbFieldEvent(VcbFieldEvent.Type.Game, "Hillcrest Park SW diamond", new DateTime(2025, 04, 5, 10, 0, 0), "", "", DateTime.Now), // Mike Marlatt says the teams don't need umpires for this practice game
             new VcbFieldEvent(VcbFieldEvent.Type.Game, "Hillcrest Park SW diamond", new DateTime(2025, 04, 5, 12, 0, 0), "", "", DateTime.Now), // Same game as above, but in the Blue team's schedule
-            new VcbFieldEvent(VcbFieldEvent.Type.Game, "Chaldecott Park N diamond", new DateTime(2025, 04, 13, 11, 30, 0), "", "", DateTime.Now), // Games involving the 15U A Girls team are being ignored for now
-            new VcbFieldEvent(VcbFieldEvent.Type.Game, "Chaldecott Park N diamond", new DateTime(2025, 06, 1, 12, 0, 0), "", "", DateTime.Now), // Same reason as above
         };
 
         List<VcbFieldEvent> mGames = new();
@@ -284,9 +282,11 @@ namespace VcbFieldExport
             { "13U AAA", new Dictionary<string, string> {
                 { "Vancouver Mounties", "VCB 13U AAA" }, }
             },
-            {
-                "15U A", new Dictionary<string, string> {
-                { "RS-Girls", "VCB 16U Red Sox-Girls" }, }
+            { "15U A", new Dictionary<string, string> {
+                { "RS-Girls", "VCB 16U Red Sox-Girls" },
+                { "Girls 1", "VCB 16U Red Sox-Girls" },
+                { "Girls 2", "15U Girls" },
+                { "TBD", "15U Girls" }, }
             },
             { "15U AA", new Dictionary<string, string>{
                 { "Vancouver Mounties Blue", "VCB Expos 15U AA Blue" },
