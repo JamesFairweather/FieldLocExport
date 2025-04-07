@@ -281,6 +281,7 @@ namespace VcbFieldExport
                 { "Vancouver Mounties", "VCB 13U AAA" }, }
             },
             { "15U A", new Dictionary<string, string> {
+                { "Burnaby", "Burnaby 15UA" },
                 { "RS-Girls", "VCB 16U Red Sox-Girls" },
                 { "Girls 1", "VCB 16U Red Sox-Girls" },
                 { "Girls 2", "15U Girls" },
