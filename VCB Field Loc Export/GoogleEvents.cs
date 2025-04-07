@@ -14,18 +14,13 @@ using System.Globalization;
 using CsvHelper.Configuration;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using Google.Apis.Auth.OAuth2.Responses;
 
 namespace VcbFieldExport
 {
-    // TODO:
-    // * improve handling of failures from the Google service
-    //   e.g. after a few days, the field account tokens expire and we get exceptions like this:
-    // Google.Apis.Auth.OAuth2.Responses.TokenResponseException: Error: "invalid_grant", Description: "Token has been expired or revoked.", Uri: ""
-    //    at Google.Apis.Auth.OAuth2.Responses.TokenResponse.FromHttpResponseAsync(HttpResponseMessage response, IClock clock, ILogger logger)
-    // 
-    // * there's probably some way to refresh the local tokens automatically.
-    // refer to https://www.codeproject.com/Articles/64474/How-to-Read-the-Google-Calendar-in-Csharp for a potentially better way
-    // to authenticate to the Google service
+    // TODO
+    // * find out whether we can reduce the frequency of how often we have to redo the full OAuth 2 flow
+    //   as of April 7, 2025, tokens are valid for 2 weeks.  I'd prefer to have a token that has no expiration time
     internal partial class Program
     {
         [GeneratedRegex(@"(?<EventType>.+)\s:\s(?<homeTeam>.+)")]
@@ -155,20 +150,40 @@ namespace VcbFieldExport
             }
         }
 
-        List<VcbFieldEvent> fetchEvents(CalendarService calendarService, string location)
+        List<VcbFieldEvent> fetchEvents(string location, out CalendarService calendarService)
         {
+            Events events;
+
+            try {
+                calendarService = GetGoogleCalendarService(location);
+
+                // Define parameters of request.
+                EventsResource.ListRequest request = calendarService.Events.List("primary");
+                request.TimeMinDateTimeOffset = DateTime.Now.AddMonths(-4);
+                request.ShowDeleted = false;
+                request.SingleEvents = true;
+                request.MaxResults = 300;
+                request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
+
+                // List events.
+                events = request.Execute();
+            }
+            catch (TokenResponseException)
+            {
+                // Handle an invalid_grant exception by retrying the request.
+                // This will force the OAuth2 flow to start again.
+                calendarService = GetGoogleCalendarService(location);
+
+                EventsResource.ListRequest request = calendarService.Events.List("primary");
+                request.TimeMinDateTimeOffset = DateTime.Now.AddMonths(-4);
+                request.ShowDeleted = false;
+                request.SingleEvents = true;
+                request.MaxResults = 300;
+                request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
+                events = request.Execute();
+            }
             List<VcbFieldEvent> results = new();
 
-            // Define parameters of request.
-            EventsResource.ListRequest request = calendarService.Events.List("primary");
-            request.TimeMinDateTimeOffset = DateTime.Now.AddMonths(-4);
-            request.ShowDeleted = false;
-            request.SingleEvents = true;
-            request.MaxResults = 300;
-            request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
-
-            // List events.
-            Events events = request.Execute();
             if (events.Items != null && events.Items.Count > 0)
             {
                 results.Capacity = events.Items.Count;
@@ -226,9 +241,9 @@ namespace VcbFieldExport
             {
                 Console.WriteLine($"Processing events for location {locationId} ...");
 
-                CalendarService calendarService = GetGoogleCalendarService(locationId);
+                CalendarService calendarService;
 
-                List<VcbFieldEvent> currentEvents = fetchEvents(calendarService, locationId);
+                List<VcbFieldEvent> currentEvents = fetchEvents(locationId, out calendarService);
                 //DeleteAllCalendarEvents();
                 //continue;
 
