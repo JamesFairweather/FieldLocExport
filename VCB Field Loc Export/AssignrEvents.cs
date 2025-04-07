@@ -204,7 +204,7 @@ namespace VcbFieldExport
                         throw new Exception($"Unhandled age group {ageGroup} was sent by Assignr.  The program needs to be updated to handle this.");
                     }
 
-                    DateTime start = DateTime.Parse(startTime);
+                    DateTime start = DateTime.Parse(startTime).ToUniversalTime();
 
                     if (!ASSIGNR_TO_TEAMSNAP_VENUE_MAP.ContainsKey(assignrVenue))
                     {
@@ -241,14 +241,14 @@ namespace VcbFieldExport
                 }
                 else if (IGNORED_GAMES.Find(e => e.location == game.location && e.startTime == game.startTime) == null) {
                     ++inconsistentGames;
-                    Console.WriteLine($"A game in TeamSnap is missing from Assignr: {game.startTime} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
+                    Console.WriteLine($"A game in TeamSnap is missing from Assignr: {game.startTime.ToLocalTime()} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
                 }
             }
 
             foreach (var game in mGames) {
                 if (IGNORED_GAMES.Find(e => e.location == game.location && e.startTime == game.startTime) == null) {
                     ++inconsistentGames;
-                    Console.WriteLine($"A game in Assignr is missing from TeamSnap: {game.startTime} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
+                    Console.WriteLine($"A game in Assignr is missing from TeamSnap: {game.startTime.ToLocalTime()} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
                 }
             }
 

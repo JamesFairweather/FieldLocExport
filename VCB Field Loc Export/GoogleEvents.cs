@@ -108,7 +108,7 @@ namespace VcbFieldExport
             {
                 result = calendarService.Events.Insert(googleCalendarEvent, "primary").Execute();
                 // vcbFieldEvent.googleEventId = result.Id;
-                Console.WriteLine($"Added event {vcbFieldEvent.eventType} at {vcbFieldEvent.location} on {vcbFieldEvent.startTime} for team {vcbFieldEvent.homeTeam}");
+                Console.WriteLine($"Added event {vcbFieldEvent.eventType} at {vcbFieldEvent.location} on {vcbFieldEvent.startTime.ToLocalTime()} for team {vcbFieldEvent.homeTeam}");
             }
             catch (Exception ex)
             {
@@ -188,8 +188,8 @@ namespace VcbFieldExport
                         Console.WriteLine("Could not parse the summary for a Google event");
                     }
 
-                    vcbFieldEvent.startTime = (eventItem.Start.DateTimeDateTimeOffset ?? DateTime.MinValue).DateTime;
-                    vcbFieldEvent.endTime = (eventItem.End.DateTimeDateTimeOffset ?? DateTime.MinValue).DateTime;
+                    vcbFieldEvent.startTime = (eventItem.Start.DateTimeDateTimeOffset ?? DateTime.MinValue).UtcDateTime;
+                    vcbFieldEvent.endTime = (eventItem.End.DateTimeDateTimeOffset ?? DateTime.MinValue).UtcDateTime;
 
                     if (vcbFieldEvent.eventType == VcbFieldEvent.Type.Practice) {
                         vcbFieldEvent.description = eventItem.Description;
@@ -240,7 +240,7 @@ namespace VcbFieldExport
                         try
                         {
                             calendarService.Events.Delete("primary", e.googleEventId).Execute();
-                            Console.WriteLine($"Deleted event {e.eventType} at {e.location} on {e.startTime} for team {e.homeTeam}");
+                            Console.WriteLine($"Deleted event {e.eventType} at {e.location} on {e.startTime.ToLocalTime()} for team {e.homeTeam}");
                         }
                         catch (Exception ex)
                         {

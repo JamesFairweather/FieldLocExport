@@ -95,10 +95,11 @@ namespace VcbFieldExport
                     }
 
                     string location = teamSnapEventFields[(JValue)"location_name"];
-                    DateTime startTime = DateTime.Parse(teamSnapEventFields[(JValue)"start_date"]).ToLocalTime();
-                    startTime = startTime.AddSeconds(-startTime.Second);        // some 2025 13U AA home games have non-zero seconds values in their start times for some reason
+                    DateTime startTime = DateTime.Parse(teamSnapEventFields[(JValue)"start_date"]);
+                    startTime = startTime.AddSeconds(-startTime.Second);    // sometimes TeamSnap events have non-zero seconds values, not sure why
                     string endDateString = teamSnapEventFields[(JValue)"end_date"];
-                    DateTime endTime = string.IsNullOrEmpty(endDateString) ? startTime.AddHours(2) : DateTime.Parse(endDateString).ToLocalTime();
+                    DateTime endTime = string.IsNullOrEmpty(endDateString) ? startTime.AddHours(2) : DateTime.Parse(endDateString);
+                    endTime = endTime.AddSeconds(-endTime.Second);
                     string formatted_title = teamSnapEventFields[(JValue)"formatted_title"];
                     string formatted_title_for_multi_team = teamSnapEventFields[(JValue)"formatted_title_for_multi_team"];
                     string opponent_name = teamSnapEventFields[(JValue)"opponent_name"];
@@ -180,7 +181,7 @@ namespace VcbFieldExport
                 Console.WriteLine("Some games are missing from a VCB opponent's TeamSnap schedule");
 
                 foreach(VcbFieldEvent e in nonLeagueUnmatchedGamesBetweenVcbTeams) {
-                    Console.WriteLine($"Location {e.location} and Date: {e.startTime}.  Home team: {e.homeTeam}.  Visiting team: {e.visitingTeam}");
+                    Console.WriteLine($"Location {e.location} and Date: {e.startTime.ToLocalTime()}.  Home team: {e.homeTeam}.  Visiting team: {e.visitingTeam}");
                 }
             }
         }
