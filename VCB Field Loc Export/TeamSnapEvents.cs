@@ -146,7 +146,10 @@ namespace VcbFieldExport
                             }
                         }
 
-                        if (!leagueControlledGame && homeTeam.StartsWith("VCB") && visitingTeam.StartsWith("VCB")) {
+                        if (!leagueControlledGame
+                            && homeTeam.StartsWith("VCB")
+                            && visitingTeam.StartsWith("VCB")
+                            && !visitingTeam.Contains("TBD")) {
 
                             // Check that a game between two VCB teams is in _both_ teams' TeamSnap schedules
                             VcbFieldEvent oppositeGameFound = nonLeagueUnmatchedGamesBetweenVcbTeams.Find(e => e.location == location && e.startTime == startTime && e.homeTeam == homeTeam && e.visitingTeam == visitingTeam);
