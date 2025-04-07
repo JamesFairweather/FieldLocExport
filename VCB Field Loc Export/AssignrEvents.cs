@@ -259,8 +259,6 @@ namespace VcbFieldExport
         string? mBearerToken;
 
         List<VcbFieldEvent> IGNORED_GAMES = new List<VcbFieldEvent> {
-            new VcbFieldEvent(VcbFieldEvent.Type.Game, "Hillcrest Park SW diamond", new DateTime(2025, 04, 5, 10, 0, 0), "", "", DateTime.Now), // Mike Marlatt says the teams don't need umpires for this practice game
-            new VcbFieldEvent(VcbFieldEvent.Type.Game, "Hillcrest Park SW diamond", new DateTime(2025, 04, 5, 12, 0, 0), "", "", DateTime.Now), // Same game as above, but in the Blue team's schedule
         };
 
         List<VcbFieldEvent> mGames = new();
