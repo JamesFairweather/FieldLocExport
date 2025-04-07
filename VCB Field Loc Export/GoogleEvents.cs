@@ -94,10 +94,10 @@ namespace VcbFieldExport
             Event googleCalendarEvent = new();
 
             googleCalendarEvent.Start = new EventDateTime()
-            { DateTimeDateTimeOffset = vcbFieldEvent.startTime };
+            { DateTimeDateTimeOffset = vcbFieldEvent.startTime.ToLocalTime() };
 
             googleCalendarEvent.End = new EventDateTime()
-            { DateTimeDateTimeOffset = vcbFieldEvent.endTime };
+            { DateTimeDateTimeOffset = vcbFieldEvent.endTime.ToLocalTime() };
 
             googleCalendarEvent.Summary = vcbFieldEvent.eventType.ToString() + " : " + vcbFieldEvent.homeTeam;
             googleCalendarEvent.Description = (vcbFieldEvent.eventType == VcbFieldEvent.Type.Practice ? vcbFieldEvent.description : "vs. " + vcbFieldEvent.visitingTeam);
