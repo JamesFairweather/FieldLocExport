@@ -59,20 +59,19 @@ namespace VcbFieldExport
             // If the scopes are modified, you will need a new credentials.json file and re-generate the tokens.
 
             string[] Scopes = { CalendarService.Scope.Calendar };
-            string ApplicationName = "Google Calendar API .NET Quickstart";
+            string ApplicationName = "Google Calendar Access";
 
             using (var stream =
               new FileStream("google_credentials.json", FileMode.Open, FileAccess.Read))
             {
                 // The file token.json stores the user's access and refresh tokens, and is created
                 // automatically when the authorization flow completes for the first time.
-                string credPath = $"{locationName}.json";
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                   GoogleClientSecrets.FromStream(stream).Secrets,
                   Scopes,
                   "user",
                   CancellationToken.None,
-                  new FileDataStore(credPath, true)).Result;
+                  new FileDataStore($"{locationName}.json", true)).Result;
             }
 
             // Create Google Calendar API service.
@@ -99,54 +98,12 @@ namespace VcbFieldExport
 
             Event result = new ();
 
-            try
-            {
-                result = calendarService.Events.Insert(googleCalendarEvent, "primary").Execute();
-                // vcbFieldEvent.googleEventId = result.Id;
+            try {
+                calendarService.Events.Insert(googleCalendarEvent, "primary").Execute();
                 Console.WriteLine($"Added event {vcbFieldEvent.eventType} at {vcbFieldEvent.location} on {vcbFieldEvent.startTime.ToLocalTime()} for team {vcbFieldEvent.homeTeam}");
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Console.WriteLine(ex.ToString());
-            }
-        }
-
-        // Uncomment these lines to remove all the events for a specific calendar
-        // string removeAllEventsFromFieldCalendar = "Chaldecott Park N diamond";
-        // DeleteAllCalendarEvents(GetGoogleCalendarService("Nanaimo Park N diamond"));
-        // return 0;
-
-        void DeleteAllCalendarEvents(CalendarService calendarService)
-        {
-            // Define parameters of request.
-            EventsResource.ListRequest request = calendarService.Events.List("primary");
-            request.TimeMinDateTimeOffset = DateTime.Now.AddMonths(-4);
-            request.ShowDeleted = false;
-            request.SingleEvents = true;
-            request.MaxResults = 300;
-            request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
-
-            // List events.
-            Events events = request.Execute();
-            if (events.Items != null && events.Items.Count > 0)
-            {
-                Console.WriteLine($"Removing {events.Items.Count} event(s) from this calendar.");
-                foreach (var eventItem in events.Items)
-                {
-                    try
-                    {
-                        Console.WriteLine($"Deleted eventId {eventItem.Id}");
-                        calendarService.Events.Delete("primary", eventItem.Id).Execute();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.ToString());
-                    }
-                }
-            }
-            else
-            {
-                Console.WriteLine("Found no events on this account calendar.");
             }
         }
 
@@ -243,11 +200,12 @@ namespace VcbFieldExport
 
                 CalendarService calendarService;
 
-                List<VcbFieldEvent> currentEvents = fetchEvents(locationId, out calendarService);
-                //DeleteAllCalendarEvents();
-                //continue;
+                // Clear a calendar of all existing events
+                // GetGoogleCalendarService(locationId).Calendars.Clear("primary").Execute();
 
-                // delete existing events from the Google calendar
+                List<VcbFieldEvent> currentEvents = fetchEvents(locationId, out calendarService);
+
+                // delete existing events that have been removed in TeamSnap from the Google calendar
                 currentEvents.ForEach(e =>
                 {
                     if (e.location == locationId && !mNewEventList.Contains(e))
