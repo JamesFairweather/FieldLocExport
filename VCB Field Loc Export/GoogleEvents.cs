@@ -61,8 +61,10 @@ namespace VcbFieldExport
             string[] Scopes = { CalendarService.Scope.Calendar };
             string ApplicationName = "Google Calendar Access";
 
+            string credentials = locationName == "Nanaimo Park N diamond" ? "nanaimoNorth_credentials.json" : "google_credentials.json";
+
             using (var stream =
-              new FileStream("google_credentials.json", FileMode.Open, FileAccess.Read))
+              new FileStream(credentials, FileMode.Open, FileAccess.Read))
             {
                 // The file token.json stores the user's access and refresh tokens, and is created
                 // automatically when the authorization flow completes for the first time.
