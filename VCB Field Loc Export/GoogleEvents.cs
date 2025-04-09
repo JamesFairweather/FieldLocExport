@@ -43,12 +43,14 @@ namespace VcbFieldExport
         };
 
         List<VcbFieldEvent> mNewEventList;
+        StreamWriter mLogger;
 
-        public GoogleEvents(List<VcbFieldEvent> games, List<VcbFieldEvent> practices)
+        public GoogleEvents(List<VcbFieldEvent> games, List<VcbFieldEvent> practices, StreamWriter logger)
         {
             mNewEventList = new List<VcbFieldEvent>(games.Count + practices.Count);
             mNewEventList.AddRange(games);
             mNewEventList.AddRange(practices);
+            this.mLogger = logger;
         }
 
 
@@ -102,10 +104,10 @@ namespace VcbFieldExport
 
             try {
                 calendarService.Events.Insert(googleCalendarEvent, "primary").Execute();
-                Console.WriteLine($"Added event {vcbFieldEvent.eventType} at {vcbFieldEvent.location} on {vcbFieldEvent.startTime.ToLocalTime()} for team {vcbFieldEvent.homeTeam}");
+                mLogger.WriteLine($"Added event {vcbFieldEvent.eventType} at {vcbFieldEvent.location} on {vcbFieldEvent.startTime.ToLocalTime()} for team {vcbFieldEvent.homeTeam}");
             }
             catch (Exception ex) {
-                Console.WriteLine(ex.ToString());
+                mLogger.WriteLine(ex.ToString());
             }
         }
 
@@ -146,7 +148,7 @@ namespace VcbFieldExport
             if (events.Items != null && events.Items.Count > 0)
             {
                 results.Capacity = events.Items.Count;
-                Console.WriteLine($"Found {events.Items.Count} event(s) on this calendar.");
+                mLogger.WriteLine($"Found {events.Items.Count} event(s) on this calendar.");
                 foreach (Event eventItem in events.Items)
                 {
                     VcbFieldEvent vcbFieldEvent = new VcbFieldEvent();
@@ -159,7 +161,7 @@ namespace VcbFieldExport
                     }
                     else
                     {
-                        Console.WriteLine("Could not parse the summary for a Google event");
+                        mLogger.WriteLine("Could not parse the summary for a Google event");
                     }
 
                     vcbFieldEvent.startTime = (eventItem.Start.DateTimeDateTimeOffset ?? DateTime.MinValue).UtcDateTime;
@@ -176,7 +178,7 @@ namespace VcbFieldExport
                         }
                         else
                         {
-                            Console.WriteLine("Could not parse the description for a Google event");
+                            mLogger.WriteLine("Could not parse the description for a Google event");
                         }
                     }
 
@@ -188,7 +190,7 @@ namespace VcbFieldExport
             }
             else
             {
-                Console.WriteLine("Found no events on this account calendar.");
+                mLogger.WriteLine("Found no events on this account calendar.");
             }
 
             return results;
@@ -198,7 +200,7 @@ namespace VcbFieldExport
         {
             foreach (string locationId in LOCATION_NAMES)
             {
-                Console.WriteLine($"Processing events for location {locationId} ...");
+                mLogger.WriteLine($"Syncing events for location {locationId} to the Google field calendar...");
 
                 CalendarService calendarService;
 
@@ -215,11 +217,11 @@ namespace VcbFieldExport
                         try
                         {
                             calendarService.Events.Delete("primary", e.googleEventId).Execute();
-                            Console.WriteLine($"Deleted event {e.eventType} at {e.location} on {e.startTime.ToLocalTime()} for team {e.homeTeam}");
+                            mLogger.WriteLine($"Deleted event {e.eventType} at {e.location} on {e.startTime.ToLocalTime()} for team {e.homeTeam}");
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine(ex.ToString());
+                            mLogger.WriteLine(ex.ToString());
                         }
                     }
                 });

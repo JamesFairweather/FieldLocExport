@@ -44,8 +44,9 @@ namespace VcbFieldExport
 
     public class AssignrEvents
     {
-        public AssignrEvents() {
+        public AssignrEvents(StreamWriter logger) {
             mHttpClient = new();
+            mLogger = logger;
         }
 
         public void Authenticate()
@@ -95,6 +96,8 @@ namespace VcbFieldExport
         {
             int totalPages = -1;
             int currentPage = 0;
+
+            mLogger.WriteLine("Fetching games from Assignr...");
 
             while (currentPage != totalPages)
             {
@@ -208,7 +211,7 @@ namespace VcbFieldExport
 
                     if (!ASSIGNR_TO_TEAMSNAP_VENUE_MAP.ContainsKey(assignrVenue))
                     {
-                        // Console.WriteLine($"Warning: A game in Assignr is hosted on a field not tracked in TeamSnap: {assignrVenue} on {startTime}.");
+                        // mLogger.WriteLine($"Warning: A game in Assignr is hosted on a field not tracked in TeamSnap: {assignrVenue} on {startTime}.");
                         continue;
                     }
 
@@ -229,6 +232,8 @@ namespace VcbFieldExport
         {
             int inconsistentGames = 0;
 
+            mLogger.WriteLine("Reconciling TeamSnap and Assignr game schedules...");
+
             foreach (var game in teamSnapGames) {
                 VcbFieldEvent e = mGames.Find(e =>
                     e.location == game.location &&
@@ -241,21 +246,26 @@ namespace VcbFieldExport
                 }
                 else if (IGNORED_GAMES.Find(e => e.location == game.location && e.startTime == game.startTime) == null) {
                     ++inconsistentGames;
-                    Console.WriteLine($"A game in TeamSnap is missing from Assignr: {game.startTime.ToLocalTime()} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
+                    mLogger.WriteLine($"A TeamSnap game is not in Assignr: {game.startTime.ToLocalTime()} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
                 }
             }
 
             foreach (var game in mGames) {
                 if (IGNORED_GAMES.Find(e => e.location == game.location && e.startTime == game.startTime) == null) {
                     ++inconsistentGames;
-                    Console.WriteLine($"A game in Assignr is missing from TeamSnap: {game.startTime.ToLocalTime()} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
+                    mLogger.WriteLine($"An Assignr game is not in TeamSnap: {game.startTime.ToLocalTime()} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
                 }
+            }
+
+            if (inconsistentGames == 0) {
+                mLogger.WriteLine("No inconsistencies were found between TeamSnap & Assignr game schedules");
             }
 
             return inconsistentGames;
         }
 
         HttpClient mHttpClient;
+        StreamWriter mLogger;
         string? mBearerToken;
 
         List<VcbFieldEvent> IGNORED_GAMES = new List<VcbFieldEvent> {

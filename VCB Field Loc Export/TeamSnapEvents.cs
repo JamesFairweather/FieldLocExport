@@ -12,7 +12,7 @@ namespace VcbFieldExport
 {
     class TeamSnapEvents
     {
-        public TeamSnapEvents()
+        public TeamSnapEvents(StreamWriter logger)
         {
             // How to obtain a TeamSnap Bearer token for accessing the service
             //
@@ -30,6 +30,7 @@ namespace VcbFieldExport
             // * in the redirect URL, the server sends back an access token in the address bar, which is the
             // Bearer token
             mBearerToken = File.ReadAllText("TeamsnapBearerToken.txt");
+            mLogger = logger;
         }
 
         public void FetchEvents()
@@ -44,6 +45,8 @@ namespace VcbFieldExport
                 "74226232", // Trafalgar Park
                 "74242257", // Nanaimo Park batting cage
             };
+
+            mLogger.WriteLine("Fetching events from TeamSnap...");
 
             List<VcbFieldEvent> nonLeagueUnmatchedGamesBetweenVcbTeams = new();
 
@@ -178,10 +181,10 @@ namespace VcbFieldExport
             }
 
             if (nonLeagueUnmatchedGamesBetweenVcbTeams.Count != 0) {
-                Console.WriteLine("Some games are missing from a VCB opponent's TeamSnap schedule");
+                mLogger.WriteLine("Some games are missing from a VCB opponent's TeamSnap schedule");
 
                 foreach(VcbFieldEvent e in nonLeagueUnmatchedGamesBetweenVcbTeams) {
-                    Console.WriteLine($"Location {e.location} and Date: {e.startTime.ToLocalTime()}.  Home team: {e.homeTeam}.  Visiting team: {e.visitingTeam}");
+                    mLogger.WriteLine($"Location {e.location} and Date: {e.startTime.ToLocalTime()}.  Home team: {e.homeTeam}.  Visiting team: {e.visitingTeam}");
                 }
             }
         }
@@ -208,5 +211,6 @@ namespace VcbFieldExport
         List<VcbFieldEvent> mGames = new();
 
         string mBearerToken;        // should I steps to store this in a cryptographically secure way?
+        StreamWriter mLogger;
     }
 }

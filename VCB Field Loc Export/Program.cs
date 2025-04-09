@@ -5,15 +5,18 @@ namespace VcbFieldExport
     {
         static int Main(string[] args)
         {
-            Console.WriteLine("Fetching events from TeamSnap...");
-            TeamSnapEvents teamSnap = new();
+            DateTime now = DateTime.Now;
+
+            string logFileName = $"fieldSync.{now.Year}-{now.Month}-{now.Day}.log";
+            StreamWriter logger = new StreamWriter(logFileName, false);
+
+            TeamSnapEvents teamSnap = new(logger);
             teamSnap.FetchEvents();
 
             // Find conflicts in the game/practice schedule
             int errors = teamSnap.FindConflicts();
 
-            Console.WriteLine("Fetching games from Assignr...");
-            AssignrEvents assignr = new();
+            AssignrEvents assignr = new(logger);
             assignr.Authenticate();
             assignr.FetchEventsFromService();
 
@@ -21,8 +24,10 @@ namespace VcbFieldExport
             errors += assignr.Reconcile(teamSnap.getGames());
 
             // Reconcile the Google field calendars with the TeamSnap field calendars
-            GoogleEvents googleEvents = new(teamSnap.getGames(), teamSnap.getPractices());
+            GoogleEvents googleEvents = new(teamSnap.getGames(), teamSnap.getPractices(), logger);
             googleEvents.Reconcile();
+
+            logger.Close();
 
             // If there are problems, the exception handler takes care of them.  Conflicts are reported on the console window
             return errors;

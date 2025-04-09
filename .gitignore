@@ -4,3 +4,4 @@
 **/*.json
 **/_ts_session_cookie
 VCB Field Loc Export/TeamsnapBearerToken.txt
+*.log
