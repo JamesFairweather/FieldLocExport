@@ -3,16 +3,6 @@ using Google.Apis.Calendar.v3.Data;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VcbFieldExport;
-using CsvHelper;
-using System.Globalization;
-using CsvHelper.Configuration;
-using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using Google.Apis.Auth.OAuth2.Responses;
 
@@ -58,8 +48,6 @@ namespace VcbFieldExport
         {
             UserCredential credential;
 
-            // If the scopes are modified, you will need a new credentials.json file and re-generate the tokens.
-
             string[] Scopes = { CalendarService.Scope.Calendar };
             string ApplicationName = "Google Calendar Access";
 
@@ -104,7 +92,7 @@ namespace VcbFieldExport
 
             try {
                 calendarService.Events.Insert(googleCalendarEvent, "primary").Execute();
-                mLogger.WriteLine($"Added event {vcbFieldEvent.eventType} at {vcbFieldEvent.location} on {vcbFieldEvent.startTime.ToLocalTime()} for team {vcbFieldEvent.homeTeam}");
+                mLogger.WriteLine($"Added event {vcbFieldEvent.eventType} on {vcbFieldEvent.startTime.ToLocalTime()} for team {vcbFieldEvent.homeTeam}");
             }
             catch (Exception ex) {
                 mLogger.WriteLine(ex.ToString());
@@ -148,7 +136,7 @@ namespace VcbFieldExport
             if (events.Items != null && events.Items.Count > 0)
             {
                 results.Capacity = events.Items.Count;
-                mLogger.WriteLine($"Found {events.Items.Count} event(s) on this calendar.");
+                mLogger.WriteLine($"Found {events.Items.Count} existing events on this calendar.");
                 foreach (Event eventItem in events.Items)
                 {
                     VcbFieldEvent vcbFieldEvent = new VcbFieldEvent();
@@ -200,6 +188,7 @@ namespace VcbFieldExport
         {
             foreach (string locationId in LOCATION_NAMES)
             {
+                mLogger.WriteLine();
                 mLogger.WriteLine($"Syncing events for location {locationId} to the Google field calendar...");
 
                 CalendarService calendarService;
@@ -217,7 +206,7 @@ namespace VcbFieldExport
                         try
                         {
                             calendarService.Events.Delete("primary", e.googleEventId).Execute();
-                            mLogger.WriteLine($"Deleted event {e.eventType} at {e.location} on {e.startTime.ToLocalTime()} for team {e.homeTeam}");
+                            mLogger.WriteLine($"Deleted event {e.eventType} on {e.startTime.ToLocalTime()} for team {e.homeTeam}");
                         }
                         catch (Exception ex)
                         {

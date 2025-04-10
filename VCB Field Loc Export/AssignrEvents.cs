@@ -1,12 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VcbFieldExport;
-using System.Collections;
 
 namespace VcbFieldExport
 {
@@ -38,14 +31,24 @@ namespace VcbFieldExport
 
     internal class AssignrCredentials
     {
-        public string? client_id { get; set; }
-        public string? client_secret { get; set; }
+        public AssignrCredentials()
+        {
+            Id = string.Empty;
+            Secret = string.Empty;
+        }
+
+        [JsonProperty("client_id")]
+        public string Id { get; set; }
+
+        [JsonProperty("client_secret")]
+        public string Secret { get; set; }
     }
 
     public class AssignrEvents
     {
         public AssignrEvents(StreamWriter logger) {
             mHttpClient = new();
+            mGames = new();
             mLogger = logger;
         }
 
@@ -55,7 +58,7 @@ namespace VcbFieldExport
             using (StreamReader reader = new StreamReader("assignr_credentials.json"))
             {
                 string json = reader.ReadToEnd();
-                credentials = System.Text.Json.JsonSerializer.Deserialize<AssignrCredentials>(json);
+                credentials = JsonConvert.DeserializeObject<AssignrCredentials>(json);
 
                 if (credentials == null)
                 {
@@ -67,8 +70,8 @@ namespace VcbFieldExport
             mHttpClient.DefaultRequestHeaders.Add("cache-control", "no-cache");
 
             var oauthHeaders = new Dictionary<string, string> {
-                {"client_id", credentials.client_id},
-                {"client_secret", credentials.client_secret},
+                {"client_id", credentials.Id},
+                {"client_secret", credentials.Secret},
                 {"scope", "read" },
                 {"grant_type", "client_credentials"},
               };
@@ -82,7 +85,8 @@ namespace VcbFieldExport
             {
                 throw new Exception($"Unexpected response from the Assignr service: {jsonContent}");
             }
-            Token tok = JsonConvert.DeserializeObject<Token>(jsonContent);
+
+            Token? tok = JsonConvert.DeserializeObject<Token>(jsonContent);
 
             if (tok == null)
             {
@@ -127,6 +131,10 @@ namespace VcbFieldExport
                 // string result = File.ReadAllText("assignr_response.json");
 
                 JObject? jsonRoot = JsonConvert.DeserializeObject(result) as JObject;
+
+                if (jsonRoot == null) {
+                    throw new Exception("Unexpected response from Assignr service");
+                }
 
                 if (totalPages == -1)
                 {
@@ -268,10 +276,10 @@ namespace VcbFieldExport
         StreamWriter mLogger;
         string? mBearerToken;
 
-        List<VcbFieldEvent> IGNORED_GAMES = new List<VcbFieldEvent> {
+        readonly List<VcbFieldEvent> IGNORED_GAMES = new List<VcbFieldEvent> {
         };
 
-        List<VcbFieldEvent> mGames = new();
+        List<VcbFieldEvent> mGames;
 
         Dictionary<string, string> ASSIGNR_TO_TEAMSNAP_VENUE_MAP = new Dictionary<string, string> {
                 { "Chaldecott North", "Chaldecott Park N diamond" },

@@ -1,12 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VcbFieldExport;
-using Google.Apis.Auth.OAuth2;
 
 namespace VcbFieldExport
 {
@@ -100,6 +93,14 @@ namespace VcbFieldExport
                     string location = teamSnapEventFields[(JValue)"location_name"];
                     DateTime startTime = DateTime.Parse(teamSnapEventFields[(JValue)"start_date"]);
                     startTime = startTime.AddSeconds(-startTime.Second);    // sometimes TeamSnap events have non-zero seconds values, not sure why
+
+                    if (startTime < DateTime.Now) {
+                        // The service may return events for the day before sometimes,
+                        // even though the event request specified the started_after parameter.  Seems like a bug.
+                        // Anyway, just ignore events that happened before today.
+                        continue;
+                    }
+
                     string endDateString = teamSnapEventFields[(JValue)"end_date"];
                     DateTime endTime = string.IsNullOrEmpty(endDateString) ? startTime.AddHours(2) : DateTime.Parse(endDateString);
                     endTime = endTime.AddSeconds(-endTime.Second);
