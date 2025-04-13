@@ -94,7 +94,7 @@ namespace VcbFieldExport
                     DateTime startTime = DateTime.Parse(teamSnapEventFields[(JValue)"start_date"]);
                     startTime = startTime.AddSeconds(-startTime.Second);    // sometimes TeamSnap events have non-zero seconds values, not sure why
 
-                    if (startTime < DateTime.Now) {
+                    if (startTime < DateTime.UtcNow) {
                         // The service may return events for the day before sometimes,
                         // even though the event request specified the started_after parameter.  Seems like a bug.
                         // Anyway, just ignore events that happened before today.
