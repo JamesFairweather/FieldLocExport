@@ -317,6 +317,10 @@ namespace VcbFieldExport
                 { "Vancouver Mounties White", "VCB 18U AAA White" },
                 { "SOMBA", "Penticton Tigers" }, }
             },
+            { "26U", new Dictionary<string, string> {
+                { "Vancouver Mounties", "VCB 26U Mounties" },
+                { "Vancouver Expos", "VCB 26U Expos" }, }
+            },
         };
     }
 }
