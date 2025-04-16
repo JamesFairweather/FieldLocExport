@@ -79,11 +79,11 @@ namespace VCBFieldExport
 
         public void fetchEvents()
         {
-            string body = @"
-{
-	""query"": ""query organizations {\n    organizations(page: 1, perPage: 50) {\n        pageInformation {\n            pages\n            count\n            page\nperPage\n        }\n        results {\n            id\n            name\n        }\n    }\n}"",
-	""operationName"": ""organizations""
-}";
+//            string body = @"
+//{
+//	""query"": ""query organizations {\n    organizations(page: 1, perPage: 50) {\n        pageInformation {\n            pages\n            count\n            page\nperPage\n        }\n        results {\n            id\n            name\n        }\n    }\n}"",
+//	""operationName"": ""organizations""
+//}";
             //query organizations {
             //    organizations(page: 1, perPage: 50) {
             //        pageInformation {
@@ -103,43 +103,17 @@ namespace VCBFieldExport
 
             // GAME can also be EVENT if we want to put these events on a public field calendar.  But for Assignr reconciliation,
             // I only need GAME.
-            string eventQuery = @"
-query events {
-  events(
-    organizationId: 144187
-    from: ""2025-04-15""
-    perPage: 15
-    calendarEventType: GAME
-  ) {
-    pageInformation {
-      pages
-      count
-      page
-      perPage
-    }
-    results {
-      name
-      type
-      start
-      end
-      location {
-        name
-      }
-      eventTeams {
-        team {
-          name
-        }
-        homeTeam
-      }
-    }
-  }
-}";
+
+            string pageInfo = @"pageInformation { pages count page perPage }";
+            string results = @"results { name type start end location { name } eventTeams { team { name } homeTeam } } }";
+
+            int pageNumber = 1;
+            string query = $"query events {{ events( organizationId: {LMB_ORGANIZATION_ID} from: \\\"{DateTime.Now.ToString("yyyy-MM-dd")}\\\" perPage: 10 page: {pageNumber} calendarEventType: GAME) {{ {pageInfo} {results} }}";
 
             string uri = "https://api.sportsengine.com/graphql";
             HttpRequestMessage msg = new HttpRequestMessage(HttpMethod.Post, uri);
             msg.Headers.Add("authorization", $"Bearer {mBearerToken}");
-            //msg.Headers.Add("Content-Type", "application/json");
-            msg.Content = new StringContent(body, Encoding.UTF8, "application/json");
+            msg.Content = new StringContent($"{{ \"query\": \"{query}\", \"operationName\": \"events\" }}", Encoding.UTF8, "application/json");
 
             HttpResponseMessage gamesResponse = mHttpClient.Send(msg);
 
