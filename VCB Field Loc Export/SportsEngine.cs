@@ -43,20 +43,15 @@ namespace VCBFieldExport
                 }
             }
 
-            string safeRedirect = System.Web.HttpUtility.UrlEncode("http://localhost");
-
-            string authUrl = $"https://user.sportsengine.com/oauth/authorize?client_id=62abbeb26f91815ffcc75767b24ef699&redirect_uri={safeRedirect}&response_type=code";
+            string authUrl = $"https://user.sportsengine.com/oauth/token";
 
             mHttpClient.DefaultRequestHeaders.Clear();
             mHttpClient.DefaultRequestHeaders.Add("cache-control", "no-cache");
 
-            HttpResponseMessage response = mHttpClient.GetAsync(authUrl).Result;
-
             var oauthHeaders = new Dictionary<string, string> {
                 {"client_id", credentials.Id},
                 {"client_secret", credentials.Secret},
-                {"code", "8f85cc86d3f626ca0852fec16759dc23" },
-                {"grant_type", "authorization_code"},
+                {"grant_type", "client_credentials"},
               };
 
             string oauthUri = "https://user.sportsengine.com/oauth/token";
@@ -64,6 +59,22 @@ namespace VCBFieldExport
             // Get a Bearer token for further API requests
             HttpResponseMessage tokenResponse = mHttpClient.PostAsync(oauthUri, new FormUrlEncodedContent(oauthHeaders)).Result;
             string jsonContent = tokenResponse.Content.ReadAsStringAsync().Result;
+
+            if (string.IsNullOrEmpty(jsonContent)) {
+                throw new Exception($"Unexpected response from the Assignr service: {jsonContent}");
+            }
+
+            Token? tok = JsonConvert.DeserializeObject<Token>(jsonContent);
+
+            if (tok == null) {
+                throw new Exception($"Unexpected response from the Assignr service: {jsonContent}");
+            }
+
+            if (tok.TokenType != "bearer") {
+                throw new Exception($"We expected the returned token to be a bearer token.  But it is {tok.TokenType} instead.");
+            }
+
+            mBearerToken = tok.AccessToken;
         }
 
         public void fetchEvents()
@@ -88,6 +99,42 @@ namespace VCBFieldExport
             //    }
             //}";
 
+            string LMB_ORGANIZATION_ID = "144187";  // from the query above
+
+            // GAME can also be EVENT if we want to put these events on a public field calendar.  But for Assignr reconciliation,
+            // I only need GAME.
+            string eventQuery = @"
+query events {
+  events(
+    organizationId: 144187
+    from: ""2025-04-15""
+    perPage: 15
+    calendarEventType: GAME
+  ) {
+    pageInformation {
+      pages
+      count
+      page
+      perPage
+    }
+    results {
+      name
+      type
+      start
+      end
+      location {
+        name
+      }
+      eventTeams {
+        team {
+          name
+        }
+        homeTeam
+      }
+    }
+  }
+}";
+
             string uri = "https://api.sportsengine.com/graphql";
             HttpRequestMessage msg = new HttpRequestMessage(HttpMethod.Post, uri);
             msg.Headers.Add("authorization", $"Bearer {mBearerToken}");
@@ -105,6 +152,6 @@ namespace VCBFieldExport
         }
 
         HttpClient mHttpClient;
-        string? mBearerToken = "c8e0a6d3deb7130ba0cb156d67b845b3";
+        string? mBearerToken;
     }
 }
