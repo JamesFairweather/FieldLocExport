@@ -144,6 +144,10 @@ namespace VcbFieldExport
             }
         }
 
+        public List<VcbFieldEvent> getGames() {
+            return mGames;
+        }
+
         List<VcbFieldEvent> mGames = new();
 
         HttpClient mHttpClient;

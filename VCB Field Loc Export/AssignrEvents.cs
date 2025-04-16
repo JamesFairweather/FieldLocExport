@@ -96,7 +96,7 @@ namespace VcbFieldExport
             mBearerToken = tok.AccessToken;
         }
 
-        public void FetchEventsFromService()
+        public void FetchEventsFromService(string siteId)
         {
             int totalPages = -1;
             int currentPage = 0;
@@ -105,14 +105,9 @@ namespace VcbFieldExport
 
             while (currentPage != totalPages)
             {
-                string VCB_SITE_ID = "12381";
-                //string site_LMB = "627";
-                //string site_Kerrisdale = "6561";
-                //string site_Richmond = "19639";
-
                 string start_date = DateTime.Now.ToString("yyyy-MM-dd");
 
-                string gamesUri = $"https://api.assignr.com/api/v2/sites/{VCB_SITE_ID}/games?page={currentPage + 1}&limit=50&search[start_date]={start_date}";
+                string gamesUri = $"https://api.assignr.com/api/v2/sites/{siteId}/games?page={currentPage + 1}&limit=50&search[start_date]={start_date}";
 
                 HttpRequestMessage msg = new HttpRequestMessage(HttpMethod.Get, gamesUri);
                 msg.Headers.Add("accept", "application/json");
@@ -126,9 +121,6 @@ namespace VcbFieldExport
                 }
 
                 string result = gamesResponse.Content.ReadAsStringAsync().Result;
-
-                // Debugging
-                // string result = File.ReadAllText("assignr_response.json");
 
                 JObject? jsonRoot = JsonConvert.DeserializeObject(result) as JObject;
 
@@ -151,7 +143,7 @@ namespace VcbFieldExport
                     string homeTeam = game["home_team"].ToString();
                     string awayTeam = game["away_team"].ToString();
                     string assignrVenue = game["_embedded"]["venue"]["name"].ToString();
-                    string gameType = game["game_type"].ToString();
+                    string gameType = (game["game_type"] ?? string.Empty).ToString();
 
                     if (gameType == "Playoffs") {
                         continue;       // Ignore playoff games until the placeholders are added to TeamSnap.
@@ -243,9 +235,14 @@ namespace VcbFieldExport
             mLogger.WriteLine("Reconciling TeamSnap and Assignr game schedules...");
 
             foreach (var game in teamSnapGames) {
+
+                if (!(game.homeTeam.StartsWith("MINB") || game.homeTeam.StartsWith("MINA") || game.homeTeam.StartsWith("MAJ"))) {
+                    continue;   // ignore games that don't need umpires
+                }
+
                 VcbFieldEvent e = mGames.Find(e =>
                     e.location == game.location &&
-                    e.startTime == game.startTime &&
+                    e.startTime.ToUniversalTime() == game.startTime.ToUniversalTime() &&
                     e.homeTeam == game.homeTeam &&
                     e.visitingTeam == game.visitingTeam);
 
@@ -282,45 +279,80 @@ namespace VcbFieldExport
         List<VcbFieldEvent> mGames;
 
         Dictionary<string, string> ASSIGNR_TO_TEAMSNAP_VENUE_MAP = new Dictionary<string, string> {
-                { "Chaldecott North", "Chaldecott Park N diamond" },
-                { "Chaldecott South", "Chaldecott Park S diamond" },
-                { "Hillcrest North", "Hillcrest Park NE diamond" },
-                { "Hillcrest South", "Hillcrest Park SW diamond" },
-                { "Nanaimo North", "Nanaimo Park N diamond" },
-                { "Nanaimo South East", "Nanaimo Park SE diamond" },
-                { "Trafalgar", "Trafalgar Park" }
-            };
+            { "Chaldecott North", "Chaldecott Park N diamond" },
+            { "Chaldecott South", "Chaldecott Park S diamond" },
+            { "Hillcrest North", "Hillcrest Park NE diamond" },
+            { "Hillcrest South", "Hillcrest Park SW diamond" },
+            { "Nanaimo North", "Nanaimo Park N diamond" },
+            { "Nanaimo South East", "Nanaimo Park SE diamond" },
+            { "Trafalgar", "Trafalgar Park" },
+            { "Challenger", "Variety Challenger Field" },
+            { "Columbia Park", "Columbia Park" },
+            { "Hillcrest Park", "Hillcrest Main Diamond" },
+            { "Oak Park", "Oak Park North Diamond" },
+        };
 
         Dictionary<string, Dictionary<string, string>> ASSIGNR_TO_TEAMSNAP_NAMEMAP = new Dictionary<string, Dictionary<string, string>> {
+            { "Majors", new Dictionary<string, string> {
+                {"Majors Royals", "MAJ1 MAIN ST PHYSIO ROYALS" },
+                {"Majors Twins", "MAJ2 HOLBORN TWINS" },
+                {"Majors Mariners", "MAJ3 ANTHEM MARINERS" },
+                {"Majors Legion", "MAJ4 LEGION" },
+                {"Majors Cardinals", "MAJ5 DWELL CARDINALS" },
+                {"Majors Rangers", "MAJ6 DAKOTA HOMES RANGERS" },
+                {"Majors Angels", "MAJ7 UNCLE BILLS PLUMBING ANGELS" },
+            }},
+            { "Minors A", new Dictionary<string, string> {
+                { "Minor A Orioles", "MINA1 TEAM KERR ORIOLES" },
+                { "Minor A Padres", "MINA2 PEA-HESU PADRES" },
+                { "Minor A Giants", "MINA3 INSPIRE DENTAL GIANTS" },
+                { "Minor A Pirates", "MINA4 BEASTVAN PIRATES" },
+                { "Minor A Diamondbacks", "MINA5 Stillwater Counselling DBACKS" },
+                { "Minor A Brewers", "MINA6 BREWERS" },
+                { "Minor A Rockies", "MINA7 ROCKIES" },
+            }},
+            { "Minors B", new Dictionary<string, string> {
+                { "Minor B Ironpigs", "MINB1 AJ Tigers Ironpigs" },
+                { "Minor B Chihuahuas", "MINB2 Chihuahuas" },
+                { "Minor B Isotopes", "MINB3 Isotopes" },
+                { "Minor B Knights", "MINB4 Pristine Labour Knights" },
+                { "Minor B Jumbo Shrimp", "MINB5 Jumbo Shrimp" },
+                { "Minor B WooSox", "MINB6 WooSox" },
+                { "Minor B Bulls", "MINB7 Bulls" },
+                { "Minor B Bees", "MINB8 Bees" },
+                { "Minor B Bison", "MINB9 Bison" },
+                { "Minor B Canadians", "MINB10 CLEAR HR CANADIANS" },
+                { "Minor B River Cats", "MINB11 RIVER CATS" },
+            }},
             { "13U AA", new Dictionary<string, string> {
-                { "Vancouver Mounties", "VCB 13U AA" }, }
-            },
+                { "Vancouver Mounties", "VCB 13U AA" },
+            }},
             { "13U AAA", new Dictionary<string, string> {
-                { "Vancouver Mounties", "VCB 13U AAA" }, }
-            },
+                { "Vancouver Mounties", "VCB 13U AAA" },
+            }},
             { "15U A", new Dictionary<string, string> {
                 { "Burnaby", "Burnaby 15UA" },
                 { "RS-Girls", "VCB 16U Red Sox-Girls" },
                 { "Girls 1", "VCB 16U Red Sox-Girls" },
                 { "Girls 2", "15U Girls" },
-                { "TBD", "15U Girls" }, }
-            },
+                { "TBD", "15U Girls" },
+            }},
             { "15U AA", new Dictionary<string, string>{
                 { "Vancouver Mounties Blue", "VCB Expos 15U AA Blue" },
-                { "Vancouver Mounties Red", "VCB 15U AA Red" }, }
-            },
+                { "Vancouver Mounties Red", "VCB 15U AA Red" },
+            }},
             { "15U AAA", new Dictionary<string, string> {
-                { "Vancouver Mounties", "VCB 15U AAA"}, }
-            },
+                { "Vancouver Mounties", "VCB 15U AAA"},
+            }},
             { "18U AAA", new Dictionary<string, string> {
                 { "Vancouver Mounties Blue", "VCB 18U AAA Blue" },
                 { "Vancouver Mounties White", "VCB 18U AAA White" },
-                { "SOMBA", "Penticton Tigers" }, }
-            },
+                { "SOMBA", "Penticton Tigers" },
+            }},
             { "26U", new Dictionary<string, string> {
                 { "Vancouver Mounties", "VCB 26U Mounties" },
-                { "Vancouver Expos", "VCB 26U Expos" }, }
-            },
+                { "Vancouver Expos", "VCB 26U Expos" },
+            }},
         };
     }
 }
