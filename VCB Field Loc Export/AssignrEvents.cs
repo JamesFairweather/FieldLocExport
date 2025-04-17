@@ -96,6 +96,10 @@ namespace VcbFieldExport
             mBearerToken = tok.AccessToken;
         }
 
+        public void clearEvents() {
+            mGames.Clear();
+        }
+
         public void FetchEventsFromService(string siteId)
         {
             int totalPages = -1;
@@ -228,23 +232,23 @@ namespace VcbFieldExport
                         continue;
                     }
 
-                    mGames.Add(new VcbFieldEvent(VcbFieldEvent.Type.Game, teamSnapVenue, start, homeTeam, awayTeam, start.AddHours(2)));
+                    mGames.Add(new VcbFieldEvent(VcbFieldEvent.Type.Game, teamSnapVenue, start, homeTeam, awayTeam, true, start.AddHours(2)));
                 }
 
                 currentPage = int.Parse(jsonRoot["page"]["current_page"].ToString());
             }
         }
 
-        public int Reconcile(List<VcbFieldEvent> teamSnapGames)
+        public int Reconcile(List<VcbFieldEvent> teamGames)
         {
             int inconsistentGames = 0;
 
-            mLogger.WriteLine("Reconciling TeamSnap and Assignr game schedules...");
+            mLogger.WriteLine("Reconciling team & Assignr game schedules...");
 
-            foreach (var game in teamSnapGames) {
+            foreach (var game in teamGames) {
 
-                if (!(game.homeTeam.StartsWith("MINB") || game.homeTeam.StartsWith("MINA") || game.homeTeam.StartsWith("MAJ"))) {
-                    continue;   // ignore games that don't need umpires
+                if (!game.officialsRequired) {
+                    continue;
                 }
 
                 VcbFieldEvent e = mGames.Find(e =>

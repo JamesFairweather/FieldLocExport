@@ -25,19 +25,21 @@ namespace VcbFieldExport {
             endTime = DateTime.MinValue;
             description = string.Empty;
             googleEventId = string.Empty;
+            officialsRequired = false;
         }
 
-        public VcbFieldEvent(Type _eventType, string _loc, DateTime _start, string _homeTeam, string _visitingTeam, DateTime _end, string _description = "", string _googleEventId = "")
+        public VcbFieldEvent(Type eventType, string loc, DateTime start, string homeTeam, string visitingTeam, bool officialsRequired, DateTime end, string description = "", string googleEventId = "")
         {
-            eventType = _eventType;
-            location = _loc;
-            startTime = _start;
-            homeTeam = _homeTeam;
-            visitingTeam = _visitingTeam;
+            this.eventType = eventType;
+            this.location = loc;
+            this.startTime = start;
+            this.homeTeam = homeTeam;
+            this.visitingTeam = visitingTeam;
             // Games are always set to 2 hours in length.  Non-games can be any length of time
-            endTime = eventType == Type.Game ? startTime.AddHours(2) : _end;
-            description = _description;
-            googleEventId = _googleEventId;
+            this.endTime = eventType == Type.Game ? startTime.AddHours(2) : end;
+            this.description = description;
+            this.googleEventId = googleEventId;
+            this.officialsRequired = officialsRequired;
         }
 
         public Type eventType { get; set; }
@@ -48,6 +50,7 @@ namespace VcbFieldExport {
         public DateTime endTime { get; set; }
         public string description { get; set; }
         public string googleEventId { get; set; }
+        public bool officialsRequired { get; set; }
 
         public override bool Equals(object? obj)
         {

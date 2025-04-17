@@ -10,31 +10,35 @@ namespace VcbFieldExport
             string logFileName = $"fieldSync.{now.Year}-{now.Month}-{now.Day}.log";
             StreamWriter logger = new StreamWriter(logFileName, false);
 
-            //SportsEngine sportsEngine = new SportsEngine();
-            //sportsEngine.authenticate();
-            //sportsEngine.fetchEvents();
-
             TeamSnapEvents teamSnap = new(logger);
             teamSnap.FetchEvents();
 
             // Find conflicts in the game/practice schedule
             int errors = teamSnap.FindConflicts();
 
-            string ASSIGNR_ID_KLL = "6561";
             string ASSIGNR_ID_LMB = "627";
-            string ASSIGNR_ID_RICHMOND = "19639";
             string ASSINGR_ID_VCB = "12381";
+
+            //string ASSIGNR_ID_KLL = "6561";
+            //string ASSIGNR_ID_RICHMOND = "19639";
 
             AssignrEvents assignr = new(logger);
             assignr.Authenticate();
             assignr.FetchEventsFromService(ASSINGR_ID_VCB);
 
-            // Cross-check the game list in TeamSnap with Assignr.  Any inconsistencies are output to the console window
             errors += assignr.Reconcile(teamSnap.getGames());
 
-            // Reconcile the Google field calendars with the TeamSnap field calendars
+            // Update the Google field calendars with the TeamSnap calendars.
             GoogleEvents googleEvents = new(teamSnap.getGames(), teamSnap.getPractices(), logger);
             googleEvents.Reconcile();
+
+            SportsEngine sportsEngine = new SportsEngine();
+            sportsEngine.authenticate();
+            sportsEngine.fetchEvents();
+
+            assignr.clearEvents();
+            assignr.FetchEventsFromService(ASSIGNR_ID_LMB);
+            errors += assignr.Reconcile(sportsEngine.getGames());
 
             logger.Close();
 
