@@ -91,11 +91,6 @@ namespace VcbFieldExport
             int pageSize = 100;
             int eventCount = 0;
 
-            // The default behavior of the JSON deserializer is to convert datetime strings, but it appears to have a
-            // bug because it's ignoring the "Z" suffix, which means the timestamp is in UTC, not local
-            JsonSerializerSettings settings = new();
-            settings.DateParseHandling = DateParseHandling.None;
-
             while (true) {
 
                 // If we want to put these events on a public calendar, we'll need GAMEs and EVENTs for the calendarEventType
@@ -114,7 +109,11 @@ namespace VcbFieldExport
                 }
                 string jsonResponse = gamesResponse.Content.ReadAsStringAsync().Result;
 
-                JObject? jsonRoot = JsonConvert.DeserializeObject(jsonResponse, settings) as JObject;
+                // The default behavior of the JSON deserializer is to convert datetime strings, but it appears to have a
+                // bug because it's ignoring the "Z" suffix, which means the timestamp is in UTC, not local
+                JsonSerializerSettings settings = new();
+                settings.DateParseHandling = DateParseHandling.None;
+                JObject jsonRoot = JsonConvert.DeserializeObject(jsonResponse, settings) as JObject ?? new JObject();
                 JObject? pageInformation = jsonRoot["data"]["events"]["pageInformation"] as JObject;
 
                 eventCount = (int)pageInformation["count"];
@@ -127,9 +126,9 @@ namespace VcbFieldExport
                 foreach (JObject e in eventList) {
                     string location = (string)e["location"]["name"];
                     string strStartTime = (string)e["start"];
-                    DateTime startTime = DateTime.Parse(strStartTime);
+                    DateTime startTime = DateTime.Parse(strStartTime).ToUniversalTime();
                     string strEndTime = (string)e["start"];
-                    DateTime endTime = DateTime.Parse(strEndTime);
+                    DateTime endTime = DateTime.Parse(strEndTime).ToUniversalTime();
                     string homeTeam = (string)e["eventTeams"][0]["team"]["name"];
                     string visitingTeam = (string)e["eventTeams"][1]["team"]["name"];
 

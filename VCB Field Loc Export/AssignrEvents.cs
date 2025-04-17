@@ -122,7 +122,9 @@ namespace VcbFieldExport
 
                 string result = gamesResponse.Content.ReadAsStringAsync().Result;
 
-                JObject? jsonRoot = JsonConvert.DeserializeObject(result) as JObject;
+                JsonSerializerSettings settings = new();
+                settings.DateParseHandling = DateParseHandling.None;
+                JObject? jsonRoot = JsonConvert.DeserializeObject(result, settings) as JObject;
 
                 if (jsonRoot == null) {
                     throw new Exception("Unexpected response from Assignr service");
@@ -247,7 +249,7 @@ namespace VcbFieldExport
 
                 VcbFieldEvent e = mGames.Find(e =>
                     e.location == game.location &&
-                    e.startTime.ToUniversalTime() == game.startTime.ToUniversalTime() &&
+                    e.startTime == game.startTime &&
                     e.homeTeam == game.homeTeam &&
                     e.visitingTeam == game.visitingTeam);
 
