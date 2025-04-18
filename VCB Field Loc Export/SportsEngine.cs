@@ -94,7 +94,7 @@ namespace VcbFieldExport
             while (true) {
 
                 // If we want to put these events on a public calendar, we'll need GAMEs and EVENTs for the calendarEventType
-                string query = $"query events {{ events( organizationId: {LMB_ORGANIZATION_ID} from: \\\"{DateTime.Now.ToString("yyyy-MM-dd")}\\\" perPage: {pageSize} page: {pageNumber} calendarEventType: GAME) {{ {pageInfo} {results} }}";
+                string query = $"query events {{ events( organizationId: {LMB_ORGANIZATION_ID} from: \\\"{DateTime.Today:O}\\\" perPage: {pageSize} page: {pageNumber} calendarEventType: GAME) {{ {pageInfo} {results} }}";
 
                 string uri = "https://api.sportsengine.com/graphql";
                 HttpRequestMessage msg = new HttpRequestMessage(HttpMethod.Post, uri);
@@ -105,7 +105,7 @@ namespace VcbFieldExport
 
                 if (gamesResponse.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    throw new Exception("Failed to retrieve game information from Assignr");
+                    throw new Exception("Failed to retrieve game information from SportsEngine");
                 }
                 string jsonResponse = gamesResponse.Content.ReadAsStringAsync().Result;
 

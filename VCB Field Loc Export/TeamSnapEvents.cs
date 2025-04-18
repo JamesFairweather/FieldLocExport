@@ -46,13 +46,10 @@ namespace VcbFieldExport
             using HttpClient client = new();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {mBearerToken}");
-            string dateString = DateTime.Now.ToString("yyyy-MM-dd");
 
             foreach (string teamSnapLocationId in TEAMSNAP_LOCATION_IDS)
             {
-                string jsonResponse = client.GetStringAsync($"https://api.teamsnap.com/v3/events/search?location_id={teamSnapLocationId}&started_after={dateString}").Result;
-
-                // string jsonResponse = File.ReadAllText("teamSnapApiResponse.json");
+                string jsonResponse = client.GetStringAsync($"https://api.teamsnap.com/v3/events/search?location_id={teamSnapLocationId}&started_after={DateTime.Today:O}").Result;
 
                 JObject? jsonRoot = JsonConvert.DeserializeObject(jsonResponse) as JObject;
 
@@ -93,14 +90,6 @@ namespace VcbFieldExport
                     string location = teamSnapEventFields[(JValue)"location_name"];
                     DateTime startTime = DateTime.Parse(teamSnapEventFields[(JValue)"start_date"]);
                     startTime = startTime.AddSeconds(-startTime.Second);    // sometimes TeamSnap events have non-zero seconds values, not sure why
-
-                    if (startTime < DateTime.UtcNow) {
-                        // The service may return events for the day before sometimes,
-                        // even though the event request specified the started_after parameter.  Seems like a bug.
-                        // Anyway, just ignore events that happened before today.
-                        continue;
-                    }
-
                     string endDateString = teamSnapEventFields[(JValue)"end_date"];
                     DateTime endTime = string.IsNullOrEmpty(endDateString) ? startTime.AddHours(2) : DateTime.Parse(endDateString);
                     endTime = endTime.AddSeconds(-endTime.Second);

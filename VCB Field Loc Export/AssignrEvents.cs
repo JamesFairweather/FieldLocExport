@@ -109,9 +109,7 @@ namespace VcbFieldExport
 
             while (currentPage != totalPages)
             {
-                string start_date = DateTime.Now.ToString("yyyy-MM-dd");
-
-                string gamesUri = $"https://api.assignr.com/api/v2/sites/{siteId}/games?page={currentPage + 1}&limit=50&search[start_date]={start_date}";
+                string gamesUri = $"https://api.assignr.com/api/v2/sites/{siteId}/games?page={currentPage + 1}&limit=50&search[start_date]={DateTime.Today.ToString("yyyy-MM-dd")}";
 
                 HttpRequestMessage msg = new HttpRequestMessage(HttpMethod.Get, gamesUri);
                 msg.Headers.Add("accept", "application/json");
@@ -157,7 +155,7 @@ namespace VcbFieldExport
                     }
 
                     if (gameType == "Playoffs") {
-                        continue;       // Ignore playoff games until the placeholders are added to TeamSnap.
+                        continue;       // Ignore playoff games until the games are added to the public calendars
                     }
 
                     if (ageGroup == "Mentor") {
@@ -173,22 +171,22 @@ namespace VcbFieldExport
                         {
                             awayTeam = "VCB 13U " + awayTeam;
                         }
-                        // The visiting team is a non-VCB team, TeamSnap & Assignr should have the same name
+                        // The visiting team is a non-org team, TeamSnap & Assignr should have the same name
                     }
                     else if (ageGroup == "15U A")
                     {
-                        if (ASSIGNR_TO_TEAMSNAP_NAMEMAP[ageGroup].ContainsKey(homeTeam))
+                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[ageGroup].ContainsKey(homeTeam))
                         {
-                            homeTeam = ASSIGNR_TO_TEAMSNAP_NAMEMAP[ageGroup][homeTeam];
+                            homeTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[ageGroup][homeTeam];
                         }
                         else
                         {
                             homeTeam = "VCB 15U " + homeTeam;
                         }
 
-                        if (ASSIGNR_TO_TEAMSNAP_NAMEMAP[ageGroup].ContainsKey(awayTeam))
+                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[ageGroup].ContainsKey(awayTeam))
                         {
-                            awayTeam = ASSIGNR_TO_TEAMSNAP_NAMEMAP[ageGroup][awayTeam];
+                            awayTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[ageGroup][awayTeam];
                         }
                         else
                         {
@@ -200,16 +198,16 @@ namespace VcbFieldExport
                         homeTeam = "VCB 18U " + homeTeam;
                         awayTeam = "VCB 18U " + awayTeam;
                     }
-                    else if (ASSIGNR_TO_TEAMSNAP_NAMEMAP.ContainsKey(ageGroup))
+                    else if (ASSIGNR_TO_PUBLIC_NAMEMAP.ContainsKey(ageGroup))
                     {
-                        if (ASSIGNR_TO_TEAMSNAP_NAMEMAP[ageGroup].ContainsKey(homeTeam))
+                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[ageGroup].ContainsKey(homeTeam))
                         {
-                            homeTeam = ASSIGNR_TO_TEAMSNAP_NAMEMAP[ageGroup][homeTeam];
+                            homeTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[ageGroup][homeTeam];
                         }
 
-                        if (ASSIGNR_TO_TEAMSNAP_NAMEMAP[ageGroup].ContainsKey(awayTeam))
+                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[ageGroup].ContainsKey(awayTeam))
                         {
-                            awayTeam = ASSIGNR_TO_TEAMSNAP_NAMEMAP[ageGroup][awayTeam];
+                            awayTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[ageGroup][awayTeam];
                         }
                         // The visiting team is a non-VCB team, TeamSnap & Assignr should have the same name
                     }
@@ -222,7 +220,7 @@ namespace VcbFieldExport
 
                     if (!ASSIGNR_TO_TEAMSNAP_VENUE_MAP.ContainsKey(assignrVenue))
                     {
-                        // mLogger.WriteLine($"Warning: A game in Assignr is hosted on a field not tracked in TeamSnap: {assignrVenue} on {startTime}.");
+                        // mLogger.WriteLine($"Warning: A game in Assignr is hosted on a field not tracked publically: {assignrVenue} on {startTime}.");
                         continue;
                     }
 
@@ -262,19 +260,19 @@ namespace VcbFieldExport
                 }
                 else if (IGNORED_GAMES.Find(e => e.location == game.location && e.startTime == game.startTime) == null) {
                     ++inconsistentGames;
-                    mLogger.WriteLine($"A TeamSnap game is not in Assignr: {game.startTime.ToLocalTime()} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
+                    mLogger.WriteLine($"A game on the public schedule is not in Assignr: {game.startTime.ToLocalTime()} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
                 }
             }
 
             foreach (var game in mGames) {
                 if (IGNORED_GAMES.Find(e => e.location == game.location && e.startTime == game.startTime) == null) {
                     ++inconsistentGames;
-                    mLogger.WriteLine($"An Assignr game is not in TeamSnap: {game.startTime.ToLocalTime()} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
+                    mLogger.WriteLine($"An Assignr game is not on the public game schedule: {game.startTime.ToLocalTime()} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
                 }
             }
 
             if (inconsistentGames == 0) {
-                mLogger.WriteLine("No inconsistencies were found between TeamSnap & Assignr game schedules");
+                mLogger.WriteLine("No inconsistencies were found between Assignr and the public game schedules");
             }
 
             return inconsistentGames;
@@ -303,7 +301,7 @@ namespace VcbFieldExport
             { "Oak Park", "Oak Park North Diamond" },
         };
 
-        Dictionary<string, Dictionary<string, string>> ASSIGNR_TO_TEAMSNAP_NAMEMAP = new Dictionary<string, Dictionary<string, string>> {
+        Dictionary<string, Dictionary<string, string>> ASSIGNR_TO_PUBLIC_NAMEMAP = new Dictionary<string, Dictionary<string, string>> {
             { "Majors", new Dictionary<string, string> {
                 {"Majors Royals", "MAJ1 MAIN ST PHYSIO ROYALS" },
                 {"Majors Twins", "MAJ2 HOLBORN TWINS" },
