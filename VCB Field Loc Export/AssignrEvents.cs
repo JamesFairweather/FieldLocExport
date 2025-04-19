@@ -72,7 +72,7 @@ namespace VcbFieldExport
             var oauthHeaders = new Dictionary<string, string> {
                 {"client_id", credentials.Id},
                 {"client_secret", credentials.Secret},
-                {"scope", "read" },
+                {"scope", "read write" },
                 {"grant_type", "client_credentials"},
               };
 
