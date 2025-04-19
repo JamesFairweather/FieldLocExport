@@ -9,19 +9,25 @@ namespace VcbFieldExport
         {
             // How to obtain a TeamSnap Bearer token for accessing the service
             //
-            // Documentation
+            // Documentation links
             // https://www.teamsnap.com/documentation/apiv3/getting-started
             // https://www.teamsnap.com/documentation/apiv3/authorization
             //
             // This program uses the Token Authentication Flow as it's not a web-based application
-            // I couldn't get the https://auth.teamsnap.com/oauth/authorize endpoint to work from code here.
-            // But I was able to get a Bearer token this way:
-            // * Open https://auth.teamsnap.com/ in the web browser (and sign in if necessary)
-            // * Click on your name, then Your Applications, then Assingr Consistency Checker.
-            // * Right-click on the "Authorize" button, copy the URL, but change the response_type URL
-            // parameter to token when it's pasted back into the address bar
-            // * in the redirect URL, the server sends back an access token in the address bar, which is the
-            // Bearer token
+            // But I couldn't get the https://auth.teamsnap.com/oauth/authorize endpoint to work from
+            // code here.  However, I was able to get a perpertual Bearer token by following these steps:
+            //
+            // 1. Open https://auth.teamsnap.com/ in the web browser, and sign in if necessary
+            // 2. Click on your name, then Your Applications, then Assignr Consistency Checker.
+            // 3. Right-click on the "Authorize" button, copy the URL, but change the response_type URL
+            //    parameter to "token" when it's pasted back into the address bar
+            // 4. in the redirect URL, the server sends back an access token in the address bar, which is
+            //    the Bearer token
+            //
+            // The above steps can be implemented in code but I couldn't figure out how to read back
+            // the token from the redirect URI.  I'm sure that's possible, I just don't know how.
+            // The Web Application flow also uses a redirect URI, which has the same problem as above:
+            // I don't know how to get that back into this program.
             mBearerToken = File.ReadAllText("TeamsnapBearerToken.txt");
             mLogger = logger;
         }
