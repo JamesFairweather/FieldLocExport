@@ -260,14 +260,14 @@ namespace VcbFieldExport
                 }
                 else if (IGNORED_GAMES.Find(e => e.location == game.location && e.startTime == game.startTime) == null) {
                     ++inconsistentGames;
-                    mLogger.WriteLine($"A game on the public schedule is not in Assignr: {game.startTime.ToLocalTime()} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
+                    mLogger.WriteLine($"A game on the public schedule is not in Assignr: {game.startTime.ToLocalTime().ToString("g")} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
                 }
             }
 
             foreach (var game in mGames) {
                 if (IGNORED_GAMES.Find(e => e.location == game.location && e.startTime == game.startTime) == null) {
                     ++inconsistentGames;
-                    mLogger.WriteLine($"An Assignr game is not on the public game schedule: {game.startTime.ToLocalTime()} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
+                    mLogger.WriteLine($"An Assignr game is not on the public game schedule: {game.startTime.ToLocalTime().ToString("g")} at {game.location} ({game.visitingTeam} @ {game.homeTeam}).");
                 }
             }
 

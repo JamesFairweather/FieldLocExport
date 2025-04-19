@@ -92,7 +92,7 @@ namespace VcbFieldExport
 
             try {
                 calendarService.Events.Insert(googleCalendarEvent, "primary").Execute();
-                mLogger.WriteLine($"Added event {vcbFieldEvent.eventType} on {vcbFieldEvent.startTime.ToLocalTime()} for team {vcbFieldEvent.homeTeam}");
+                mLogger.WriteLine($"Added event {vcbFieldEvent.eventType} on {vcbFieldEvent.startTime.ToLocalTime().ToString("g")} for team {vcbFieldEvent.homeTeam}");
             }
             catch (Exception ex) {
                 mLogger.WriteLine(ex.ToString());
@@ -206,7 +206,7 @@ namespace VcbFieldExport
                         try
                         {
                             calendarService.Events.Delete("primary", e.googleEventId).Execute();
-                            mLogger.WriteLine($"Deleted event {e.eventType} on {e.startTime.ToLocalTime()} for team {e.homeTeam}");
+                            mLogger.WriteLine($"Deleted event {e.eventType} on {e.startTime.ToLocalTime().ToString("g")} for team {e.homeTeam}");
                         }
                         catch (Exception ex)
                         {

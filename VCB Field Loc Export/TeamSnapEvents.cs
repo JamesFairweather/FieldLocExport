@@ -174,7 +174,7 @@ namespace VcbFieldExport
                 mLogger.WriteLine("Some games are missing from a VCB opponent's TeamSnap schedule");
 
                 foreach(VcbFieldEvent e in nonLeagueUnmatchedGamesBetweenVcbTeams) {
-                    mLogger.WriteLine($"Location {e.location} and Date: {e.startTime.ToLocalTime()}.  Home team: {e.homeTeam}.  Visiting team: {e.visitingTeam}");
+                    mLogger.WriteLine($"Location {e.location} and Date: {e.startTime.ToLocalTime().ToString("g")}.  Home team: {e.homeTeam}.  Visiting team: {e.visitingTeam}");
                 }
             }
         }
