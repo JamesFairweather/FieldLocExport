@@ -102,17 +102,17 @@ namespace VcbFieldExport
 
         public void FetchEventsFromService(string siteId)
         {
-            int totalPages = -1;
-            int currentPage = 0;
+            int totalPages = int.MaxValue;
+            int currentPage = 1;
 
             mLogger.WriteLine("Fetching games from Assignr...");
 
-            while (currentPage != totalPages)
+            while (currentPage <= totalPages)
             {
-                string gamesUri = $"https://api.assignr.com/api/v2/sites/{siteId}/games?page={currentPage + 1}&limit=50&search[start_date]={DateTime.Today.ToString("yyyy-MM-dd")}";
+                string gamesUri = $"https://api.assignr.com/api/v2/sites/{siteId}/games?page={currentPage}&search[start_date]={DateTime.Today.ToString("yyyy-MM-dd")}";
 
                 HttpRequestMessage msg = new HttpRequestMessage(HttpMethod.Get, gamesUri);
-                msg.Headers.Add("accept", "application/json");
+                msg.Headers.Add("accept", "application/vnd.assignr.v2.hal+json");
                 msg.Headers.Add("authorization", $"Bearer {mBearerToken}");
 
                 HttpResponseMessage gamesResponse = mHttpClient.Send(msg);
@@ -132,11 +132,7 @@ namespace VcbFieldExport
                     throw new Exception("Unexpected response from Assignr service");
                 }
 
-                if (totalPages == -1)
-                {
-                    JToken? a = jsonRoot["page"]["pages"];
-                    totalPages = int.Parse(a.ToString());
-                }
+                totalPages = int.Parse(jsonRoot["page"]["pages"].ToString());
 
                 JArray gameList = jsonRoot["_embedded"]["games"] as JArray;
 
@@ -233,7 +229,7 @@ namespace VcbFieldExport
                     mGames.Add(new VcbFieldEvent(VcbFieldEvent.Type.Game, teamSnapVenue, start, homeTeam, awayTeam, true, start.AddHours(2)));
                 }
 
-                currentPage = int.Parse(jsonRoot["page"]["current_page"].ToString());
+                ++currentPage;
             }
         }
 
