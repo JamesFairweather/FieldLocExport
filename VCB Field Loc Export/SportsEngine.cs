@@ -131,9 +131,10 @@ namespace VcbFieldExport
                     DateTime endTime = DateTime.Parse(strEndTime).ToUniversalTime();
                     string homeTeam = (string)e["eventTeams"][0]["team"]["name"];
                     string visitingTeam = (string)e["eventTeams"][1]["team"]["name"];
+                    string division = string.Empty;
                     bool officialsRequired = homeTeam.StartsWith("MINB") || homeTeam.StartsWith("MINA") || homeTeam.StartsWith("MAJ");
 
-                    mGames.Add(new VcbFieldEvent(VcbFieldEvent.Type.Game, location, startTime, homeTeam, visitingTeam, officialsRequired, endTime, string.Empty));
+                    mGames.Add(new VcbFieldEvent(location, startTime, division, homeTeam, visitingTeam, officialsRequired));
                 }
 
                 if (mGames.Count == eventCount) {

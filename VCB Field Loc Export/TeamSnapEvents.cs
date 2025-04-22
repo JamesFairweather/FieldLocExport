@@ -113,7 +113,6 @@ namespace VcbFieldExport
                     string thisTeam = formatted_title_for_multi_team.Remove(index, formatted_title.Length).Trim();
                     string homeTeam = string.Empty;
                     string visitingTeam = string.Empty;
-                    string eventDescription = string.Empty;
                     bool addGameToEventList = true;
 
                     if (teamSnapEventFields[(JValue)"is_game"] == "True")
@@ -156,7 +155,7 @@ namespace VcbFieldExport
 
                             if (oppositeGameFound == null) {
                                 // First instance of this game.  We should find another one in their opponent's TeamSnap schedule later
-                                nonLeagueUnmatchedGamesBetweenVcbTeams.Add(new(VcbFieldEvent.Type.Game, location, startTime, homeTeam, visitingTeam, true, endTime, eventDescription));
+                                nonLeagueUnmatchedGamesBetweenVcbTeams.Add(new(location, startTime, string.Empty, homeTeam, visitingTeam, true));
                             }
                             else {
                                 // This game was added from the other team's schedule, so we can remove it from the unmatched list
@@ -165,13 +164,11 @@ namespace VcbFieldExport
                         }
 
                         if (addGameToEventList) {
-                            mGames.Add(new VcbFieldEvent(VcbFieldEvent.Type.Game, location, startTime, homeTeam, visitingTeam, true, endTime, eventDescription));
+                            mGames.Add(new VcbFieldEvent(location, startTime, string.Empty, homeTeam, visitingTeam, true));
                         }
                     }
                     else {
-                        eventDescription = formatted_title;
-                        homeTeam = thisTeam;
-                        mPractices.Add(new VcbFieldEvent(VcbFieldEvent.Type.Practice, location, startTime, homeTeam, visitingTeam, false, endTime, eventDescription));
+                        mPractices.Add(new VcbFieldEvent(location, startTime, endTime, thisTeam, formatted_title));
                     }
                 }
             }

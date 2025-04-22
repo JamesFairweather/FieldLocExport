@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +21,7 @@ namespace VcbFieldExport {
             eventType = Type.Practice;
             location = string.Empty;
             startTime = DateTime.MinValue;
+            division = string.Empty;
             homeTeam = string.Empty;
             visitingTeam = string.Empty;
             endTime = DateTime.MinValue;
@@ -28,23 +30,38 @@ namespace VcbFieldExport {
             officialsRequired = false;
         }
 
-        public VcbFieldEvent(Type eventType, string loc, DateTime start, string homeTeam, string visitingTeam, bool officialsRequired, DateTime end, string description = "", string googleEventId = "")
+        public VcbFieldEvent(string loc, DateTime start, string division, string homeTeam, string visitingTeam, bool officialsRequired)
         {
-            this.eventType = eventType;
+            this.eventType = Type.Game;
             this.location = loc;
             this.startTime = start;
+            this.division = division;
             this.homeTeam = homeTeam;
             this.visitingTeam = visitingTeam;
-            // Games are always set to 2 hours in length.  Non-games can be any length of time
-            this.endTime = eventType == Type.Game ? startTime.AddHours(2) : end;
-            this.description = description;
-            this.googleEventId = googleEventId;
+            this.endTime = startTime.AddHours(2);
+            this.description = string.Empty;
+            this.googleEventId = string.Empty;
             this.officialsRequired = officialsRequired;
+        }
+        public VcbFieldEvent(string loc, DateTime start, DateTime end, string team, string description)
+        {
+            this.eventType = Type.Practice;
+            this.location = loc;
+            this.startTime = start;
+            this.endTime = end;
+            this.homeTeam = team;
+            this.description = description;
+
+            this.division = string.Empty;
+            this.visitingTeam = string.Empty;
+            this.googleEventId = string.Empty;
+            this.officialsRequired = false;
         }
 
         public Type eventType { get; set; }
         public string location { get; set; }
         public DateTime startTime { get; set; }
+        public string division { get; set; }
         public string homeTeam { get; set; }
         public string visitingTeam { get; set; }
         public DateTime endTime { get; set; }

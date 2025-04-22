@@ -226,7 +226,7 @@ namespace VcbFieldExport
                         continue;
                     }
 
-                    mGames.Add(new VcbFieldEvent(VcbFieldEvent.Type.Game, teamSnapVenue, start, homeTeam, awayTeam, true, start.AddHours(2)));
+                    mGames.Add(new VcbFieldEvent(teamSnapVenue, start, ageGroup, homeTeam, awayTeam, true));
                 }
 
                 ++currentPage;

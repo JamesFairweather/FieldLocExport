@@ -85,10 +85,16 @@ namespace VcbFieldExport
             googleCalendarEvent.End = new EventDateTime()
             { DateTimeDateTimeOffset = vcbFieldEvent.endTime.ToLocalTime() };
 
-            googleCalendarEvent.Summary = vcbFieldEvent.eventType.ToString() + " : " + vcbFieldEvent.homeTeam;
-            googleCalendarEvent.Description = (vcbFieldEvent.eventType == VcbFieldEvent.Type.Practice ? vcbFieldEvent.description : "vs. " + vcbFieldEvent.visitingTeam);
+            if (vcbFieldEvent.eventType == VcbFieldEvent.Type.Practice) {
+                googleCalendarEvent.Summary = "Practice: " + vcbFieldEvent.homeTeam;
+                googleCalendarEvent.Description = vcbFieldEvent.description;
+            } else {
+                googleCalendarEvent.Summary = "Game: ";
+                googleCalendarEvent.Description = $"{vcbFieldEvent.visitingTeam} @ {vcbFieldEvent.homeTeam}";
 
-            Event result = new ();
+            }
+
+            Event result = new();
 
             try {
                 calendarService.Events.Insert(googleCalendarEvent, "primary").Execute();
