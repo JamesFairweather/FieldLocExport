@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace VcbFieldExport
 {
@@ -48,6 +49,7 @@ namespace VcbFieldExport
             mLogger.WriteLine("Fetching events from TeamSnap...");
 
             List<VcbFieldEvent> nonLeagueUnmatchedGamesBetweenVcbTeams = new();
+            Regex teamRegex = new(@"VCB\s(Expos\s)?(?<Division>[^\s]+)\s(?<Team>.+)");
 
             using HttpClient client = new();
             client.DefaultRequestHeaders.Accept.Clear();
@@ -145,6 +147,43 @@ namespace VcbFieldExport
                             }
                         }
 
+                        string division = string.Empty;
+
+                        Match match = teamRegex.Match(thisTeam);
+
+                        if (match.Success)
+                        {
+                            division = match.Groups["Division"].Value;
+
+                            if (division == "16U") {
+                                division = "15U";   // Girls Red Sox team is named "16U" because the Girls can be 1 year older
+                            }
+
+                            string team = match.Groups["Team"].Value;
+                            if (team.StartsWith("AAA")) {
+                                division += " AAA";     // 18U AAA Blue, 18U AAA White, 15U AAA, 13U AAA
+                            }
+                            else if (team == "AA Blue" || team == "AA Red" || team == "AA") {
+                                division += " AA";      // Expos 15U AA Blue, 15U AA Red, 13U AA
+                            }
+                            else if (division == "13U" || division == "15U") {
+                                division += " A";
+                            }
+                            else if (division == "18U") {
+                                division += " AA";
+                            }
+                            else if (division == "26U") {
+                                // no action is required
+                            }
+                            else {
+                                throw new Exception($"Unexpected division and/or team name found while reading the TeamSnap events: {thisTeam}");
+                            }
+                        }
+
+                        if (string.IsNullOrEmpty(division)) {
+                            throw new Exception($"Unable to extract division information for team {thisTeam}");
+                        }
+
                         if (!leagueControlledGame
                             && homeTeam.StartsWith("VCB")
                             && visitingTeam.StartsWith("VCB")
@@ -155,7 +194,7 @@ namespace VcbFieldExport
 
                             if (oppositeGameFound == null) {
                                 // First instance of this game.  We should find another one in their opponent's TeamSnap schedule later
-                                nonLeagueUnmatchedGamesBetweenVcbTeams.Add(new(location, startTime, string.Empty, homeTeam, visitingTeam, true));
+                                nonLeagueUnmatchedGamesBetweenVcbTeams.Add(new(location, startTime, division, homeTeam, visitingTeam, true));
                             }
                             else {
                                 // This game was added from the other team's schedule, so we can remove it from the unmatched list
@@ -164,7 +203,7 @@ namespace VcbFieldExport
                         }
 
                         if (addGameToEventList) {
-                            mGames.Add(new VcbFieldEvent(location, startTime, string.Empty, homeTeam, visitingTeam, true));
+                            mGames.Add(new VcbFieldEvent(location, startTime, division, homeTeam, visitingTeam, true));
                         }
                     }
                     else {

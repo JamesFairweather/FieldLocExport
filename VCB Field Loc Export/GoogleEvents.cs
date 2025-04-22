@@ -13,10 +13,10 @@ namespace VcbFieldExport
     //   as of April 7, 2025, tokens are valid for 2 weeks.  I'd prefer to have a token that has no expiration time
     internal partial class Program
     {
-        [GeneratedRegex(@"(?<EventType>.+)\s:\s(?<homeTeam>.+)")]
+        [GeneratedRegex(@"(?<EventType>.+):\s(?<team>.+)")]
         public static partial Regex SummaryRegex();
 
-        [GeneratedRegex(@"vs\.\s(?<visitingTeam>.+)")]
+        [GeneratedRegex(@"(?<visitingTeam>.+)\s@\s(?<homeTeam>.+)")]
         public static partial Regex DescriptionRegex();
     }
 
@@ -89,16 +89,20 @@ namespace VcbFieldExport
                 googleCalendarEvent.Summary = "Practice: " + vcbFieldEvent.homeTeam;
                 googleCalendarEvent.Description = vcbFieldEvent.description;
             } else {
-                googleCalendarEvent.Summary = "Game: ";
+                googleCalendarEvent.Summary = "Game: " + vcbFieldEvent.division;
                 googleCalendarEvent.Description = $"{vcbFieldEvent.visitingTeam} @ {vcbFieldEvent.homeTeam}";
-
             }
 
             Event result = new();
 
             try {
                 calendarService.Events.Insert(googleCalendarEvent, "primary").Execute();
-                mLogger.WriteLine($"Added event {vcbFieldEvent.eventType} on {vcbFieldEvent.startTime.ToLocalTime().ToString("g")} for team {vcbFieldEvent.homeTeam}");
+                if (vcbFieldEvent.eventType == VcbFieldEvent.Type.Practice) {
+                    mLogger.WriteLine($"Added Practice on {vcbFieldEvent.startTime.ToLocalTime().ToString("g")} for team {vcbFieldEvent.homeTeam}");
+                }
+                else {
+                    mLogger.WriteLine($"Added Game on {vcbFieldEvent.startTime.ToLocalTime().ToString("g")}: {vcbFieldEvent.visitingTeam} @ {vcbFieldEvent.homeTeam}");
+                }
             }
             catch (Exception ex) {
                 mLogger.WriteLine(ex.ToString());
@@ -151,7 +155,20 @@ namespace VcbFieldExport
                     if (match.Success)
                     {
                         vcbFieldEvent.eventType = match.Groups["EventType"].Value == "Practice" ? VcbFieldEvent.Type.Practice : VcbFieldEvent.Type.Game;
-                        vcbFieldEvent.homeTeam = match.Groups["homeTeam"].Value;
+                        if (vcbFieldEvent.eventType == VcbFieldEvent.Type.Practice) {
+                            vcbFieldEvent.homeTeam = match.Groups["team"].Value;
+                        }
+                        else {
+                            // Game: get the teams from the event description property
+                            match = Program.DescriptionRegex().Match(eventItem.Description);
+                            if (match.Success) {
+                                vcbFieldEvent.homeTeam = match.Groups["homeTeam"].Value ?? string.Empty;
+                                vcbFieldEvent.visitingTeam = match.Groups["visitingTeam"].Value ?? string.Empty;
+                            }
+                            else {
+                                mLogger.WriteLine("Could not parse the description for a Google event");
+                            }
+                        }
                     }
                     else
                     {
@@ -160,21 +177,6 @@ namespace VcbFieldExport
 
                     vcbFieldEvent.startTime = (eventItem.Start.DateTimeDateTimeOffset ?? DateTime.MinValue).UtcDateTime;
                     vcbFieldEvent.endTime = (eventItem.End.DateTimeDateTimeOffset ?? DateTime.MinValue).UtcDateTime;
-
-                    if (vcbFieldEvent.eventType == VcbFieldEvent.Type.Practice) {
-                        vcbFieldEvent.description = eventItem.Description;
-                    }
-                    else {
-                        match = Program.DescriptionRegex().Match(eventItem.Description);
-                        if (match.Success)
-                        {
-                            vcbFieldEvent.visitingTeam = match.Groups["visitingTeam"].Value ?? string.Empty;
-                        }
-                        else
-                        {
-                            mLogger.WriteLine("Could not parse the description for a Google event");
-                        }
-                    }
 
                     // Record the event Id in case we need to delete it
                     vcbFieldEvent.googleEventId = eventItem.Id;
