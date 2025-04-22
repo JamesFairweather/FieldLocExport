@@ -51,7 +51,7 @@ namespace VcbFieldExport
             string[] Scopes = { CalendarService.Scope.Calendar };
             string ApplicationName = "Google Calendar Access";
 
-            string credentials = locationName == "Nanaimo Park N diamond" ? "nanaimoNorth_credentials.json" : "google_credentials.json";
+            string credentials = "field_credentials.json";
 
             using (var stream =
               new FileStream(credentials, FileMode.Open, FileAccess.Read))
