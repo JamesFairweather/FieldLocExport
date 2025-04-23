@@ -29,6 +29,7 @@ namespace VcbFieldExport
             "Hillcrest Park SW diamond",
             "Nanaimo Park N diamond",
             "Nanaimo Park SE diamond",
+            "Nanaimo Park batting cage",
             "Trafalgar Park",
         };
 
