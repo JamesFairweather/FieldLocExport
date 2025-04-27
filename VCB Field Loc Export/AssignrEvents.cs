@@ -399,6 +399,7 @@ namespace VcbFieldExport
             { "15U AA", new Dictionary<string, string>{
                 { "Vancouver Mounties Blue", "VCB Expos 15U AA Blue" },
                 { "Vancouver Mounties Red", "VCB 15U AA Red" },
+                { "Burnaby Braves", "North Burnaby" },
             }},
             { "15U AAA", new Dictionary<string, string> {
                 { "Vancouver Mounties", "VCB 15U AAA"},
