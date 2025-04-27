@@ -1,14 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using VcbFieldExport;
-using static Google.Apis.Requests.BatchRequest;
 
 namespace VcbFieldExport
 {
@@ -25,6 +17,91 @@ namespace VcbFieldExport
 
         [JsonProperty("client_secret")]
         public string Secret { get; set; }
+    }
+
+    internal class Data
+    {
+        public Data() {
+            events = new();
+        }
+
+        public Events events { get; set; }
+    }
+
+    internal class Events
+    {
+        public Events() {
+            pageInformation = new();
+            results = new();
+        }
+
+        public PageInformation pageInformation { get; set; }
+        public List<Result> results { get; set; }
+    }
+
+    internal class EventTeam
+    {
+        public EventTeam()
+        {
+            team = new();
+            homeTeam = true;
+        }
+
+        public Team team { get; set; }
+        public bool homeTeam { get; set; }
+    }
+
+    internal class Location
+    {
+        public Location() {
+            name = string.Empty;
+        }
+
+        public string name { get; set; }
+    }
+
+    internal class PageInformation
+    {
+        public int pages { get; set; }
+        public int count { get; set; }
+        public int page { get; set; }
+        public int perPage { get; set; }
+    }
+
+    internal class Result
+    {
+        Result()
+        {
+            name = string.Empty;
+            type = string.Empty;
+            location = new();
+            eventTeams = new();
+        }
+
+        public string name { get; set; }
+        public string type { get; set; }
+        public DateTime start { get; set; }
+        public DateTime end { get; set; }
+        public Location location { get; set; }
+        public List<EventTeam> eventTeams { get; set; }
+    }
+
+    internal class EventQueryResult
+    {
+        public EventQueryResult() {
+            data = new();
+        }
+
+        public Data data { get; set; }
+    }
+
+    internal class Team
+    {
+        public Team() {
+            name = string.Empty; 
+        }
+
+        public string name { get; set; }
     }
 
     internal class SportsEngine
@@ -88,13 +165,12 @@ namespace VcbFieldExport
             string results = @"results { name type start end location { name } eventTeams { team { name } homeTeam } } }";
 
             int pageNumber = 1;
-            int pageSize = 100;
             int eventCount = 0;
 
             while (true) {
 
                 // If we want to put these events on a public calendar, we'll need GAMEs and EVENTs for the calendarEventType
-                string query = $"query events {{ events( organizationId: {LMB_ORGANIZATION_ID} from: \\\"{DateTime.Today:O}\\\" perPage: {pageSize} page: {pageNumber} calendarEventType: GAME) {{ {pageInfo} {results} }}";
+                string query = $"query events {{ events( organizationId: {LMB_ORGANIZATION_ID} from: \\\"{DateTime.Today:O}\\\" perPage: 100 page: {pageNumber} calendarEventType: GAME) {{ {pageInfo} {results} }}";
 
                 string uri = "https://api.sportsengine.com/graphql";
                 HttpRequestMessage msg = new HttpRequestMessage(HttpMethod.Post, uri);
@@ -113,28 +189,20 @@ namespace VcbFieldExport
                 // bug because it's ignoring the "Z" suffix, which means the timestamp is in UTC, not local
                 JsonSerializerSettings settings = new();
                 settings.DateParseHandling = DateParseHandling.None;
-                JObject jsonRoot = JsonConvert.DeserializeObject(jsonResponse, settings) as JObject ?? new JObject();
-                JObject? pageInformation = jsonRoot["data"]["events"]["pageInformation"] as JObject;
+                EventQueryResult eventQueryResult = JsonConvert.DeserializeObject<EventQueryResult>(jsonResponse) ?? new EventQueryResult();
 
-                eventCount = (int)pageInformation["count"];
-                if (pageNumber != (int)pageInformation["page"]) {
+                eventCount = eventQueryResult.data.events.pageInformation.count;
+
+                if (pageNumber != eventQueryResult.data.events.pageInformation.page) {
                     throw new Exception("Unexpected page returned");
                 }
 
-                JArray eventList = jsonRoot["data"]["events"]["results"] as JArray;
-
-                foreach (JObject e in eventList) {
-                    string location = (string)e["location"]["name"];
-                    string strStartTime = (string)e["start"];
-                    DateTime startTime = DateTime.Parse(strStartTime).ToUniversalTime();
-                    string strEndTime = (string)e["start"];
-                    DateTime endTime = DateTime.Parse(strEndTime).ToUniversalTime();
-                    string homeTeam = (string)e["eventTeams"][0]["team"]["name"];
-                    string visitingTeam = (string)e["eventTeams"][1]["team"]["name"];
-                    string division = string.Empty;
+                foreach (Result e in eventQueryResult.data.events.results) {
+                    string homeTeam = e.eventTeams[0]?.team?.name ?? "TBD";
+                    string visitingTeam = e.eventTeams[1]?.team?.name ?? "TBD";
                     bool officialsRequired = homeTeam.StartsWith("MINB") || homeTeam.StartsWith("MINA") || homeTeam.StartsWith("MAJ");
 
-                    mGames.Add(new VcbFieldEvent(location, startTime, division, homeTeam, visitingTeam, officialsRequired));
+                    mGames.Add(new VcbFieldEvent(e.location.name ?? "TBD", e.start, string.Empty, homeTeam, visitingTeam, officialsRequired));
                 }
 
                 if (mGames.Count == eventCount) {

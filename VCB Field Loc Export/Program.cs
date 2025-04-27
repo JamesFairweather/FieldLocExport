@@ -6,6 +6,7 @@ namespace VcbFieldExport
         static int Main(string[] args)
         {
             DateTime now = DateTime.Now;
+            int errors = 0;
 
             string logFileName = $"fieldSync.{now.Year}-{now.Month}-{now.Day}.log";
             StreamWriter logger = new StreamWriter(logFileName, false);
@@ -14,7 +15,7 @@ namespace VcbFieldExport
             teamSnap.FetchEvents();
 
             // Find conflicts in the game/practice schedule
-            int errors = teamSnap.FindConflicts();
+            errors += teamSnap.FindConflicts();
 
             string ASSIGNR_ID_LMB = "627";
             string ASSINGR_ID_VCB = "12381";

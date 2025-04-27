@@ -112,7 +112,7 @@ namespace VcbFieldExport
 
         List<VcbFieldEvent> fetchEvents(string location, out CalendarService calendarService)
         {
-            Events events;
+            Google.Apis.Calendar.v3.Data.Events events;
 
             try {
                 calendarService = GetGoogleCalendarService(location);

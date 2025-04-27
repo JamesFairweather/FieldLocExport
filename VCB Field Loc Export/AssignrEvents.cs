@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using static Google.Apis.Requests.BatchRequest;
+using System.Xml.Linq;
 
 namespace VcbFieldExport
 {
@@ -42,6 +44,64 @@ namespace VcbFieldExport
 
         [JsonProperty("client_secret")]
         public string Secret { get; set; }
+    }
+
+    internal class Game
+    {
+        public Game()
+        {
+            start_time = new();
+            age_group = string.Empty;
+            home_team = string.Empty;
+            away_team = string.Empty;
+            game_type = string.Empty;
+            cancelled = false;
+            _embedded = new();
+        }
+        public DateTime start_time { get; set; }
+        public string age_group { get; set; }
+        public string home_team { get; set; }
+        public string away_team { get; set; }
+        public string game_type { get; set; }
+        public bool cancelled { get; set; }
+        public Embedded _embedded { get; set; }
+    }
+
+
+    internal class Page
+    {
+        public int pages { get; set; }
+    }
+
+    internal class Venue
+    {
+        public Venue()
+        {
+            name = string.Empty;
+        }
+        public string name { get; set; }
+    }
+
+    internal class Embedded
+    {
+        public Embedded() {
+            games = new();
+            venue = new();
+        }
+        public List<Game> games { get; set; }
+        public Venue venue { get; set; }
+    }
+
+    internal class AssignrResponseRoot
+    {
+        public AssignrResponseRoot()
+        {
+            page = new();
+            _embedded = new();
+        }
+
+        public Page page { get; set; }
+        public Embedded _embedded { get; set; }
     }
 
     public class AssignrEvents
@@ -122,44 +182,38 @@ namespace VcbFieldExport
                     throw new Exception("Failed to retrieve game information from Assignr");
                 }
 
-                string result = gamesResponse.Content.ReadAsStringAsync().Result;
+                string jsonResponse = gamesResponse.Content.ReadAsStringAsync().Result;
 
                 JsonSerializerSettings settings = new();
                 settings.DateParseHandling = DateParseHandling.None;
-                JObject? jsonRoot = JsonConvert.DeserializeObject(result, settings) as JObject;
+                AssignrResponseRoot jsonRoot = JsonConvert.DeserializeObject<AssignrResponseRoot>(jsonResponse) ?? new();
 
                 if (jsonRoot == null) {
                     throw new Exception("Unexpected response from Assignr service");
                 }
 
-                totalPages = int.Parse(jsonRoot["page"]["pages"].ToString());
+                totalPages = jsonRoot.page.pages;
 
-                JArray gameList = jsonRoot["_embedded"]["games"] as JArray;
-
-                foreach (JObject game in gameList)
+                foreach (Game game in jsonRoot._embedded.games)
                 {
-                    string startTime = game["start_time"].ToString();
-                    string ageGroup = game["age_group"].ToString();
-                    string homeTeam = game["home_team"].ToString();
-                    string awayTeam = game["away_team"].ToString();
-                    string assignrVenue = game["_embedded"]["venue"]["name"].ToString();
-                    string gameType = (game["game_type"] ?? string.Empty).ToString();
-                    bool isCancelled = (bool)game["cancelled"];
+                    string homeTeam = game.home_team;
+                    string awayTeam = game.away_team;
+                    string age_group = game.age_group ?? string.Empty;
 
-                    if (isCancelled) {
+                    if (game.cancelled) {
                         continue;
                     }
 
-                    if (gameType == "Playoffs") {
+                    if (game.game_type == "Playoffs") {
                         continue;       // Ignore playoff games until the games are added to the public calendars
                     }
 
-                    if (ageGroup == "Mentor") {
+                    if (age_group == "Mentor") {
                         // This is a placeholder for an umpire mentor assignment, it doesn't represent a game
                         continue;
                     }
 
-                    if (ageGroup == "13U A")
+                    if (age_group == "13U A")
                     {
                         homeTeam = "VCB 13U " + homeTeam;
 
@@ -169,64 +223,64 @@ namespace VcbFieldExport
                         }
                         // The visiting team is a non-org team, TeamSnap & Assignr should have the same name
                     }
-                    else if (ageGroup == "15U A")
+                    else if (age_group == "15U A")
                     {
-                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[ageGroup].ContainsKey(homeTeam))
+                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[age_group].ContainsKey(homeTeam))
                         {
-                            homeTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[ageGroup][homeTeam];
+                            homeTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][homeTeam];
                         }
                         else
                         {
                             homeTeam = "VCB 15U " + homeTeam;
                         }
 
-                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[ageGroup].ContainsKey(awayTeam))
+                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[age_group].ContainsKey(awayTeam))
                         {
-                            awayTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[ageGroup][awayTeam];
+                            awayTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][awayTeam];
                         }
                         else
                         {
                             awayTeam = "VCB 15U " + awayTeam;
                         }
                     }
-                    else if (ageGroup == "18U AA")
+                    else if (game.age_group == "18U AA")
                     {
                         homeTeam = "VCB 18U " + homeTeam;
                         awayTeam = "VCB 18U " + awayTeam;
                     }
-                    else if (ASSIGNR_TO_PUBLIC_NAMEMAP.ContainsKey(ageGroup))
+                    else if (ASSIGNR_TO_PUBLIC_NAMEMAP.ContainsKey(age_group))
                     {
-                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[ageGroup].ContainsKey(homeTeam))
+                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[age_group].ContainsKey(homeTeam))
                         {
-                            homeTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[ageGroup][homeTeam];
+                            homeTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][homeTeam];
                         }
 
-                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[ageGroup].ContainsKey(awayTeam))
+                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[age_group].ContainsKey(awayTeam))
                         {
-                            awayTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[ageGroup][awayTeam];
+                            awayTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][awayTeam];
                         }
                         // The visiting team is a non-VCB team, TeamSnap & Assignr should have the same name
                     }
                     else
                     {
-                        throw new Exception($"Unhandled age group {ageGroup} was sent by Assignr.  The program needs to be updated to handle this.");
+                        throw new Exception($"Unhandled age group {game.age_group} was sent by Assignr.  The program needs to be updated to handle this.");
                     }
 
-                    DateTime start = DateTime.Parse(startTime).ToUniversalTime();
-
-                    if (!ASSIGNR_TO_TEAMSNAP_VENUE_MAP.ContainsKey(assignrVenue))
+                    if (!ASSIGNR_TO_TEAMSNAP_VENUE_MAP.ContainsKey(game._embedded.venue.name))
                     {
-                        // mLogger.WriteLine($"Warning: A game in Assignr is hosted on a field not tracked publically: {assignrVenue} on {startTime}.");
+                        // mLogger.WriteLine($"Warning: A game in Assignr is hosted on a field not tracked publically: {game._embedded.venue.name} on {startTime}.");
                         continue;
                     }
 
-                    string teamSnapVenue = ASSIGNR_TO_TEAMSNAP_VENUE_MAP[assignrVenue];
+                    string teamSnapVenue = ASSIGNR_TO_TEAMSNAP_VENUE_MAP[game._embedded.venue.name];
+                    DateTime start = game.start_time.ToUniversalTime();
+
 
                     if (IGNORED_GAMES.Find(e => e.location == teamSnapVenue && e.startTime == start) != null) {
                         continue;
                     }
 
-                    mGames.Add(new VcbFieldEvent(teamSnapVenue, start, ageGroup, homeTeam, awayTeam, true));
+                    mGames.Add(new VcbFieldEvent(teamSnapVenue, start, game.age_group ?? string.Empty, homeTeam, awayTeam, true));
                 }
 
                 ++currentPage;
@@ -245,7 +299,7 @@ namespace VcbFieldExport
                     continue;
                 }
 
-                VcbFieldEvent e = mGames.Find(e =>
+                VcbFieldEvent? e = mGames.Find(e =>
                     e.location == game.location &&
                     e.startTime == game.startTime &&
                     e.homeTeam == game.homeTeam &&

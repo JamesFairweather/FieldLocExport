@@ -1,9 +1,54 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using Google.Apis.Util;
 
 namespace VcbFieldExport
 {
+    public class Datum
+    {
+        public Datum()
+        {
+            name = string.Empty;
+            value = string.Empty;
+        }
+
+        public string name { get; set; }
+        public string value { get; set; }
+    }
+
+    public class Item
+    {
+        Item()
+        {
+            data = new();
+        }
+
+        public List<Datum> data { get; set; }
+    }
+
+    public class Collection
+    {
+        public Collection()
+        {
+            version = string.Empty;
+            items = new();
+        }
+        public string version { get; set; }
+        public List<Item> items { get; set; }
+    }
+
+    public class TeamSnapResponseRoot
+    {
+        public TeamSnapResponseRoot()
+        {
+            collection = new();
+        }
+
+        public Collection collection { get; set; }
+    }
+
+
     class TeamSnapEvents
     {
         public TeamSnapEvents(StreamWriter logger)
@@ -59,53 +104,25 @@ namespace VcbFieldExport
             {
                 string jsonResponse = client.GetStringAsync($"https://api.teamsnap.com/v3/events/search?location_id={teamSnapLocationId}&started_after={DateTime.Today:O}").Result;
 
-                JObject? jsonRoot = JsonConvert.DeserializeObject(jsonResponse) as JObject;
+                TeamSnapResponseRoot jsonRoot = JsonConvert.DeserializeObject<TeamSnapResponseRoot>(jsonResponse) ?? new();
 
-                JArray eventList = jsonRoot["collection"]["items"] as JArray;
-
-                Dictionary<JValue, string> teamSnapEventFields = new Dictionary<JValue, string> {
-                    { (JValue)"location_name", "" },
-                    { (JValue)"start_date", "" },
-                    { (JValue)"end_date", "" },
-                    { (JValue)"is_game", "" },                 // boolean
-                    { (JValue)"is_league_controlled", "" },    // boolean
-                    { (JValue)"is_canceled", "" },             // boolean
-                    { (JValue)"game_type", "" },               // Home/Away
-                    { (JValue)"formatted_title", "" },
-                    { (JValue)"formatted_title_for_multi_team", "" },
-                    { (JValue)"opponent_name", "" },
-                };
-
-                foreach (JObject e in eventList)
+                foreach (Item e in jsonRoot.collection.items)
                 {
-                    JArray eventInfo = e["data"] as JArray;
-
-                    // store all the useful properties in a dictionary
-                    foreach (JObject prop in eventInfo)
-                    {
-                        JValue propName = (JValue)prop["name"];
-                        if (teamSnapEventFields.ContainsKey(propName))
-                        {
-                            teamSnapEventFields[propName] = prop["value"].ToString();
-                        }
-                    }
-
-                    if (teamSnapEventFields[(JValue)"is_canceled"] == "True")
+                    if (e.data.Find(x => x.name == "is_cancelled")?.value == "true")
                     {
                         continue;   // skip canceled events
                     }
 
-                    string location = teamSnapEventFields[(JValue)"location_name"];
-                    DateTime startTime = DateTime.Parse(teamSnapEventFields[(JValue)"start_date"]);
+                    string location = e.data.Find(x => x.name == "location_name")?.value ?? "TBD";
+                    DateTime startTime = DateTime.Parse(e.data.Find(x => x.name == "start_date")?.value ?? string.Empty).ToUniversalTime();
                     startTime = startTime.AddSeconds(-startTime.Second);    // sometimes TeamSnap events have non-zero seconds values, not sure why
-                    string endDateString = teamSnapEventFields[(JValue)"end_date"];
-                    DateTime endTime = string.IsNullOrEmpty(endDateString) ? startTime.AddHours(2) : DateTime.Parse(endDateString);
+                    string? endDateString = e.data.Find(x => x.name == "start_date")?.value;
+                    DateTime endTime = (endDateString != null) ? DateTime.Parse(endDateString).ToUniversalTime() : startTime.AddHours(2);
                     endTime = endTime.AddSeconds(-endTime.Second);
-                    string formatted_title = teamSnapEventFields[(JValue)"formatted_title"];
-                    string formatted_title_for_multi_team = teamSnapEventFields[(JValue)"formatted_title_for_multi_team"];
-                    string opponent_name = teamSnapEventFields[(JValue)"opponent_name"];
-                    bool homeGame = teamSnapEventFields[(JValue)"game_type"] == "Home";
-                    bool leagueControlledGame = teamSnapEventFields[(JValue)"is_league_controlled"] == "True";
+                    string formatted_title = e.data.Find(x => x.name == "formatted_title")?.value ?? string.Empty;
+                    string formatted_title_for_multi_team = e.data.Find(x => x.name == "formatted_title_for_multi_team")?.value ?? string.Empty;
+                    string opponent_name = e.data.Find(x => x.name == "opponent_name")?.value ?? string.Empty;
+                    bool leagueControlledGame = e.data.Find(x => x.name == "is_league_controlled")?.value == "true";
 
                     int index = formatted_title_for_multi_team.IndexOf(formatted_title);
                     if (index == -1)
@@ -115,15 +132,17 @@ namespace VcbFieldExport
                     string thisTeam = formatted_title_for_multi_team.Remove(index, formatted_title.Length).Trim();
                     string homeTeam = string.Empty;
                     string visitingTeam = string.Empty;
-                    bool addGameToEventList = true;
 
-                    if (teamSnapEventFields[(JValue)"is_game"] == "True")
+                    if (e.data.Find(x => x.name == "is_game")?.value == "true")
                     {
-                        if (homeGame)
+                        bool addGameToEventList;
+
+                        if (e.data.Find(x => x.name == "game_type")?.value == "Home")
                         {
                             // always add home games.
                             homeTeam = thisTeam;
                             visitingTeam = opponent_name;
+                            addGameToEventList = true;
                         }
                         else
                         {
@@ -131,23 +150,20 @@ namespace VcbFieldExport
                             homeTeam = opponent_name;
                             visitingTeam = thisTeam;
 
-                            if (leagueControlledGame || (homeTeam.StartsWith("VCB") && homeTeam != "VCB 15U TBD"))
-                            {
-                                // If the game is controlled by the league, we want to skip adding beause it will be
-                                // added by the home team.
+                            // If the game is controlled by the league, we want to skip adding beause it will be
+                            // added by the home team.
 
-                                // OR, if this is the visiting team's event for a game where the home team is also a VCB team,
-                                // ignore it because the game will be added by the home team's entry.  We only want to
-                                // add this entry if this is a team-controlled game where the home team is NOT a VCB team.
-                                // There are a few games being played on VCB fields where the VCB team is the visiting
-                                // team.  Assignr has these games of course, and we want TeamSnap to show them too.
-                                // Except we still want to add the game if the home team is "VCB 15U TBD" because these are
-                                // Girls team games where their opponent is still to be decided.
-                                addGameToEventList = false;
-                            }
+                            // OR, if this is the visiting team's event for a game where the home team is also a VCB team,
+                            // ignore it because the game will be added by the home team's entry.  We only want to
+                            // add this entry if this is a team-controlled game where the home team is NOT a VCB team.
+                            // There are a few games being played on VCB fields where the VCB team is the visiting
+                            // team.  Assignr has these games of course, and we want TeamSnap to show them too.
+                            // Except we still want to add the game if the home team is "VCB 15U TBD" because these are
+                            // Girls team games where their opponent is still to be decided.
+                            addGameToEventList = !((leagueControlledGame || (homeTeam.StartsWith("VCB") && homeTeam != "VCB 15U TBD")));
                         }
 
-                        string division = string.Empty;
+                        string? division = null;
 
                         Match match = teamRegex.Match(thisTeam);
 
@@ -180,7 +196,7 @@ namespace VcbFieldExport
                             }
                         }
 
-                        if (string.IsNullOrEmpty(division)) {
+                        if (division == null) {
                             throw new Exception($"Unable to extract division information for team {thisTeam}");
                         }
 
@@ -190,7 +206,7 @@ namespace VcbFieldExport
                             && !visitingTeam.Contains("TBD")) {
 
                             // Check that a game between two VCB teams is in _both_ teams' TeamSnap schedules
-                            VcbFieldEvent oppositeGameFound = nonLeagueUnmatchedGamesBetweenVcbTeams.Find(e => e.location == location && e.startTime == startTime && e.homeTeam == homeTeam && e.visitingTeam == visitingTeam);
+                            VcbFieldEvent? oppositeGameFound = nonLeagueUnmatchedGamesBetweenVcbTeams.Find(e => e.location == location && e.startTime == startTime && e.homeTeam == homeTeam && e.visitingTeam == visitingTeam);
 
                             if (oppositeGameFound == null) {
                                 // First instance of this game.  We should find another one in their opponent's TeamSnap schedule later
