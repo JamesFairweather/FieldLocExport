@@ -204,66 +204,69 @@ namespace VcbFieldExport
                         continue;
                     }
 
-                    if (game.game_type == "Playoffs") {
-                        continue;       // Ignore playoff games until the games are added to the public calendars
-                    }
+                    //if (game.game_type == "Playoffs") {
+                    //    continue;       // Ignore playoff games until the games are added to the public calendars
+                    //}
 
                     if (age_group == "Mentor") {
                         // This is a placeholder for an umpire mentor assignment, it doesn't represent a game
                         continue;
                     }
 
-                    if (age_group == "13U A")
+                    if (game.game_type != "Playoffs")
                     {
-                        homeTeam = "VCB 13U " + homeTeam;
+                        if (age_group == "13U A")
+                        {
+                            homeTeam = "VCB 13U " + homeTeam;
 
-                        if (awayTeam == "Dodgers" || awayTeam == "Blue Jays" || awayTeam == "Expos" || awayTeam == "Red Sox" || awayTeam == "Diamondbacks")
-                        {
-                            awayTeam = "VCB 13U " + awayTeam;
+                            if (awayTeam == "Dodgers" || awayTeam == "Blue Jays" || awayTeam == "Expos" || awayTeam == "Red Sox" || awayTeam == "Diamondbacks")
+                            {
+                                awayTeam = "VCB 13U " + awayTeam;
+                            }
+                            // The visiting team is a non-org team, TeamSnap & Assignr should have the same name
                         }
-                        // The visiting team is a non-org team, TeamSnap & Assignr should have the same name
-                    }
-                    else if (age_group == "15U A")
-                    {
-                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[age_group].ContainsKey(homeTeam))
+                        else if (age_group == "15U A")
                         {
-                            homeTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][homeTeam];
+                            if (ASSIGNR_TO_PUBLIC_NAMEMAP[age_group].ContainsKey(homeTeam))
+                            {
+                                homeTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][homeTeam];
+                            }
+                            else
+                            {
+                                homeTeam = "VCB 15U " + homeTeam;
+                            }
+
+                            if (ASSIGNR_TO_PUBLIC_NAMEMAP[age_group].ContainsKey(awayTeam))
+                            {
+                                awayTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][awayTeam];
+                            }
+                            else
+                            {
+                                awayTeam = "VCB 15U " + awayTeam;
+                            }
+                        }
+                        else if (game.age_group == "18U AA")
+                        {
+                            homeTeam = "VCB 18U " + homeTeam;
+                            awayTeam = "VCB 18U " + awayTeam;
+                        }
+                        else if (ASSIGNR_TO_PUBLIC_NAMEMAP.ContainsKey(age_group))
+                        {
+                            if (ASSIGNR_TO_PUBLIC_NAMEMAP[age_group].ContainsKey(homeTeam))
+                            {
+                                homeTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][homeTeam];
+                            }
+
+                            if (ASSIGNR_TO_PUBLIC_NAMEMAP[age_group].ContainsKey(awayTeam))
+                            {
+                                awayTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][awayTeam];
+                            }
+                            // The visiting team is a non-VCB team, TeamSnap & Assignr should have the same name
                         }
                         else
                         {
-                            homeTeam = "VCB 15U " + homeTeam;
+                            throw new Exception($"Unhandled age group {game.age_group} was sent by Assignr.  The program needs to be updated to handle this.");
                         }
-
-                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[age_group].ContainsKey(awayTeam))
-                        {
-                            awayTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][awayTeam];
-                        }
-                        else
-                        {
-                            awayTeam = "VCB 15U " + awayTeam;
-                        }
-                    }
-                    else if (game.age_group == "18U AA")
-                    {
-                        homeTeam = "VCB 18U " + homeTeam;
-                        awayTeam = "VCB 18U " + awayTeam;
-                    }
-                    else if (ASSIGNR_TO_PUBLIC_NAMEMAP.ContainsKey(age_group))
-                    {
-                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[age_group].ContainsKey(homeTeam))
-                        {
-                            homeTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][homeTeam];
-                        }
-
-                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[age_group].ContainsKey(awayTeam))
-                        {
-                            awayTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][awayTeam];
-                        }
-                        // The visiting team is a non-VCB team, TeamSnap & Assignr should have the same name
-                    }
-                    else
-                    {
-                        throw new Exception($"Unhandled age group {game.age_group} was sent by Assignr.  The program needs to be updated to handle this.");
                     }
 
                     if (!ASSIGNR_TO_TEAMSNAP_VENUE_MAP.ContainsKey(game._embedded.venue.name))

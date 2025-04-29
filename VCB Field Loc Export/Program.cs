@@ -13,6 +13,7 @@ namespace VcbFieldExport
 
             TeamSnapEvents teamSnap = new(logger);
             teamSnap.FetchEvents();
+            teamSnap.addPlayoffPlaceHolderGames();
 
             // Find conflicts in the game/practice schedule
             errors += teamSnap.FindConflicts();

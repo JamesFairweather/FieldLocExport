@@ -171,6 +171,10 @@ namespace VcbFieldExport
                             }
                         }
                     }
+                    else if (eventItem.Summary == "No permit")
+                    {
+                        continue;   // ignore this event
+                    }
                     else
                     {
                         mLogger.WriteLine("Could not parse the summary for a Google event");
