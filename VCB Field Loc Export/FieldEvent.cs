@@ -13,6 +13,7 @@ namespace VcbFieldExport {
         {
             Practice,
             Game,
+            PlayoffPlaceholder,
         };
         
         public VcbFieldEvent()
@@ -30,9 +31,9 @@ namespace VcbFieldExport {
             officialsRequired = false;
         }
 
-        public VcbFieldEvent(string loc, DateTime start, string division, string homeTeam, string visitingTeam, bool officialsRequired)
+        public VcbFieldEvent(Type eventType, string loc, DateTime start, string division, string homeTeam, string visitingTeam, bool officialsRequired)
         {
-            this.eventType = Type.Game;
+            this.eventType = eventType;
             this.location = loc;
             this.startTime = start;
             this.division = division;

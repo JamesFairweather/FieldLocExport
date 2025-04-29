@@ -56,6 +56,7 @@ namespace VcbFieldExport
             away_team = string.Empty;
             game_type = string.Empty;
             cancelled = false;
+            public_note = string.Empty;
             _embedded = new();
         }
         public DateTime start_time { get; set; }
@@ -64,6 +65,7 @@ namespace VcbFieldExport
         public string away_team { get; set; }
         public string game_type { get; set; }
         public bool cancelled { get; set; }
+        public string public_note { get; set; }
         public Embedded _embedded { get; set; }
     }
 
@@ -204,16 +206,17 @@ namespace VcbFieldExport
                         continue;
                     }
 
-                    //if (game.game_type == "Playoffs") {
-                    //    continue;       // Ignore playoff games until the games are added to the public calendars
-                    //}
-
                     if (age_group == "Mentor") {
                         // This is a placeholder for an umpire mentor assignment, it doesn't represent a game
                         continue;
                     }
 
-                    if (game.game_type != "Playoffs")
+                    string division = game.age_group ?? string.Empty;
+
+                    if (game.game_type == "Playoffs") {
+                        division = division + $" playoff {game.public_note}";
+                    }
+                    else
                     {
                         if (age_group == "13U A")
                         {
@@ -283,12 +286,15 @@ namespace VcbFieldExport
                         continue;
                     }
 
-                    mGames.Add(new VcbFieldEvent(teamSnapVenue, start, game.age_group ?? string.Empty, homeTeam, awayTeam, true));
+                    VcbFieldEvent.Type gameType = game.game_type == "Playoffs" ? VcbFieldEvent.Type.PlayoffPlaceholder : VcbFieldEvent.Type.Game;
+                    mGames.Add(new VcbFieldEvent(gameType, teamSnapVenue, start, division, homeTeam, awayTeam, true));
                 }
 
                 ++currentPage;
             }
         }
+
+        public List<VcbFieldEvent> getGames() { return mGames; }
 
         public int Reconcile(List<VcbFieldEvent> teamGames)
         {

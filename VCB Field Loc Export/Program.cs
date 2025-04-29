@@ -13,7 +13,6 @@ namespace VcbFieldExport
 
             TeamSnapEvents teamSnap = new(logger);
             teamSnap.FetchEvents();
-            teamSnap.addPlayoffPlaceHolderGames();
 
             // Find conflicts in the game/practice schedule
             errors += teamSnap.FindConflicts();
@@ -27,6 +26,7 @@ namespace VcbFieldExport
             AssignrEvents assignr = new(logger);
             assignr.Authenticate();
             assignr.FetchEventsFromService(ASSINGR_ID_VCB);
+            teamSnap.addPlayoffPlaceHolderGames(assignr.getGames().FindAll(x => x.eventType == VcbFieldEvent.Type.PlayoffPlaceholder));
 
             errors += assignr.Reconcile(teamSnap.getGames());
 

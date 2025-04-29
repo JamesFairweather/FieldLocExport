@@ -210,7 +210,7 @@ namespace VcbFieldExport
 
                             if (oppositeGameFound == null) {
                                 // First instance of this game.  We should find another one in their opponent's TeamSnap schedule later
-                                nonLeagueUnmatchedGamesBetweenVcbTeams.Add(new(location, startTime, division, homeTeam, visitingTeam, true));
+                                nonLeagueUnmatchedGamesBetweenVcbTeams.Add(new(VcbFieldEvent.Type.Game, location, startTime, division, homeTeam, visitingTeam, true));
                             }
                             else {
                                 // This game was added from the other team's schedule, so we can remove it from the unmatched list
@@ -219,7 +219,7 @@ namespace VcbFieldExport
                         }
 
                         if (addGameToEventList) {
-                            mGames.Add(new VcbFieldEvent(location, startTime, division, homeTeam, visitingTeam, true));
+                            mGames.Add(new VcbFieldEvent(VcbFieldEvent.Type.Game, location, startTime, division, homeTeam, visitingTeam, true));
                         }
                     }
                     else {
@@ -236,36 +236,11 @@ namespace VcbFieldExport
                 }
             }
         }
-        public void addPlayoffPlaceHolderGames() {
+        public void addPlayoffPlaceHolderGames(List<VcbFieldEvent> placeHolderGames) {
             // 13U A
             // playoff schedule is not known yet
 
-            // 15U A
-            mGames.Add(new VcbFieldEvent("Hillcrest Park NE diamond", new DateTime(2025, 06, 14, 11, 00, 00).ToUniversalTime(), "15U A playoff game 4", "2nd Place Team", "7th Place Team", true));
-            mGames.Add(new VcbFieldEvent("Chaldecott Park N diamond", new DateTime(2025, 06, 14, 12, 00, 00).ToUniversalTime(), "15U A playoff game 1", "1st Place Team", "8th Place Team", true));
-            mGames.Add(new VcbFieldEvent("Chaldecott Park N diamond", new DateTime(2025, 06, 14, 15, 00, 00).ToUniversalTime(), "15U A playoff game 2", "4th Place Team", "5th Place Team", true));
-            mGames.Add(new VcbFieldEvent("Chaldecott Park N diamond", new DateTime(2025, 06, 14, 18, 00, 00).ToUniversalTime(), "15U A playoff game 3", "3rd Place Team", "6th Place Team", true));
-            mGames.Add(new VcbFieldEvent("Chaldecott Park N diamond", new DateTime(2025, 06, 16, 18, 00, 00).ToUniversalTime(), "15U A playoff game 5", "Loser of Game 1", "Loser of Game 2", true));
-            mGames.Add(new VcbFieldEvent("Hillcrest Park NE diamond", new DateTime(2025, 06, 16, 18, 00, 00).ToUniversalTime(), "15U A playoff game 6", "Loser of Game 3", "Loser of Game 4", true));
-            mGames.Add(new VcbFieldEvent("Chaldecott Park N diamond", new DateTime(2025, 06, 18, 18, 00, 00).ToUniversalTime(), "15U A playoff game 7", "Winner of Game 1", "Winner of Game 2", true));
-            mGames.Add(new VcbFieldEvent("Hillcrest Park NE diamond", new DateTime(2025, 06, 18, 18, 00, 00).ToUniversalTime(), "15U A playoff game 8", "Winner of Game 3", "Winner of Game 4", true));
-            mGames.Add(new VcbFieldEvent("Chaldecott Park N diamond", new DateTime(2025, 06, 20, 18, 00, 00).ToUniversalTime(), "15U A playoff game 9", "Winner of Game 5", "Loser of Game 8", true));
-            mGames.Add(new VcbFieldEvent("Hillcrest Park NE diamond", new DateTime(2025, 06, 20, 18, 00, 00).ToUniversalTime(), "15U A playoff game 10", "Winner of Game 6", "Loser of Game 7", true));
-            mGames.Add(new VcbFieldEvent("Chaldecott Park N diamond", new DateTime(2025, 06, 21, 15, 00, 00).ToUniversalTime(), "15U A playoff game 11", "Winner of Game 7", "Winner of Game 8", true));
-            mGames.Add(new VcbFieldEvent("Chaldecott Park N diamond", new DateTime(2025, 06, 22, 12, 00, 00).ToUniversalTime(), "15U A playoff game 12", "Winner of Game 9", "Winner of Game 10", true));
-            mGames.Add(new VcbFieldEvent("Chaldecott Park N diamond", new DateTime(2025, 06, 23, 18, 00, 00).ToUniversalTime(), "15U A playoff game 13", "Loser of Game 11", "Winner of Game 12", true));
-            mGames.Add(new VcbFieldEvent("Chaldecott Park N diamond", new DateTime(2025, 06, 25, 18, 00, 00).ToUniversalTime(), "15U A playoff game 14", "Winner of Game 11", "Winner of Game 13", true));
-
-            // 18U AA
-            mGames.Add(new VcbFieldEvent("Hillcrest Park SW diamond", new DateTime(2025, 06, 18, 18, 00, 00).ToUniversalTime(), "18U AA playoff game 1", "7th Place Team", "10th Place Team", true));
-            mGames.Add(new VcbFieldEvent("Nanaimo Park SE diamond",   new DateTime(2025, 06, 19, 18, 00, 00).ToUniversalTime(), "18U AA playoff game 2", "8th Place Team", "9th Place Team", true));
-            mGames.Add(new VcbFieldEvent("Hillcrest Park SW diamond", new DateTime(2025, 06, 20, 18, 00, 00).ToUniversalTime(), "18U AA playoff game 3", "1st Place Team", "Winner of Game 2", true));
-            mGames.Add(new VcbFieldEvent("Nanaimo Park SE diamond",   new DateTime(2025, 06, 20, 18, 00, 00).ToUniversalTime(), "18U AA playoff game 4", "4th Place Team", "5th Place Team", true));
-            mGames.Add(new VcbFieldEvent("Hillcrest Park SW diamond", new DateTime(2025, 06, 21, 12, 00, 00).ToUniversalTime(), "18U AA playoff game 5", "2nd Place Team", "Winner of Game 1", true));
-            mGames.Add(new VcbFieldEvent("Nanaimo Park SE diamond",   new DateTime(2025, 06, 21, 12, 00, 00).ToUniversalTime(), "18U AA playoff game 6", "3rd Place Team", "6th Place Team", true));
-            mGames.Add(new VcbFieldEvent("Nanaimo Park SE diamond",   new DateTime(2025, 06, 22, 12, 00, 00).ToUniversalTime(), "18U AA playoff game 7", "Winner of Game 3", "Winner of Game 4", true));
-            mGames.Add(new VcbFieldEvent("Hillcrest Park SW diamond", new DateTime(2025, 06, 22, 18, 00, 00).ToUniversalTime(), "18U AA playoff game 8", "Winner of Game 5", "Winner of Game 6", true));
-            mGames.Add(new VcbFieldEvent("Hillcrest Park SW diamond", new DateTime(2025, 06, 27, 18, 00, 00).ToUniversalTime(), "18U AA playoff game 9", "Winner of Game 8", "Winner of Game 7", true));
+            mGames.AddRange(placeHolderGames);
         }
 
         public int FindConflicts()
