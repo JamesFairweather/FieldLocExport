@@ -13,7 +13,7 @@ namespace VcbFieldExport {
         {
             Practice,
             Game,
-            PlayoffPlaceholder,
+            PlayoffGame,
         };
         
         public VcbFieldEvent()

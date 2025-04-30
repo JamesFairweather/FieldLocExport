@@ -86,13 +86,23 @@ namespace VcbFieldExport
             googleCalendarEvent.End = new EventDateTime()
             { DateTimeDateTimeOffset = vcbFieldEvent.endTime.ToLocalTime() };
 
-            if (vcbFieldEvent.eventType == VcbFieldEvent.Type.Practice) {
-                googleCalendarEvent.Summary = "Practice: " + vcbFieldEvent.homeTeam;
-                googleCalendarEvent.Description = vcbFieldEvent.description;
-            } else {
-                googleCalendarEvent.Summary = "Game: " + vcbFieldEvent.division;
-                googleCalendarEvent.Description = $"{vcbFieldEvent.visitingTeam} @ {vcbFieldEvent.homeTeam}";
-            }
+            switch (vcbFieldEvent.eventType)
+            {
+                case VcbFieldEvent.Type.Practice:
+                    googleCalendarEvent.Summary = "Practice: " + vcbFieldEvent.homeTeam;
+                    googleCalendarEvent.Description = vcbFieldEvent.description;
+                    break;
+
+                case VcbFieldEvent.Type.Game:
+                    googleCalendarEvent.Summary = "Game: " + vcbFieldEvent.division;
+                    googleCalendarEvent.Description = $"{vcbFieldEvent.visitingTeam} @ {vcbFieldEvent.homeTeam}";
+                    break;
+
+                case VcbFieldEvent.Type.PlayoffGame:
+                    googleCalendarEvent.Summary = "Playoffs: " + vcbFieldEvent.division;
+                    googleCalendarEvent.Description = $"{vcbFieldEvent.visitingTeam} @ {vcbFieldEvent.homeTeam}";
+                    break;
+           }
 
             Event result = new();
 
@@ -155,7 +165,18 @@ namespace VcbFieldExport
                     Match match = Program.SummaryRegex().Match(eventItem.Summary);
                     if (match.Success)
                     {
-                        vcbFieldEvent.eventType = match.Groups["EventType"].Value == "Practice" ? VcbFieldEvent.Type.Practice : VcbFieldEvent.Type.Game;
+                        switch (match.Groups["EventType"].Value)
+                        {
+                            case "Practice":
+                                vcbFieldEvent.eventType = VcbFieldEvent.Type.Practice;
+                                break;
+                            case "Game":
+                                vcbFieldEvent.eventType = VcbFieldEvent.Type.Game;
+                                break;
+                            case "Playoffs":
+                                vcbFieldEvent.eventType = VcbFieldEvent.Type.PlayoffGame;
+                                break;
+                        }
                         if (vcbFieldEvent.eventType == VcbFieldEvent.Type.Practice) {
                             vcbFieldEvent.homeTeam = match.Groups["team"].Value;
                         }

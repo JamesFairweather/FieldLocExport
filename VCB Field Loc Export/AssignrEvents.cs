@@ -214,7 +214,7 @@ namespace VcbFieldExport
                     string division = game.age_group ?? string.Empty;
 
                     if (game.game_type == "Playoffs") {
-                        division = division + $" playoff {game.public_note}";
+                        division = division + $" {game.public_note}";
                     }
                     else
                     {
@@ -286,7 +286,7 @@ namespace VcbFieldExport
                         continue;
                     }
 
-                    VcbFieldEvent.Type gameType = game.game_type == "Playoffs" ? VcbFieldEvent.Type.PlayoffPlaceholder : VcbFieldEvent.Type.Game;
+                    VcbFieldEvent.Type gameType = game.game_type == "Playoffs" ? VcbFieldEvent.Type.PlayoffGame : VcbFieldEvent.Type.Game;
                     mGames.Add(new VcbFieldEvent(gameType, teamSnapVenue, start, division, homeTeam, awayTeam, true));
                 }
 

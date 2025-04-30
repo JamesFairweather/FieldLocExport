@@ -26,7 +26,7 @@ namespace VcbFieldExport
             AssignrEvents assignr = new(logger);
             assignr.Authenticate();
             assignr.FetchEventsFromService(ASSINGR_ID_VCB);
-            teamSnap.addPlayoffPlaceHolderGames(assignr.getGames().FindAll(x => x.eventType == VcbFieldEvent.Type.PlayoffPlaceholder));
+            teamSnap.addPlayoffPlaceHolderGames(assignr.getGames().FindAll(x => x.eventType == VcbFieldEvent.Type.PlayoffGame));
 
             errors += assignr.Reconcile(teamSnap.getGames());
 
