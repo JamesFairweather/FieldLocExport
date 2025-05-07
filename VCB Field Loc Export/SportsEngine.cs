@@ -72,13 +72,12 @@ namespace VcbFieldExport
     {
         Result()
         {
-            name = string.Empty;
+            status = string.Empty;
             type = string.Empty;
             location = new();
             eventTeams = new();
         }
-
-        public string name { get; set; }
+        public string status { get; set; }
         public string type { get; set; }
         public DateTime start { get; set; }
         public DateTime end { get; set; }
@@ -162,10 +161,9 @@ namespace VcbFieldExport
             string LMB_ORGANIZATION_ID = "144187";  // from the query above
 
             string pageInfo = @"pageInformation { pages count page perPage }";
-            string results = @"results { name type start end location { name } eventTeams { team { name } homeTeam } } }";
+            string results = @"results { status name type start end location { name } eventTeams { team { name } homeTeam } } }";
 
             int pageNumber = 1;
-            int eventCount = 0;
 
             while (true) {
 
@@ -191,13 +189,15 @@ namespace VcbFieldExport
                 settings.DateParseHandling = DateParseHandling.None;
                 EventQueryResult eventQueryResult = JsonConvert.DeserializeObject<EventQueryResult>(jsonResponse) ?? new EventQueryResult();
 
-                eventCount = eventQueryResult.data.events.pageInformation.count;
-
                 if (pageNumber != eventQueryResult.data.events.pageInformation.page) {
                     throw new Exception("Unexpected page returned");
                 }
 
                 foreach (Result e in eventQueryResult.data.events.results) {
+                    if (e.status != "SCHEDULED") {
+                        continue;
+                    }
+
                     string homeTeam = e.eventTeams[0]?.team?.name ?? "TBD";
                     string visitingTeam = e.eventTeams[1]?.team?.name ?? "TBD";
                     bool officialsRequired = homeTeam.StartsWith("MINB") || homeTeam.StartsWith("MINA") || homeTeam.StartsWith("MAJ");
@@ -205,7 +205,7 @@ namespace VcbFieldExport
                     mGames.Add(new VcbFieldEvent(VcbFieldEvent.Type.Game, e.location.name ?? "TBD", e.start, string.Empty, homeTeam, visitingTeam, officialsRequired));
                 }
 
-                if (mGames.Count == eventCount) {
+                if (pageNumber == eventQueryResult.data.events.pageInformation.pages) {
                     break;  // while(true} loop exit
                 }
 
