@@ -8,9 +8,6 @@ using Google.Apis.Auth.OAuth2.Responses;
 
 namespace VcbFieldExport
 {
-    // TODO
-    // * find out whether we can reduce the frequency of how often we have to redo the full OAuth 2 flow
-    //   as of April 7, 2025, tokens are valid for 2 weeks.  I'd prefer to have a token that has no expiration time
     internal partial class Program
     {
         [GeneratedRegex(@"(?<EventType>.+):\s(?<team>.+)")]
@@ -52,6 +49,9 @@ namespace VcbFieldExport
             string[] Scopes = { CalendarService.Scope.Calendar };
             string ApplicationName = "Google Calendar Access";
 
+            // Access to specific field calendars is provided through the fields@vcbmountiesbaseball.com
+            // account.  Because all these accounts are part of the same Google organization, we don't
+            // need to re-authenticate
             string credentials = "field_credentials.json";
 
             using (var stream =
