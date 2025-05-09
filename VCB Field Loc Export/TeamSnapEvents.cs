@@ -108,7 +108,7 @@ namespace VcbFieldExport
 
                 foreach (Item e in jsonRoot.collection.items)
                 {
-                    if (e.data.Find(x => x.name == "is_cancelled")?.value == "true")
+                    if (e.data.Find(x => x.name == "is_canceled")?.value == "true")
                     {
                         continue;   // skip canceled events
                     }
