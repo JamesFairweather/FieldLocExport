@@ -99,7 +99,7 @@ namespace VcbFieldExport
                     break;
 
                 case VcbFieldEvent.Type.PlayoffGame:
-                    googleCalendarEvent.Summary = "Playoffs: " + vcbFieldEvent.division;
+                    googleCalendarEvent.Summary = "Playoffs: " + vcbFieldEvent.division + " " + vcbFieldEvent.description;
                     googleCalendarEvent.Description = $"{vcbFieldEvent.visitingTeam} @ {vcbFieldEvent.homeTeam}";
                     break;
            }

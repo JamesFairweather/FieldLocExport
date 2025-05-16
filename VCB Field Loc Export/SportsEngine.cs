@@ -202,7 +202,7 @@ namespace VcbFieldExport
                     string visitingTeam = e.eventTeams[1]?.team?.name ?? "TBD";
                     bool officialsRequired = homeTeam.StartsWith("MINB") || homeTeam.StartsWith("MINA") || homeTeam.StartsWith("MAJ");
 
-                    mGames.Add(new VcbFieldEvent(VcbFieldEvent.Type.Game, e.location.name ?? "TBD", e.start, string.Empty, homeTeam, visitingTeam, officialsRequired));
+                    mGames.Add(new VcbFieldEvent(VcbFieldEvent.Type.Game, e.location.name ?? "TBD", e.start, string.Empty, homeTeam, visitingTeam, string.Empty, officialsRequired));
                 }
 
                 if (pageNumber == eventQueryResult.data.events.pageInformation.pages) {

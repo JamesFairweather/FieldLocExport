@@ -31,7 +31,7 @@ namespace VcbFieldExport {
             officialsRequired = false;
         }
 
-        public VcbFieldEvent(Type eventType, string loc, DateTime start, string division, string homeTeam, string visitingTeam, bool officialsRequired)
+        public VcbFieldEvent(Type eventType, string loc, DateTime start, string division, string homeTeam, string visitingTeam, string description, bool officialsRequired)
         {
             this.eventType = eventType;
             this.location = loc;
@@ -40,7 +40,7 @@ namespace VcbFieldExport {
             this.homeTeam = homeTeam;
             this.visitingTeam = visitingTeam;
             this.endTime = startTime.AddHours(2);
-            this.description = string.Empty;
+            this.description = description;
             this.googleEventId = string.Empty;
             this.officialsRequired = officialsRequired;
         }

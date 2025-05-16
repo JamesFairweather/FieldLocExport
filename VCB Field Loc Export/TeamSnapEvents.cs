@@ -1,7 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Text.RegularExpressions;
-using Google.Apis.Util;
 
 namespace VcbFieldExport
 {
@@ -164,6 +162,14 @@ namespace VcbFieldExport
                         }
 
                         string? division = null;
+                        VcbFieldEvent.Type gameType = VcbFieldEvent.Type.Game;
+
+                        string label = e.data.Find(x => x.name == "label")?.value ?? string.Empty;
+                        if (label.StartsWith("Playoffs")) {
+                            // As of May 15, the only games with this label are 13U A
+                            division = "13U A";
+                            gameType = VcbFieldEvent.Type.PlayoffGame;
+                        }
 
                         Match match = teamRegex.Match(thisTeam);
 
@@ -210,7 +216,7 @@ namespace VcbFieldExport
 
                             if (oppositeGameFound == null) {
                                 // First instance of this game.  We should find another one in their opponent's TeamSnap schedule later
-                                nonLeagueUnmatchedGamesBetweenVcbTeams.Add(new(VcbFieldEvent.Type.Game, location, startTime, division, homeTeam, visitingTeam, true));
+                                nonLeagueUnmatchedGamesBetweenVcbTeams.Add(new(VcbFieldEvent.Type.Game, location, startTime, division, homeTeam, visitingTeam, string.Empty, true));
                             }
                             else {
                                 // This game was added from the other team's schedule, so we can remove it from the unmatched list
@@ -219,7 +225,7 @@ namespace VcbFieldExport
                         }
 
                         if (addGameToEventList) {
-                            mGames.Add(new VcbFieldEvent(VcbFieldEvent.Type.Game, location, startTime, division, homeTeam, visitingTeam, true));
+                            mGames.Add(new VcbFieldEvent(gameType, location, startTime, division, homeTeam, visitingTeam, string.Empty, true));
                         }
                     }
                     else {
@@ -237,9 +243,6 @@ namespace VcbFieldExport
             }
         }
         public void addPlayoffPlaceHolderGames(List<VcbFieldEvent> placeHolderGames) {
-            // 13U A
-            // playoff schedule is not known yet
-
             mGames.AddRange(placeHolderGames);
         }
 
