@@ -201,8 +201,18 @@ namespace VcbFieldExport
                                 throw new Exception($"Unexpected division and/or team name found while reading the TeamSnap events: {thisTeam}");
                             }
                         }
+                        else if (thisTeam == "VCB") {
+                            // special cases - games booked using the Registrar-owned team "VCB"
+                            if (label == "15U A Summer team assessment game") {
+                                // 15U A intrasquad game on June 13
+                                division = "15U A";
+                                homeTeam = "Mounties";
+                                visitingTeam = "Expos";
+                            }
+                        }
 
-                        if (division == null) {
+                        if (division == null)
+                        {
                             throw new Exception($"Unable to extract division information for team {thisTeam}");
                         }
 
