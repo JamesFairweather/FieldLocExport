@@ -114,7 +114,7 @@ namespace VcbFieldExport
                     string location = e.data.Find(x => x.name == "location_name")?.value ?? "TBD";
                     DateTime startTime = DateTime.Parse(e.data.Find(x => x.name == "start_date")?.value ?? string.Empty).ToUniversalTime();
                     startTime = startTime.AddSeconds(-startTime.Second);    // sometimes TeamSnap events have non-zero seconds values, not sure why
-                    string? endDateString = e.data.Find(x => x.name == "start_date")?.value;
+                    string? endDateString = e.data.Find(x => x.name == "end_date")?.value;
                     DateTime endTime = (endDateString != null) ? DateTime.Parse(endDateString).ToUniversalTime() : startTime.AddHours(2);
                     endTime = endTime.AddSeconds(-endTime.Second);
                     string formatted_title = e.data.Find(x => x.name == "formatted_title")?.value ?? string.Empty;
