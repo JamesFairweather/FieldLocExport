@@ -41,7 +41,6 @@ namespace VcbFieldExport
             this.mLogger = logger;
         }
 
-
         CalendarService GetGoogleCalendarService(string locationName)
         {
             UserCredential credential;
@@ -157,7 +156,6 @@ namespace VcbFieldExport
             if (events.Items != null && events.Items.Count > 0)
             {
                 results.Capacity = events.Items.Count;
-                mLogger.WriteLine($"Found {events.Items.Count} existing events on this calendar.");
                 foreach (Event eventItem in events.Items)
                 {
                     VcbFieldEvent vcbFieldEvent = new VcbFieldEvent();
@@ -222,8 +220,7 @@ namespace VcbFieldExport
         {
             foreach (string locationId in LOCATION_NAMES)
             {
-                mLogger.WriteLine();
-                mLogger.WriteLine($"Syncing events for location {locationId} to the Google field calendar...");
+                mLogger.WriteLine($"Syncing events for location {locationId} to the Google field calendar... ");
 
                 CalendarService calendarService;
 
@@ -257,6 +254,8 @@ namespace VcbFieldExport
                         addEventToGoogleCalendar(calendarService, e);
                     }
                 });
+
+                mLogger.WriteLine("done");
             }
         }
     }

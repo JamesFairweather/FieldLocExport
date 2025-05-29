@@ -162,12 +162,10 @@ namespace VcbFieldExport
             mGames.Clear();
         }
 
-        public void FetchEventsFromService(string siteId)
+        public void FetchEventsFromService(string siteId, bool includePlayoffGames)
         {
             int totalPages = int.MaxValue;
             int currentPage = 1;
-
-            mLogger.WriteLine("Fetching games from Assignr...");
 
             while (currentPage <= totalPages)
             {
@@ -208,6 +206,16 @@ namespace VcbFieldExport
 
                     if (age_group == "Mentor") {
                         // This is a placeholder for an umpire mentor assignment, it doesn't represent a game
+                        continue;
+                    }
+
+                    if (age_group == "8U") {
+                        // Little Mountain has this age group, which we will ignore
+                        continue;
+                    }
+
+                    if (!includePlayoffGames && game.game_type == "Playoffs") {
+                        // Ignore playoff games for Little Mountain, these games are not in SportsEngine
                         continue;
                     }
 

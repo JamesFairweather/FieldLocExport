@@ -89,8 +89,6 @@ namespace VcbFieldExport
                 "74242257", // Nanaimo Park batting cage
             };
 
-            mLogger.WriteLine("Fetching events from TeamSnap...");
-
             List<VcbFieldEvent> nonLeagueUnmatchedGamesBetweenVcbTeams = new();
             Regex teamRegex = new(@"VCB\s(Expos\s)?(?<Division>[^\s]+)\s(?<Team>.+)");
 
