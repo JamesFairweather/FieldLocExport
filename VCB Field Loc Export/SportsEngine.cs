@@ -4,21 +4,6 @@ using System.Text;
 
 namespace VcbFieldExport
 {
-    internal class OAuthCredentials
-    {
-        public OAuthCredentials()
-        {
-            Id = string.Empty;
-            Secret = string.Empty;
-        }
-
-        [JsonProperty("client_id")]
-        public string Id { get; set; }
-
-        [JsonProperty("client_secret")]
-        public string Secret { get; set; }
-    }
-
     internal class Data
     {
         public Data() {
@@ -109,17 +94,10 @@ namespace VcbFieldExport
             mHttpClient = new();
         }
 
-        public void authenticate() {
-            OAuthCredentials? credentials;
-            using (StreamReader reader = new StreamReader("sportsengine.json"))
-            {
-                string json = reader.ReadToEnd();
-                credentials = JsonConvert.DeserializeObject<OAuthCredentials>(json);
+        public void authenticate(Google.Apis.Auth.OAuth2.ClientSecrets? credentials) {
 
-                if (credentials == null)
-                {
-                    throw new Exception("Unable to deserialize the SportsEngine credentials");
-                }
+            if (credentials == null) {
+                throw new ArgumentException("credentials cannot be null at this point");
             }
 
             string authUrl = $"https://user.sportsengine.com/oauth/token";
@@ -128,8 +106,8 @@ namespace VcbFieldExport
             mHttpClient.DefaultRequestHeaders.Add("cache-control", "no-cache");
 
             var oauthHeaders = new Dictionary<string, string> {
-                {"client_id", credentials.Id},
-                {"client_secret", credentials.Secret},
+                {"client_id", credentials?.ClientId ?? string.Empty},
+                {"client_secret", credentials?.ClientSecret ?? string.Empty},
                 {"grant_type", "client_credentials"},
               };
 

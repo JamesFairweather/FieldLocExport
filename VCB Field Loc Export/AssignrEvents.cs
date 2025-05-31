@@ -31,21 +31,6 @@ namespace VcbFieldExport
         public int Created { get; set; }
     }
 
-    internal class AssignrCredentials
-    {
-        public AssignrCredentials()
-        {
-            Id = string.Empty;
-            Secret = string.Empty;
-        }
-
-        [JsonProperty("client_id")]
-        public string Id { get; set; }
-
-        [JsonProperty("client_secret")]
-        public string Secret { get; set; }
-    }
-
     internal class Game
     {
         public Game()
@@ -114,26 +99,19 @@ namespace VcbFieldExport
             mLogger = logger;
         }
 
-        public void Authenticate()
+        public void Authenticate(Google.Apis.Auth.OAuth2.ClientSecrets? credentials)
         {
-            AssignrCredentials? credentials;
-            using (StreamReader reader = new StreamReader("assignr_credentials.json"))
+            if (credentials == null)
             {
-                string json = reader.ReadToEnd();
-                credentials = JsonConvert.DeserializeObject<AssignrCredentials>(json);
-
-                if (credentials == null)
-                {
-                    throw new Exception("Unable to deserialize the Assignr credentials");
-                }
+                throw new ArgumentException("credentials cannot be null");
             }
 
             mHttpClient.DefaultRequestHeaders.Clear();
             mHttpClient.DefaultRequestHeaders.Add("cache-control", "no-cache");
 
             var oauthHeaders = new Dictionary<string, string> {
-                {"client_id", credentials.Id},
-                {"client_secret", credentials.Secret},
+                {"client_id", credentials.ClientId ?? string.Empty},
+                {"client_secret", credentials.ClientSecret ?? string.Empty},
                 {"scope", "read write" },
                 {"grant_type", "client_credentials"},
               };

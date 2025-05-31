@@ -1,6 +1,20 @@
 ﻿
+using Newtonsoft.Json;
+
 namespace VcbFieldExport
 {
+    public class Credentials
+    {
+        [JsonProperty("teamsnap_bearer_token")]
+        // TODO: Figure out how to get a bearer token from TeamSnap's service using the client ID & secret.
+        // Fortunately, the bearer token seems to be perpertual so we can just put that into our credential file
+        // until the above TODO is done.
+        public string? Teamsnap { get; set; }
+        public Google.Apis.Auth.OAuth2.ClientSecrets? Sportsengine { get; set; }
+        public Google.Apis.Auth.OAuth2.ClientSecrets? Assignr { get; set; }
+        public Google.Apis.Auth.OAuth2.ClientSecrets? Google { get; set; }
+    }
+
     internal partial class Program
     {
         static int Main(string[] args)
@@ -11,9 +25,18 @@ namespace VcbFieldExport
             string logFileName = $"fieldSync.{now.Year}-{now.Month}-{now.Day}.log";
             StreamWriter logger = new StreamWriter(logFileName, false);
 
+            Credentials? credentials;
+            using (StreamReader reader = new StreamReader("credentials.json")) {
+                credentials = JsonConvert.DeserializeObject<Credentials>(reader.ReadToEnd());
+            }
+
+            if (credentials == null) {
+                throw new Exception("Failed to read the service credentials");
+            }
+
             logger.WriteLine("Checking Vancouver Community Baseball's Assignr schedule for consistency");
             TeamSnapEvents teamSnap = new(logger);
-            teamSnap.FetchEvents();
+            teamSnap.FetchEvents(credentials.Teamsnap ?? string.Empty);
 
             // Find conflicts in the game/practice schedule
             errors += teamSnap.FindConflicts();
@@ -25,7 +48,7 @@ namespace VcbFieldExport
             //string ASSIGNR_ID_RICHMOND = "19639";
 
             AssignrEvents assignr = new(logger);
-            assignr.Authenticate();
+            assignr.Authenticate(credentials.Assignr);
             assignr.FetchEventsFromService(ASSINGR_ID_VCB, true);
             teamSnap.addPlayoffPlaceHolderGames(assignr.getGames().FindAll(x => {
                 // add 15U and 18U AA playoff games from Assignr.  As the teams are set
@@ -41,13 +64,13 @@ namespace VcbFieldExport
 
             // Update the Google field calendars with the TeamSnap calendars.
             GoogleEvents googleEvents = new(teamSnap.getGames(), teamSnap.getPractices(), logger);
-            googleEvents.Reconcile();
+            googleEvents.Reconcile(credentials.Google);
 
             logger.WriteLine();
             logger.WriteLine("Checking Little Mountain Baseball's Assignr schedule for consistency");
 
             SportsEngine sportsEngine = new SportsEngine();
-            sportsEngine.authenticate();
+            sportsEngine.authenticate(credentials.Sportsengine);
             sportsEngine.fetchEvents();
 
             assignr.clearEvents();

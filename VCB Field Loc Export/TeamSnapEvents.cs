@@ -72,11 +72,11 @@ namespace VcbFieldExport
             // the token from the redirect URI.  I'm sure that's possible, I just don't know how.
             // The Web Application flow also uses a redirect URI, which has the same problem as above:
             // I don't know how to get that back into this program.
-            mBearerToken = File.ReadAllText("TeamsnapBearerToken.txt");
+
             mLogger = logger;
         }
 
-        public void FetchEvents()
+        public void FetchEvents(string bearerToken)
         {
             List<string> TEAMSNAP_LOCATION_IDS = new List<string> {
                 "74226229", // Chaldecott Park N diamond
@@ -94,7 +94,7 @@ namespace VcbFieldExport
 
             using HttpClient client = new();
             client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {mBearerToken}");
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {bearerToken}");
 
             foreach (string teamSnapLocationId in TEAMSNAP_LOCATION_IDS)
             {
@@ -275,7 +275,6 @@ namespace VcbFieldExport
         List<VcbFieldEvent> mPractices = new();
         List<VcbFieldEvent> mGames = new();
 
-        string mBearerToken;        // should I steps to store this in a cryptographically secure way?
         StreamWriter mLogger;
     }
 }

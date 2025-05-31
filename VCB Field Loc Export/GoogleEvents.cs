@@ -41,30 +41,17 @@ namespace VcbFieldExport
             this.mLogger = logger;
         }
 
-        CalendarService GetGoogleCalendarService(string locationName)
+        CalendarService GetGoogleCalendarService(string locationName, Google.Apis.Auth.OAuth2.ClientSecrets? credentials)
         {
-            UserCredential credential;
-
             string[] Scopes = { CalendarService.Scope.Calendar };
             string ApplicationName = "Google Calendar Access";
 
-            // Access to specific field calendars is provided through the fields@vcbmountiesbaseball.com
-            // account.  Because all these accounts are part of the same Google organization, we don't
-            // need to re-authenticate
-            string credentials = "field_credentials.json";
-
-            using (var stream =
-              new FileStream(credentials, FileMode.Open, FileAccess.Read))
-            {
-                // The file token.json stores the user's access and refresh tokens, and is created
-                // automatically when the authorization flow completes for the first time.
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                  GoogleClientSecrets.FromStream(stream).Secrets,
+            UserCredential credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                  credentials,
                   Scopes,
                   "user",
                   CancellationToken.None,
                   new FileDataStore($"{locationName}.json", true)).Result;
-            }
 
             // Create Google Calendar API service.
             var service = new CalendarService(new BaseClientService.Initializer()
@@ -119,12 +106,12 @@ namespace VcbFieldExport
             }
         }
 
-        List<VcbFieldEvent> fetchEvents(string location, out CalendarService calendarService)
+        List<VcbFieldEvent> fetchEvents(string location, Google.Apis.Auth.OAuth2.ClientSecrets? credentials, out CalendarService calendarService)
         {
             Google.Apis.Calendar.v3.Data.Events events;
 
             try {
-                calendarService = GetGoogleCalendarService(location);
+                calendarService = GetGoogleCalendarService(location, credentials);
 
                 // Define parameters of request.
                 EventsResource.ListRequest request = calendarService.Events.List("primary");
@@ -141,7 +128,7 @@ namespace VcbFieldExport
             {
                 // Handle an invalid_grant exception by retrying the request.
                 // This will force the OAuth2 flow to start again.
-                calendarService = GetGoogleCalendarService(location);
+                calendarService = GetGoogleCalendarService(location, credentials);
 
                 EventsResource.ListRequest request = calendarService.Events.List("primary");
                 request.TimeMinDateTimeOffset = DateTime.Now.AddMonths(-4);
@@ -216,8 +203,13 @@ namespace VcbFieldExport
             return results;
         }
 
-        public void Reconcile()
+        public void Reconcile(Google.Apis.Auth.OAuth2.ClientSecrets? credentials)
         {
+            if (credentials == null)
+            {
+                throw new ArgumentException("credentials cannot be null at this point");
+            }
+
             foreach (string locationId in LOCATION_NAMES)
             {
                 mLogger.WriteLine($"Syncing events for location {locationId} to the Google field calendar... ");
@@ -227,7 +219,7 @@ namespace VcbFieldExport
                 // Clear a calendar of all existing events
                 // GetGoogleCalendarService(locationId).Calendars.Clear("primary").Execute();
 
-                List<VcbFieldEvent> currentEvents = fetchEvents(locationId, out calendarService);
+                List<VcbFieldEvent> currentEvents = fetchEvents(locationId, credentials, out calendarService);
 
                 // delete existing events that have been removed in TeamSnap from the Google calendar
                 currentEvents.ForEach(e =>
