@@ -41,9 +41,9 @@ namespace VcbFieldExport
             // Find conflicts in the game/practice schedule
             errors += teamSnap.FindConflicts();
 
-            string ASSIGNR_ID_LMB = "627";
             string ASSINGR_ID_VCB = "12381";
 
+            //string ASSIGNR_ID_LMB = "627";
             //string ASSIGNR_ID_KLL = "6561";
             //string ASSIGNR_ID_RICHMOND = "19639";
 
@@ -66,16 +66,16 @@ namespace VcbFieldExport
             GoogleEvents googleEvents = new(teamSnap.getGames(), teamSnap.getPractices(), logger);
             googleEvents.Reconcile(credentials.Google);
 
-            logger.WriteLine();
-            logger.WriteLine("Checking Little Mountain Baseball's Assignr schedule for consistency");
+            //logger.WriteLine();
+            //logger.WriteLine("Checking Little Mountain Baseball's Assignr schedule for consistency");
 
-            SportsEngine sportsEngine = new SportsEngine();
-            sportsEngine.authenticate(credentials.Sportsengine);
-            sportsEngine.fetchEvents();
+            //SportsEngine sportsEngine = new SportsEngine();
+            //sportsEngine.authenticate(credentials.Sportsengine);
+            //sportsEngine.fetchEvents();
 
-            assignr.clearEvents();
-            assignr.FetchEventsFromService(ASSIGNR_ID_LMB, false);
-            errors += assignr.Reconcile(sportsEngine.getGames());
+            //assignr.clearEvents();
+            //assignr.FetchEventsFromService(ASSIGNR_ID_LMB, false);
+            //errors += assignr.Reconcile(sportsEngine.getGames());
 
             logger.Close();
 
