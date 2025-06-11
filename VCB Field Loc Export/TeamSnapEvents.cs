@@ -163,7 +163,7 @@ namespace VcbFieldExport
                         VcbFieldEvent.Type gameType = VcbFieldEvent.Type.Game;
 
                         string label = e.data.Find(x => x.name == "label")?.value ?? string.Empty;
-                        if (label.StartsWith("Playoffs")) {
+                        if (label.StartsWith("Playoffs") || label.StartsWith("Final")) {
                             // As of May 15, the only games with this label are 13U A
                             division = "13U A";
                             gameType = VcbFieldEvent.Type.PlayoffGame;
