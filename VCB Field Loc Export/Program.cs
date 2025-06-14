@@ -54,8 +54,8 @@ namespace VcbFieldExport
                 // add 15U and 18U AA playoff games from Assignr.  As the teams are set
                 // and the games added to TeamSnap, I'll need to remove those games using
                 // this filter.
-                DateTime RoundRobinEndDate_13UA = new DateTime(2025, 6, 10);
-                return x.eventType == VcbFieldEvent.Type.PlayoffGame && (x.division != "13U A" || x.startTime > RoundRobinEndDate_13UA);
+                return x.eventType == VcbFieldEvent.Type.PlayoffGame
+                    && ((x.division == "15U A" && x.startTime > DateTime.UtcNow.AddDays(1)) || x.division == "18U AA");
             }));
 
             errors += assignr.Reconcile(teamSnap.getGames());

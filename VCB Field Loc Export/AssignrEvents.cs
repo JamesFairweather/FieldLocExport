@@ -197,6 +197,12 @@ namespace VcbFieldExport
                         continue;
                     }
 
+                    // Add client-side filter for games on a specific field here, if you want.  The Assignr
+                    // service does not support querying on a specific venue, so this is the best we can do
+                    //if (game._embedded.venue.name != "Hillcrest South") {
+                    //    continue;
+                    //}
+
                     string division = game.age_group ?? string.Empty;
 
                     if (age_group == "13U A")

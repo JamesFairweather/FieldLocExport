@@ -214,6 +214,20 @@ namespace VcbFieldExport
                             throw new Exception($"Unable to extract division information for team {thisTeam}");
                         }
 
+                        // Any game after the end of the regular season is a playoff game
+                        DateTime EndOfRegularSeason_15UA = new(2025, 6, 12);
+                        DateTime EndOfRegularSeason_18UAA = new(2025, 6, 16);
+
+                        if (division == "15U A" && startTime > EndOfRegularSeason_15UA)
+                        {
+                            gameType = VcbFieldEvent.Type.PlayoffGame;
+                        }
+
+                        if (division == "18U AA" && startTime > EndOfRegularSeason_18UAA)
+                        {
+                            gameType = VcbFieldEvent.Type.PlayoffGame;
+                        }
+
                         if (!leagueControlledGame
                             && homeTeam.StartsWith("VCB")
                             && visitingTeam.StartsWith("VCB")
