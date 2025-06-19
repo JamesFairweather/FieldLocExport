@@ -51,11 +51,13 @@ namespace VcbFieldExport
             assignr.Authenticate(credentials.Assignr);
             assignr.FetchEventsFromService(ASSINGR_ID_VCB, true);
             teamSnap.addPlayoffPlaceHolderGames(assignr.getGames().FindAll(x => {
-                // add 15U and 18U AA playoff games from Assignr.  As the teams are set
-                // and the games added to TeamSnap, I'll need to remove those games using
-                // this filter.
+                // Playoff games will only be in TeamSnap if both teams are known, so add
+                // placeholder for these games from Assignr if the game isn't in TeamSnap yet.
                 return x.eventType == VcbFieldEvent.Type.PlayoffGame
-                    && ((x.division == "15U A" && x.startTime > DateTime.UtcNow.AddDays(1)) || x.division == "18U AA");
+                    && (x.division == "15U A" || x.division == "18U AA")
+                    && teamSnap.getGames().Find(t => {
+                        return x.location == t.location && x.startTime == t.startTime;
+                        }) == null;
             }));
 
             errors += assignr.Reconcile(teamSnap.getGames());
