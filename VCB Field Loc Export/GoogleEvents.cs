@@ -27,7 +27,7 @@ namespace VcbFieldExport
             "Nanaimo Park N diamond",
             "Nanaimo Park SE diamond",
             "Nanaimo Park batting cage",
-            "Trafalgar Park",
+            // "Trafalgar Park",
         };
 
         List<VcbFieldEvent> mNewEventList;
