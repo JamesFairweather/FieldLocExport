@@ -217,7 +217,7 @@ namespace VcbFieldExport
                 CalendarService calendarService;
 
                 // Clear a calendar of all existing events
-                // GetGoogleCalendarService(locationId).Calendars.Clear("primary").Execute();
+                // GetGoogleCalendarService(locationId, credentials).Calendars.Clear("primary").Execute();
 
                 List<VcbFieldEvent> currentEvents = fetchEvents(locationId, credentials, out calendarService);
 
