@@ -160,14 +160,6 @@ namespace VcbFieldExport
                         }
 
                         string? division = null;
-                        VcbFieldEvent.Type gameType = VcbFieldEvent.Type.Game;
-
-                        string label = e.data.Find(x => x.name == "label")?.value ?? string.Empty;
-                        if (label.StartsWith("Playoffs") || label.StartsWith("Final")) {
-                            // As of May 15, the only games with this label are 13U A
-                            division = "13U A";
-                            gameType = VcbFieldEvent.Type.PlayoffGame;
-                        }
 
                         Match match = teamRegex.Match(thisTeam);
 
@@ -200,13 +192,7 @@ namespace VcbFieldExport
                             }
                         }
                         else if (thisTeam == "VCB") {
-                            // special cases - games booked using the Registrar-owned team "VCB"
-                            if (label == "15U A Summer team assessment game") {
-                                // 15U A intrasquad game on June 13
-                                division = "15U A";
-                                homeTeam = "Mounties";
-                                visitingTeam = "Expos";
-                            }
+                            throw new Exception("Games booked under the VCB special team are not handled by this script.");
                         }
 
                         if (division == null)
@@ -214,17 +200,24 @@ namespace VcbFieldExport
                             throw new Exception($"Unable to extract division information for team {thisTeam}");
                         }
 
-                        // Any game after the end of the regular season is a playoff game
-                        DateTime EndOfRegularSeason_15UA = new(2025, 6, 12);
-                        DateTime EndOfRegularSeason_18UAA = new(2025, 6, 16);
+                        VcbFieldEvent.Type gameType = VcbFieldEvent.Type.Game;
 
-                        if (division == "15U A" && startTime > EndOfRegularSeason_15UA)
-                        {
-                            gameType = VcbFieldEvent.Type.PlayoffGame;
-                        }
+                        // For 13UA, 15UA, and 18UAA:
+                        // Games scheduled after the end of the regular season and before the end of the playoffs are
+                        // playoff games.  Games after the end of the playoffs are summer ball games, but for the
+                        // purposes of our game calendar, we'll treat them as regular-season games.
+                        // These dates should be in a separate configuration file, not buried in code...  I'll fix that
+                        // for 2026.
+                        DateTime RegularSeasonEnd_13UA = new(2025, 5, 28);
+                        DateTime PlayoffsEnd_13UA = new(2025, 6, 15);
+                        DateTime RegularSeasonEnd_15UA = new(2025, 6, 12);
+                        DateTime PlayoffsEnd_15UA = new(2025, 6, 23);
+                        DateTime RegularSeasonEnd_18UAA = new(2025, 6, 16);
+                        DateTime PlayoffsEnd_18UAA = new(2025, 6, 27);
 
-                        if (division == "18U AA" && startTime > EndOfRegularSeason_18UAA)
-                        {
+                        if ((division == "15U A" && startTime > RegularSeasonEnd_13UA && startTime <= PlayoffsEnd_13UA) ||
+                            (division == "13U A" && startTime > RegularSeasonEnd_15UA && startTime <= PlayoffsEnd_15UA) ||
+                            (division == "18U AA" && startTime > RegularSeasonEnd_18UAA && startTime <= PlayoffsEnd_18UAA)) {
                             gameType = VcbFieldEvent.Type.PlayoffGame;
                         }
 
