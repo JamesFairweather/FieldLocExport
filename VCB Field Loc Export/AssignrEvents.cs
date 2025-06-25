@@ -230,17 +230,30 @@ namespace VcbFieldExport
                             homeTeam = "VCB 15U " + homeTeam;
                         }
 
+                        //try {
+                        //    awayTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][awayTeam];
+                        //}
+                        //catch (KeyNotFoundException) {
+                        //    awayTeam = "VCB 15U " + awayTeam;
+                        //}
+                    }
+                    else if (game.age_group == "18U AA")
+                    {
+                        try {
+                            homeTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][homeTeam];
+                        }
+                        catch (KeyNotFoundException) {
+                            // we don't need to do this for summer teams
+                            // homeTeam = "VCB 18U " + homeTeam;
+                        }
+
                         try {
                             awayTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][awayTeam];
                         }
                         catch (KeyNotFoundException) {
-                            awayTeam = "VCB 15U " + awayTeam;
+                            // we don't need to do this for summer teams
+                            // awayTeam = "VCB 18U " + awayTeam;
                         }
-                    }
-                    else if (game.age_group == "18U AA")
-                    {
-                        homeTeam = "VCB 18U " + homeTeam;
-                        awayTeam = "VCB 18U " + awayTeam;
                     }
                     else if (ASSIGNR_TO_PUBLIC_NAMEMAP.ContainsKey(age_group))
                     {
@@ -391,12 +404,13 @@ namespace VcbFieldExport
                 { "Minor B River Cats", "MINB11 RIVER CATS" },
             }},
             { "13U A", new Dictionary<string, string> {
-                { "Dodgers", "VCB 13U Dodgers" },
-                { "Blue Jays", "VCB 13U Blue Jays" },
-                { "Diamondbacks", "VCB 13U Diamondbacks" },
-                { "Expos", "VCB 13U Expos" },
-                { "Vancouver Expos", "VCB 13U Expos" },
-                { "Red Sox", "VCB 13U Red Sox" },
+                //{ "Dodgers", "VCB 13U Dodgers" },
+                //{ "Blue Jays", "VCB 13U Blue Jays" },
+                //{ "Diamondbacks", "VCB 13U Diamondbacks" },
+                //{ "Expos", "VCB 13U Expos" },
+                //{ "Vancouver Expos", "VCB 13U Expos" },
+                //{ "Red Sox", "VCB 13U Red Sox" },
+                { "Vancouver Mounties", "VCB 13U A Mounties" }
             }},
             { "13U AA", new Dictionary<string, string> {
                 { "Vancouver Mounties", "VCB 13U AA" },
@@ -405,11 +419,12 @@ namespace VcbFieldExport
                 { "Vancouver Mounties", "VCB 13U AAA" },
             }},
             { "15U A", new Dictionary<string, string> {
-                { "Burnaby", "Burnaby 15UA" },
-                { "RS-Girls", "VCB 16U Red Sox-Girls" },
-                { "Girls 1", "VCB 16U Red Sox-Girls" },
-                { "Girls 2", "15U Girls" },
-                { "TBD", "15U Girls" },
+                //{ "Burnaby", "Burnaby 15UA" },
+                //{ "RS-Girls", "VCB 16U Red Sox-Girls" },
+                //{ "Girls 1", "VCB 16U Red Sox-Girls" },
+                //{ "Girls 2", "15U Girls" },
+                // { "TBD", "15U Girls" },
+                { "Vancouver Mounties", "VCB 15U A Mounties" }
             }},
             { "15U AA", new Dictionary<string, string>{
                 { "Vancouver Mounties Blue", "VCB Expos 15U AA Blue" },
@@ -418,6 +433,11 @@ namespace VcbFieldExport
             }},
             { "15U AAA", new Dictionary<string, string> {
                 { "Vancouver Mounties", "VCB 15U AAA"},
+            }},
+            { "18U AA", new Dictionary<string, string> {
+                { "Vancouver Expos", "VCB 18U AA Expos" },
+                { "Vancouver Mounties", "VCB 18U AA Mounties" },
+                { "New West", "New West/South Burnaby" },
             }},
             { "18U AAA", new Dictionary<string, string> {
                 { "Vancouver Mounties Blue", "VCB 18U AAA Blue" },
