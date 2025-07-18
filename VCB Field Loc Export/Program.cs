@@ -17,6 +17,16 @@ namespace VcbFieldExport
 
     internal partial class Program
     {
+        // TODO for 2026: use date ranges for spring regular-season, spring playoffs, and summer seasons
+        // so I don't need to keep updating the code to handle different cases as we move through the year
+        // These dates should be in a configuration file
+        // DateTime SpringSeason_13UAPlayoffs_Start = new(2025, 06, 08);   // 13U A games on or after this day are playoff games
+        // DateTime SpringSeason_15UAPlayoffs_Start = new(2025, 06, 14);   // 15U A games on or after this day are playoff games
+        // DateTime SpringSeason_18UAPlayoffs_Start = new(2025, 06, 16);   // 18U AA games on or after this day are playoff games
+        // DateTime SummerSeason_Start = new(2025, 06, 30);                // start of the summer season for 13U A, 15U A, 18U AA.  These are scheduled as regular-season games
+
+        // Add other significant dates as may be needed (e.g. permit end dates)
+
         static int Main(string[] args)
         {
             DateTime now = DateTime.Now;
