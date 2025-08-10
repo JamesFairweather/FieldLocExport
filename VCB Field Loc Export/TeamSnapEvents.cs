@@ -76,19 +76,8 @@ namespace VcbFieldExport
             mLogger = logger;
         }
 
-        public void FetchEvents(string bearerToken)
+        public void FetchEvents(string bearerToken, List<Field> fieldInfo)
         {
-            List<string> TEAMSNAP_LOCATION_IDS = new List<string> {
-                "74226229", // Chaldecott Park N diamond
-                "74226228", // Chaldecott Park S diamond
-                "74226227", // Hillcrest Park NE diamond
-                "74226226", // Hillcrest Park SW diamond
-                "74226230", // Nanaimo Park N diamond
-                "74226231", // Nanaimo Park SE diamond
-                // "74226232", // Trafalgar Park
-                "74242257", // Nanaimo Park batting cage
-            };
-
             List<VcbFieldEvent> nonLeagueUnmatchedGamesBetweenVcbTeams = new();
             Regex teamRegex = new(@"VCB\s(Expos\s)?(?<Division>[^\s]+)\s(?<Team>.+)");
 
@@ -96,9 +85,13 @@ namespace VcbFieldExport
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {bearerToken}");
 
-            foreach (string teamSnapLocationId in TEAMSNAP_LOCATION_IDS)
+            foreach (Field field in fieldInfo)
             {
-                string jsonResponse = client.GetStringAsync($"https://api.teamsnap.com/v3/events/search?location_id={teamSnapLocationId}&started_after={DateTime.Today:O}").Result;
+                if (!field.Valid()) {
+                    continue;
+                }
+
+                string jsonResponse = client.GetStringAsync($"https://api.teamsnap.com/v3/events/search?location_id={field.teamSnapId}&started_after={DateTime.Today:O}").Result;
 
                 TeamSnapResponseRoot jsonRoot = JsonConvert.DeserializeObject<TeamSnapResponseRoot>(jsonResponse) ?? new();
 

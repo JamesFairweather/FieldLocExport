@@ -15,6 +15,29 @@ namespace VcbFieldExport
         public Google.Apis.Auth.OAuth2.ClientSecrets? Google { get; set; }
     }
 
+    public class Field
+    {
+        public Field(DateTime start, DateTime end, string teamSnapId, string googleID)
+        {
+            this.startDate = start;
+            this.endDate = end;
+            this.teamSnapId = teamSnapId;
+            this.googleId = googleID;
+        }
+
+        public DateTime startDate { get; }     // first day of the season we start tracking
+        public DateTime endDate { get; }       // last day of the season to track
+
+        public string teamSnapId { get; }
+
+        public string googleId { get; }
+
+        public bool Valid()
+        {
+            return DateTime.Today > startDate && DateTime .Today < endDate;
+        }
+    };
+
     internal partial class Program
     {
         // TODO for 2026: use date ranges for spring regular-season, spring playoffs, and summer seasons
@@ -25,7 +48,16 @@ namespace VcbFieldExport
         // DateTime SpringSeason_18UAPlayoffs_Start = new(2025, 06, 16);   // 18U AA games on or after this day are playoff games
         // DateTime SummerSeason_Start = new(2025, 06, 30);                // start of the summer season for 13U A, 15U A, 18U AA.  These are scheduled as regular-season games
 
-        // Add other significant dates as may be needed (e.g. permit end dates)
+        static List<Field> fieldInfo = new List<Field> {
+            new Field(new DateTime(2025, 04, 01), new DateTime(2025, 7, 19),    "74226229", "Chaldecott Park N diamond"),
+            new Field(new DateTime(2025, 04, 01), new DateTime(2025, 7, 19),    "74226228", "Chaldecott Park S diamond"),
+            new Field(new DateTime(2025, 04, 01), new DateTime(2025, 8, 4),     "74226227", "Hillcrest Park NE diamond"),
+            new Field(new DateTime(2025, 04, 01), new DateTime(2025, 8, 4),     "74226226", "Hillcrest Park SW diamond"),
+            new Field(new DateTime(2025, 04, 01), new DateTime(2025, 10, 31),   "74226230", "Nanaimo Park N diamond"),
+            new Field(new DateTime(2025, 04, 01), new DateTime(2025, 10, 31),   "74226231", "Nanaimo Park SE diamond"),
+            new Field(new DateTime(2025, 04, 01), new DateTime(2025, 10, 31),   "74242257", "Nanaimo Park batting cage"),
+            new Field(new DateTime(2025, 04, 01), new DateTime(2025, 6, 15),    "74226232", "Trafalgar Park"),
+        };
 
         static int Main(string[] args)
         {
@@ -46,7 +78,7 @@ namespace VcbFieldExport
 
             logger.WriteLine("Checking Vancouver Community Baseball's Assignr schedule for consistency");
             TeamSnapEvents teamSnap = new(logger);
-            teamSnap.FetchEvents(credentials.Teamsnap ?? string.Empty);
+            teamSnap.FetchEvents(credentials.Teamsnap ?? string.Empty, fieldInfo);
 
             // Find conflicts in the game/practice schedule
             errors += teamSnap.FindConflicts();
@@ -60,15 +92,16 @@ namespace VcbFieldExport
             AssignrEvents assignr = new(logger);
             assignr.Authenticate(credentials.Assignr);
             assignr.FetchEventsFromService(ASSINGR_ID_VCB, true);
-            teamSnap.addPlayoffPlaceHolderGames(assignr.getGames().FindAll(x => {
-                // Playoff games will only be in TeamSnap if both teams are known, so add
-                // placeholder for these games from Assignr if the game isn't in TeamSnap yet.
-                return x.eventType == VcbFieldEvent.Type.PlayoffGame
-                    && (x.division == "15U A" || x.division == "18U AA")
-                    && teamSnap.getGames().Find(t => {
-                        return x.location == t.location && x.startTime == t.startTime;
-                        }) == null;
-            }));
+            // TODO for 2026: implement a better way of managing playoff games
+            //teamSnap.addPlayoffPlaceHolderGames(assignr.getGames().FindAll(x => {
+            //    // Playoff games will only be in TeamSnap if both teams are known, so add
+            //    // placeholder for these games from Assignr if the game isn't in TeamSnap yet.
+            //    return x.eventType == VcbFieldEvent.Type.PlayoffGame
+            //        && (x.division == "15U A" || x.division == "18U AA")
+            //        && teamSnap.getGames().Find(t => {
+            //            return x.location == t.location && x.startTime == t.startTime;
+            //            }) == null;
+            //}));
 
             errors += assignr.Reconcile(teamSnap.getGames());
 
@@ -76,7 +109,7 @@ namespace VcbFieldExport
 
             // Update the Google field calendars with the TeamSnap calendars.
             GoogleEvents googleEvents = new(teamSnap.getGames(), teamSnap.getPractices(), logger);
-            googleEvents.Reconcile(credentials.Google);
+            googleEvents.Reconcile(credentials.Google, fieldInfo);
 
             //logger.WriteLine();
             //logger.WriteLine("Checking Little Mountain Baseball's Assignr schedule for consistency");

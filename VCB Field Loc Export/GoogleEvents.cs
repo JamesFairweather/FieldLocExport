@@ -19,17 +19,6 @@ namespace VcbFieldExport
 
     class GoogleEvents
     {
-        List<string> LOCATION_NAMES = new List<string> {
-            "Chaldecott Park N diamond",
-            "Chaldecott Park S diamond",
-            "Hillcrest Park NE diamond",
-            "Hillcrest Park SW diamond",
-            "Nanaimo Park N diamond",
-            "Nanaimo Park SE diamond",
-            "Nanaimo Park batting cage",
-            // "Trafalgar Park",
-        };
-
         List<VcbFieldEvent> mNewEventList;
         StreamWriter mLogger;
 
@@ -203,28 +192,32 @@ namespace VcbFieldExport
             return results;
         }
 
-        public void Reconcile(Google.Apis.Auth.OAuth2.ClientSecrets? credentials)
+        public void Reconcile(Google.Apis.Auth.OAuth2.ClientSecrets? credentials, List<Field> fieldInfo)
         {
             if (credentials == null)
             {
                 throw new ArgumentException("credentials cannot be null at this point");
             }
 
-            foreach (string locationId in LOCATION_NAMES)
+            foreach (Field field in fieldInfo)
             {
-                mLogger.WriteLine($"Syncing events for location {locationId} to the Google field calendar... ");
+                if (!field.Valid()) {
+                    continue;
+                }
+
+                mLogger.WriteLine($"Syncing events for location {field.googleId} to the Google field calendar... ");
 
                 CalendarService calendarService;
 
                 // Clear a calendar of all existing events
-                // GetGoogleCalendarService(locationId, credentials).Calendars.Clear("primary").Execute();
+                // GetGoogleCalendarService(field.googleId, credentials).Calendars.Clear("primary").Execute();
 
-                List<VcbFieldEvent> currentEvents = fetchEvents(locationId, credentials, out calendarService);
+                List<VcbFieldEvent> currentEvents = fetchEvents(field.googleId, credentials, out calendarService);
 
                 // delete existing events that have been removed in TeamSnap from the Google calendar
                 currentEvents.ForEach(e =>
                 {
-                    if (e.location == locationId && !mNewEventList.Contains(e))
+                    if (!mNewEventList.Contains(e))
                     {
                         try
                         {
@@ -238,11 +231,11 @@ namespace VcbFieldExport
                     }
                 });
 
-                // insert new events into the Google calendar
+                // insert new events for this field into the it's corresponding Google calendar
                 List<VcbFieldEvent> eventsToAdd = new List<VcbFieldEvent>();
-                mNewEventList.ForEach(e =>
+                mNewEventList.FindAll(x => x.location == field.googleId).ForEach(e =>
                 {
-                    if (e.location == locationId && !currentEvents.Contains(e)) {
+                    if (!currentEvents.Contains(e)) {
                         addEventToGoogleCalendar(calendarService, e);
                     }
                 });
