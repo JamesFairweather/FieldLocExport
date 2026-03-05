@@ -257,21 +257,13 @@ namespace VcbFieldExport
                     }
                     else if (ASSIGNR_TO_PUBLIC_NAMEMAP.ContainsKey(age_group))
                     {
-                        try {
+                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[age_group].ContainsKey(homeTeam)) {
                             homeTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][homeTeam];
                         }
-                        catch (KeyNotFoundException) {
-                            // homeTeam name is already correct
-                        }
 
-                        try {
+                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[age_group].ContainsKey(awayTeam)) {
                             awayTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][awayTeam];
                         }
-                        catch (KeyNotFoundException) {
-                            // awayTeam name is already correct
-                        }
-
-                        // The visiting team is a non-VCB team, TeamSnap & Assignr should have the same name
                     }
                     else
                     {
