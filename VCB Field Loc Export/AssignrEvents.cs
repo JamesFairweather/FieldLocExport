@@ -358,13 +358,13 @@ namespace VcbFieldExport
         List<VcbFieldEvent> mGames;
 
         Dictionary<string, string> ASSIGNR_TO_TEAMSNAP_VENUE_MAP = new Dictionary<string, string> {
-            { "Chaldecott North", "Chaldecott Park N diamond" },
-            { "Chaldecott South", "Chaldecott Park S diamond" },
-            { "Hillcrest North", "Hillcrest Park NE diamond" },
-            { "Hillcrest South", "Hillcrest Park SW diamond" },
-            { "Nanaimo North", "Nanaimo Park N diamond" },
-            { "Nanaimo South East", "Nanaimo Park SE diamond" },
-            { "Trafalgar", "Trafalgar Park" },
+            { "Chaldecott North", "Chaldecott Park N (VCB)" },
+            { "Chaldecott South", "Chaldecott Park S (VCB)" },
+            { "Hillcrest North", "Hillcrest Park NE (VCB)" },
+            { "Hillcrest South", "Hillcrest Park SW (VCB)" },
+            { "Nanaimo North", "Nanaimo Park N (VCB)" },
+            { "Nanaimo South East", "Nanaimo Park SE (VCB)" },
+            { "Trafalgar", "Trafalgar Park (VCB)" },
             { "Challenger", "Variety Challenger Field" },
             { "Columbia Park", "Columbia Park" },
             { "Hillcrest Park", "Hillcrest Main Diamond" },
@@ -433,6 +433,17 @@ namespace VcbFieldExport
             }},
             { "15U AAA", new Dictionary<string, string> {
                 { "Vancouver Mounties", "VCB 15U AAA"},
+                { "Cloverdale", "Cloverdale Rangers 15U AAA" },
+                { "Township", "Township (Langley)" },
+                { "Cowichan", "Cowichan 15U AAA"},
+                { "Abbotsford", "Abby AAA"},
+                { "Victoria", "Victoria Seawolves 15U AAA" },
+                { "Ridge Meadows", "Ridge Meadows 15U AAA" },
+                { "SOMBA", "Somba 15U AAA" },
+                { "North Shore", "NSBA 15U AAA" },
+                { "Kamloops", "Kamloops Riverdogs 15U AAA" },
+                { "COMBA", "Comba 15U AAA" },
+                { "Tri-City", "Tri City" }
             }},
             { "18U AA", new Dictionary<string, string> {
                 { "Vancouver Expos", "VCB 18U AA Expos" },
@@ -440,9 +451,11 @@ namespace VcbFieldExport
                 { "New West", "New West/South Burnaby" },
             }},
             { "18U AAA", new Dictionary<string, string> {
-                { "Vancouver Mounties Blue", "VCB 18U AAA Blue" },
-                { "Vancouver Mounties White", "VCB 18U AAA White" },
-                { "SOMBA", "Penticton Tigers" },
+                { "Vancouver Mounties Blue", "VCB 18U AAA Blue Expos" },
+                { "Vancouver Mounties White", "VCB 18U AAA White Mounties" },
+                { "UBC", "UBC Jr Thunder" },
+                { "Cowichan", "Cowichan Valley" },
+                { "COMBA", "Comba" }
             }},
             { "26U", new Dictionary<string, string> {
                 { "Vancouver Mounties", "VCB 26U Mounties" },

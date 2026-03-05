@@ -48,15 +48,18 @@ namespace VcbFieldExport
         // DateTime SpringSeason_18UAPlayoffs_Start = new(2025, 06, 16);   // 18U AA games on or after this day are playoff games
         // DateTime SummerSeason_Start = new(2025, 06, 30);                // start of the summer season for 13U A, 15U A, 18U AA.  These are scheduled as regular-season games
 
+        // VCB Organization locations
+        // https://go.teamsnap.com/1054301/league_location/list
+
         static List<Field> fieldInfo = new List<Field> {
-            new Field(new DateTime(2025, 04, 01), new DateTime(2025, 7, 19),    "74226229", "Chaldecott Park N diamond"),
-            new Field(new DateTime(2025, 04, 01), new DateTime(2025, 7, 19),    "74226228", "Chaldecott Park S diamond"),
-            new Field(new DateTime(2025, 04, 01), new DateTime(2025, 8, 4),     "74226227", "Hillcrest Park NE diamond"),
-            new Field(new DateTime(2025, 04, 01), new DateTime(2025, 8, 4),     "74226226", "Hillcrest Park SW diamond"),
-            new Field(new DateTime(2025, 04, 01), new DateTime(2025, 10, 31),   "74226230", "Nanaimo Park N diamond"),
-            new Field(new DateTime(2025, 04, 01), new DateTime(2025, 10, 31),   "74226231", "Nanaimo Park SE diamond"),
-            new Field(new DateTime(2025, 04, 01), new DateTime(2025, 10, 31),   "74242257", "Nanaimo Park batting cage"),
-            new Field(new DateTime(2025, 04, 01), new DateTime(2025, 6, 15),    "74226232", "Trafalgar Park"),
+            new Field(new DateTime(2026, 03, 01), new DateTime(2026, 9, 30),    "77851189", "Chaldecott Park N (VCB)"),
+            new Field(new DateTime(2026, 03, 01), new DateTime(2026, 9, 30),    "77851190", "Chaldecott Park S (VCB)"),
+            new Field(new DateTime(2026, 03, 01), new DateTime(2026, 10, 31),     "77851188", "Hillcrest Park NE (VCB)"),
+            new Field(new DateTime(2026, 03, 01), new DateTime(2026, 10, 31),     "77851187", "Hillcrest Park SW (VCB)"),
+            new Field(new DateTime(2026, 03, 01), new DateTime(2026, 10, 31),   "77851191", "Nanaimo Park N (VCB)"),
+            new Field(new DateTime(2026, 03, 01), new DateTime(2026, 10, 31),   "77851192", "Nanaimo Park SE (VCB)"),
+            // new Field(new DateTime(2025, 04, 01), new DateTime(2025, 10, 31),   "74242257", "Nanaimo Park batting cage"), disabled for 2026.  Need a new Org-wide location created for this resource
+            new Field(new DateTime(2026, 03, 01), new DateTime(2026, 9, 30),    "77851193", "Trafalgar Park (VCB)"),
         };
 
         static int Main(string[] args)
@@ -91,7 +94,7 @@ namespace VcbFieldExport
 
             AssignrEvents assignr = new(logger);
             assignr.Authenticate(credentials.Assignr);
-            assignr.FetchEventsFromService(ASSINGR_ID_VCB, true);
+            assignr.FetchEventsFromService(ASSINGR_ID_VCB, false);
             // TODO for 2026: implement a better way of managing playoff games
             //teamSnap.addPlayoffPlaceHolderGames(assignr.getGames().FindAll(x => {
             //    // Playoff games will only be in TeamSnap if both teams are known, so add
