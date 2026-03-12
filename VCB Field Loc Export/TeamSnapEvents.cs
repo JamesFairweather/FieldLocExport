@@ -53,13 +53,24 @@ namespace VcbFieldExport
     {
         Dictionary<string, string> TeamIdToDivision = new Dictionary<string, string>
         {
-            { "10483142", "18U AAA" },  // VCB 18U AAA White Mounties
-            { "10483271", "18U AAA" },  // VCB 18U AAA Blue Expos
-            { "10483153", "15U AAA" },  // VCB 15U AAA
-            { "10501427", "15U AA" },   // VCB 15U AA Red
-            { "10453428", "15U AA" },   // VCB 15U AA Expos Blue
-            { "10480810", "13U AAA" },  // VCB 13U AAA
-            { "10453427", "13U AA" },   // VCB 13U AA
+            { "10453427", "13U AA" },   // 13U AA
+            { "10480810", "13U AAA" },  // 13U AAA
+            { "10453428", "15U AA" },   // 15U AA Expos Blue
+            { "10501427", "15U AA" },   // 15U AA Red
+            { "10483153", "15U AAA" },  // 15U AAA
+            { "10483271", "18U AAA" },  // 18U AAA Blue Expos
+            { "10483142", "18U AAA" },  // 18U AAA White Mounties
+            { "10548496", "15U A" },    // Yankees
+            { "10548495", "15U A" },    // Rockies
+            { "10548494", "15U A" },    // Red Sox
+            { "10548493", "15U A" },    // Phillies
+            { "10548492", "15U A" },    // Mets
+            { "10548491", "15U A" },    // Mariners
+            { "10548490", "15U A" },    // Expos
+            { "10548489", "15U A" },    // Dodgers
+            { "10548488", "15U A" },    // Brewers
+            { "10548487", "15U A" },    // Blue Jays
+            { "10548486", "15U A" },    // Athletics
             { "10538952", "18U AA" },   // Yankees
             { "10538951", "18U AA" },   // Reds
             { "10538950", "18U AA" },   // Rangers
