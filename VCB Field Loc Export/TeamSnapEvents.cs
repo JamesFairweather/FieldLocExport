@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 
 namespace VcbFieldExport
@@ -49,6 +51,27 @@ namespace VcbFieldExport
 
     class TeamSnapEvents
     {
+        Dictionary<string, string> TeamIdToDivision = new Dictionary<string, string>
+        {
+            { "10483142", "18U AAA" },  // VCB 18U AAA White Mounties
+            { "10483271", "18U AAA" },  // VCB 18U AAA Blue Expos
+            { "10483153", "15U AAA" },  // VCB 15U AAA
+            { "10501427", "15U AA" },   // VCB 15U AA Red
+            { "10453428", "15U AA" },   // VCB 15U AA Expos Blue
+            { "10480810", "13U AAA" },  // VCB 13U AAA
+            { "10453427", "13U AA" },   // VCB 13U AA
+            { "10538952", "18U AA" },   // Yankees
+            { "10538951", "18U AA" },   // Reds
+            { "10538950", "18U AA" },   // Rangers
+            { "10538949", "18U AA" },   // Pirates
+            { "10538948", "18U AA" },   // Phillies
+            { "10538947", "18U AA" },   // Marlins
+            { "10538946", "18U AA" },   // Mariners
+            { "10538945", "18U AA" },   // Dodgers
+            { "10538944", "18U AA" },   // Blue Jays
+            { "10538943", "18U AA" },   // Athletics
+        };
+
         public TeamSnapEvents(StreamWriter logger)
         {
             // How to obtain a TeamSnap Bearer token for accessing the service
@@ -79,7 +102,6 @@ namespace VcbFieldExport
         public void FetchEvents(string bearerToken, List<Field> fieldInfo)
         {
             List<VcbFieldEvent> nonLeagueUnmatchedGamesBetweenVcbTeams = new();
-            Regex teamRegex = new(@"VCB\s(Expos\s)?(?<Division>[^\s]+)\s(?<Team>.+)");
 
             using HttpClient client = new();
             client.DefaultRequestHeaders.Accept.Clear();
@@ -112,6 +134,7 @@ namespace VcbFieldExport
                     string formatted_title_for_multi_team = e.data.Find(x => x.name == "formatted_title_for_multi_team")?.value ?? string.Empty;
                     string opponent_name = e.data.Find(x => x.name == "opponent_name")?.value ?? string.Empty;
                     bool leagueControlledGame = e.data.Find(x => x.name == "is_league_controlled")?.value == "true";
+                    string teamId = e.data.Find(x => x.name == "team_id")?.value ?? string.Empty;
 
                     int index = formatted_title_for_multi_team.IndexOf(formatted_title);
                     if (index == -1)
@@ -152,45 +175,13 @@ namespace VcbFieldExport
                             addGameToEventList = !((leagueControlledGame || (homeTeam.StartsWith("VCB") && homeTeam != "VCB 15U TBD")));
                         }
 
-                        string? division = null;
+                        string division;
 
-                        Match match = teamRegex.Match(thisTeam);
-
-                        if (match.Success)
-                        {
-                            division = match.Groups["Division"].Value;
-
-                            if (division == "16U") {
-                                division = "15U";   // Girls Red Sox team is named "16U" because the Girls can be 1 year older
-                            }
-
-                            string team = match.Groups["Team"].Value;
-                            if (team.StartsWith("AAA")) {
-                                division += " AAA";     // 18U AAA Blue, 18U AAA White, 15U AAA, 13U AAA
-                            }
-                            else if (team == "AA Blue" || team == "AA Red" || team == "AA") {
-                                division += " AA";      // Expos 15U AA Blue, 15U AA Red, 13U AA
-                            }
-                            else if (division == "13U" || division == "15U") {
-                                division += " A";
-                            }
-                            else if (division == "18U") {
-                                division += " AA";
-                            }
-                            else if (division == "26U") {
-                                // no action is required
-                            }
-                            else {
-                                throw new Exception($"Unexpected division and/or team name found while reading the TeamSnap events: {thisTeam}");
-                            }
+                        try {
+                            division = TeamIdToDivision[teamId];
                         }
-                        else if (thisTeam == "VCB") {
-                            throw new Exception("Games booked under the VCB special team are not handled by this script.");
-                        }
-
-                        if (division == null)
-                        {
-                            throw new Exception($"Unable to extract division information for team {thisTeam}");
+                        catch (KeyNotFoundException) {
+                            throw new Exception($"Team {thisTeam} does not have a mapping to a division.  Please update the map.");
                         }
 
                         VcbFieldEvent.Type gameType = VcbFieldEvent.Type.Game;
