@@ -176,18 +176,18 @@ namespace VcbFieldExport
                 {
                     string homeTeam = game.home_team;
                     string awayTeam = game.away_team;
-                    string age_group = game.age_group ?? string.Empty;
+                    string division = game.age_group ?? string.Empty;
 
                     if (game.cancelled) {
                         continue;
                     }
 
-                    if (age_group == "Mentor") {
+                    if (division == "Mentor") {
                         // This is a placeholder for an umpire mentor assignment, it doesn't represent a game
                         continue;
                     }
 
-                    if (age_group == "8U") {
+                    if (division == "8U") {
                         // Little Mountain has this age group, which we will ignore
                         continue;
                     }
@@ -203,66 +203,13 @@ namespace VcbFieldExport
                     //    continue;
                     //}
 
-                    string division = game.age_group ?? string.Empty;
-
-                    if (age_group == "13U A")
-                    {
-                        try {
-                            homeTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][homeTeam];
-                        }
-                        catch (KeyNotFoundException) {
-                            // homeTeam name is already correct
+                    if (ASSIGNR_TO_PUBLIC_NAMEMAP.ContainsKey(division)) {
+                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[division].ContainsKey(homeTeam)) {
+                            homeTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[division][homeTeam];
                         }
 
-                        try {
-                            awayTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][awayTeam];
-                        }
-                        catch (KeyNotFoundException) {
-                            // awayTeam name is already correct
-                        }
-                    }
-                    else if (age_group == "15U A")
-                    {
-                        try {
-                            homeTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][homeTeam];
-                        }
-                        catch (KeyNotFoundException) {
-                            homeTeam = "VCB 15U " + homeTeam;
-                        }
-
-                        //try {
-                        //    awayTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][awayTeam];
-                        //}
-                        //catch (KeyNotFoundException) {
-                        //    awayTeam = "VCB 15U " + awayTeam;
-                        //}
-                    }
-                    else if (game.age_group == "18U AA")
-                    {
-                        try {
-                            homeTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][homeTeam];
-                        }
-                        catch (KeyNotFoundException) {
-                            // we don't need to do this for summer teams
-                            // homeTeam = "VCB 18U " + homeTeam;
-                        }
-
-                        try {
-                            awayTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][awayTeam];
-                        }
-                        catch (KeyNotFoundException) {
-                            // we don't need to do this for summer teams
-                            // awayTeam = "VCB 18U " + awayTeam;
-                        }
-                    }
-                    else if (ASSIGNR_TO_PUBLIC_NAMEMAP.ContainsKey(age_group))
-                    {
-                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[age_group].ContainsKey(homeTeam)) {
-                            homeTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][homeTeam];
-                        }
-
-                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[age_group].ContainsKey(awayTeam)) {
-                            awayTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[age_group][awayTeam];
+                        if (ASSIGNR_TO_PUBLIC_NAMEMAP[division].ContainsKey(awayTeam)) {
+                            awayTeam = ASSIGNR_TO_PUBLIC_NAMEMAP[division][awayTeam];
                         }
                     }
                     else
@@ -419,9 +366,8 @@ namespace VcbFieldExport
                 { "Vancouver Mounties", "VCB 15U A Mounties" }
             }},
             { "15U AA", new Dictionary<string, string>{
-                { "Vancouver Mounties Blue", "VCB Expos 15U AA Blue" },
-                { "Vancouver Mounties Red", "VCB 15U AA Red" },
-                { "Burnaby Braves", "North Burnaby" },
+                { "Vancouver Mounties Blue", "VCB 15U AA Expos Blue" },
+                { "Vancouver Mounties Red", "VCB 15U AA Red" }
             }},
             { "15U AAA", new Dictionary<string, string> {
                 { "Vancouver Mounties", "VCB 15U AAA"},
