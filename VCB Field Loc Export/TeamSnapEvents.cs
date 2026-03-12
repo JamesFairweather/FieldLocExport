@@ -70,6 +70,9 @@ namespace VcbFieldExport
             { "10538945", "18U AA" },   // Dodgers
             { "10538944", "18U AA" },   // Blue Jays
             { "10538943", "18U AA" },   // Athletics
+            { "10547272", "26U" },      // Expos
+            { "10547273", "26U" },      // Mounties
+            { "10547274", "26U" },      // Vipers
         };
 
         public TeamSnapEvents(StreamWriter logger)
