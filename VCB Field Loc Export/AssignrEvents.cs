@@ -438,9 +438,7 @@ namespace VcbFieldExport
                 { "Tri-City", "Tri City" }
             }},
             { "18U AA", new Dictionary<string, string> {
-                { "Vancouver Expos", "VCB 18U AA Expos" },
-                { "Vancouver Mounties", "VCB 18U AA Mounties" },
-                { "New West", "New West/South Burnaby" },
+                { "A's", "Athletics" }
             }},
             { "18U AAA", new Dictionary<string, string> {
                 { "Vancouver Mounties Blue", "VCB 18U AAA Blue Expos" },
