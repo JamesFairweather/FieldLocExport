@@ -343,13 +343,6 @@ namespace VcbFieldExport
                 { "Minor B River Cats", "MINB11 RIVER CATS" },
             }},
             { "13U A", new Dictionary<string, string> {
-                //{ "Dodgers", "VCB 13U Dodgers" },
-                //{ "Blue Jays", "VCB 13U Blue Jays" },
-                //{ "Diamondbacks", "VCB 13U Diamondbacks" },
-                //{ "Expos", "VCB 13U Expos" },
-                //{ "Vancouver Expos", "VCB 13U Expos" },
-                //{ "Red Sox", "VCB 13U Red Sox" },
-                { "Vancouver Mounties", "VCB 13U A Mounties" }
             }},
             { "13U AA", new Dictionary<string, string> {
                 { "Vancouver Mounties", "VCB 13U AA" },
@@ -358,12 +351,7 @@ namespace VcbFieldExport
                 { "Vancouver Mounties", "VCB 13U AAA" },
             }},
             { "15U A", new Dictionary<string, string> {
-                //{ "Burnaby", "Burnaby 15UA" },
-                //{ "RS-Girls", "VCB 16U Red Sox-Girls" },
-                //{ "Girls 1", "VCB 16U Red Sox-Girls" },
-                //{ "Girls 2", "15U Girls" },
-                // { "TBD", "15U Girls" },
-                { "Vancouver Mounties", "VCB 15U A Mounties" }
+                { "A's", "Athletics" }
             }},
             { "15U AA", new Dictionary<string, string>{
                 { "Vancouver Mounties Blue", "VCB 15U AA Expos Blue" },
