@@ -60,6 +60,8 @@ namespace VcbFieldExport
             { "10483153", "15U AAA" },  // 15U AAA
             { "10483271", "18U AAA" },  // 18U AAA Blue Expos
             { "10483142", "18U AAA" },  // 18U AAA White Mounties
+            { "10453430", "13U A" },    // 13U A Draft pool fake team
+            { "10453431", "15U A" },    // 15U A Draft pool fake team
             { "10548496", "15U A" },    // Yankees
             { "10548495", "15U A" },    // Rockies
             { "10548494", "15U A" },    // Red Sox
@@ -145,9 +147,10 @@ namespace VcbFieldExport
                     DateTime endTime = (endDateString != null) ? DateTime.Parse(endDateString).ToUniversalTime() : startTime.AddHours(2);
                     endTime = endTime.AddSeconds(-endTime.Second);
                     string formatted_title = e.data.Find(x => x.name == "formatted_title")?.value ?? string.Empty;
+                    bool isGame = e.data.Find(x => x.name == "is_game")?.value == "true";
+                    bool isHomeGame = e.data.Find(x => x.name == "game_type")?.value == "Home";
                     string formatted_title_for_multi_team = e.data.Find(x => x.name == "formatted_title_for_multi_team")?.value ?? string.Empty;
                     string opponent_name = e.data.Find(x => x.name == "opponent_name")?.value ?? string.Empty;
-                    bool leagueControlledGame = e.data.Find(x => x.name == "is_league_controlled")?.value == "true";
                     string teamId = e.data.Find(x => x.name == "team_id")?.value ?? string.Empty;
 
                     int index = formatted_title_for_multi_team.IndexOf(formatted_title);
@@ -156,47 +159,21 @@ namespace VcbFieldExport
                         throw new Exception("Did not find the event description in the formatted_title_for_multi_team value.  Check the TeamSnap API response");
                     }
                     string thisTeam = formatted_title_for_multi_team.Remove(index, formatted_title.Length).Trim();
-                    string homeTeam = string.Empty;
-                    string visitingTeam = string.Empty;
 
-                    if (e.data.Find(x => x.name == "is_game")?.value == "true")
+                    string division;
+                    try
                     {
-                        bool addGameToEventList;
+                        division = TeamIdToDivision[teamId];
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                        throw new Exception($"Team {thisTeam} does not have a mapping to a division.  Please update the map.");
+                    }
 
-                        if (e.data.Find(x => x.name == "game_type")?.value == "Home")
-                        {
-                            // always add home games.
-                            homeTeam = thisTeam;
-                            visitingTeam = opponent_name;
-                            addGameToEventList = true;
-                        }
-                        else
-                        {
-                            // this team is the visiting team.  It will only be added in rare cases
-                            homeTeam = opponent_name;
-                            visitingTeam = thisTeam;
-
-                            // If the game is controlled by the league, we want to skip adding beause it will be
-                            // added by the home team.
-
-                            // OR, if this is the visiting team's event for a game where the home team is also a VCB team,
-                            // ignore it because the game will be added by the home team's entry.  We only want to
-                            // add this entry if this is a team-controlled game where the home team is NOT a VCB team.
-                            // There are a few games being played on VCB fields where the VCB team is the visiting
-                            // team.  Assignr has these games of course, and we want TeamSnap to show them too.
-                            // Except we still want to add the game if the home team is "VCB 15U TBD" because these are
-                            // Girls team games where their opponent is still to be decided.
-                            addGameToEventList = !((leagueControlledGame || (homeTeam.StartsWith("VCB") && homeTeam != "VCB 15U TBD")));
-                        }
-
-                        string division;
-
-                        try {
-                            division = TeamIdToDivision[teamId];
-                        }
-                        catch (KeyNotFoundException) {
-                            throw new Exception($"Team {thisTeam} does not have a mapping to a division.  Please update the map.");
-                        }
+                    if (isGame)
+                    {
+                        string homeTeam = isHomeGame ? thisTeam : opponent_name;
+                        string visitingTeam = isHomeGame ? opponent_name : thisTeam;
 
                         VcbFieldEvent.Type gameType = VcbFieldEvent.Type.Game;
 
@@ -215,47 +192,53 @@ namespace VcbFieldExport
 
                         if ((division == "15U A" && startTime > RegularSeasonEnd_13UA && startTime <= PlayoffsEnd_13UA) ||
                             (division == "13U A" && startTime > RegularSeasonEnd_15UA && startTime <= PlayoffsEnd_15UA) ||
-                            (division == "18U AA" && startTime > RegularSeasonEnd_18UAA && startTime <= PlayoffsEnd_18UAA)) {
+                            (division == "18U AA" && startTime > RegularSeasonEnd_18UAA && startTime <= PlayoffsEnd_18UAA))
+                        {
                             gameType = VcbFieldEvent.Type.PlayoffGame;
                         }
 
-                        if (!leagueControlledGame
-                            && homeTeam.StartsWith("VCB")
-                            && visitingTeam.StartsWith("VCB")
-                            && !visitingTeam.Contains("TBD")) {
+                        if (isHomeGame) {
+                            mGames.Add(new VcbFieldEvent(gameType, location, startTime, division, homeTeam, visitingTeam, string.Empty, true));
+                        }
 
-                            // Check that a game between two VCB teams is in _both_ teams' TeamSnap schedules
+                        if (CheckForGameInOtherTeamsCalendar(division, opponent_name)) {
+
                             VcbFieldEvent? oppositeGameFound = nonLeagueUnmatchedGamesBetweenVcbTeams.Find(e => e.location == location && e.startTime == startTime && e.homeTeam == homeTeam && e.visitingTeam == visitingTeam);
 
-                            if (oppositeGameFound == null) {
+                            if (oppositeGameFound == null)
+                            {
                                 // First instance of this game.  We should find another one in their opponent's TeamSnap schedule later
                                 nonLeagueUnmatchedGamesBetweenVcbTeams.Add(new(VcbFieldEvent.Type.Game, location, startTime, division, homeTeam, visitingTeam, string.Empty, true));
                             }
-                            else {
+                            else
+                            {
                                 // This game was added from the other team's schedule, so we can remove it from the unmatched list
                                 nonLeagueUnmatchedGamesBetweenVcbTeams.Remove(oppositeGameFound);
                             }
                         }
-
-                        if (addGameToEventList) {
-                            mGames.Add(new VcbFieldEvent(gameType, location, startTime, division, homeTeam, visitingTeam, string.Empty, true));
-                        }
                     }
-                    else {
+                    else
+                    {
                         mPractices.Add(new VcbFieldEvent(location, startTime, endTime, thisTeam, formatted_title));
                     }
                 }
             }
 
-            if (nonLeagueUnmatchedGamesBetweenVcbTeams.Count != 0) {
+            // Verify that there are no unmatched games in the VCB teams' schedules when they're playing each other
+            // If this comes up as non-empty at this point, one (or both) teams have incorrect schedules and need to
+            // be fixed.
+            if (nonLeagueUnmatchedGamesBetweenVcbTeams.Count != 0)
+            {
                 mLogger.WriteLine("Some games are missing from a VCB opponent's TeamSnap schedule");
 
-                foreach(VcbFieldEvent e in nonLeagueUnmatchedGamesBetweenVcbTeams) {
+                foreach (VcbFieldEvent e in nonLeagueUnmatchedGamesBetweenVcbTeams)
+                {
                     mLogger.WriteLine($"Location {e.location} and Date: {e.startTime.ToLocalTime().ToString("g")}.  Home team: {e.homeTeam}.  Visiting team: {e.visitingTeam}");
                 }
             }
         }
-        public void addPlayoffPlaceHolderGames(List<VcbFieldEvent> placeHolderGames) {
+        public void addPlayoffPlaceHolderGames(List<VcbFieldEvent> placeHolderGames)
+        {
             mGames.AddRange(placeHolderGames);
         }
 
@@ -275,6 +258,35 @@ namespace VcbFieldExport
         public List<VcbFieldEvent> getGames()
         {
             return mGames;
+        }
+
+        bool CheckForGameInOtherTeamsCalendar(string division, string opponent)
+        {
+            // check the game is found in the other team's TeamSnap schedule when:
+            //   - the division is a travel division where there is more than one VCB team, and
+            //   - the opposing team is also a VCB team (regardless of which team is home)
+
+            List<string> VCB15UAATEAMS = new List<string> {
+                            "VCB 15U AA Red",
+                            "VCB 15U AA Expos Blue"
+                        };
+
+            List<string> VCB18UAAATEAMS = new List<string> {
+                            "VCB 18U AAA White Mounties",
+                            "VCB 18U AAA Blue Expos"
+                        };
+
+            List<string> VCB26UTEAMS = new List<string> {
+                            "26U Vipers",
+                            "26U Mounties",
+                            "26U Expos"
+                        };
+
+            return
+                (division == "15U AA" && VCB15UAATEAMS.Contains(opponent)) ||
+                (division == "18U AAA" && VCB18UAAATEAMS.Contains(opponent)) ||
+                (division == "26U" && VCB26UTEAMS.Contains(opponent)
+            );
         }
 
         List<VcbFieldEvent> mPractices = new();
