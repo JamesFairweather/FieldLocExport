@@ -60,8 +60,13 @@ namespace VcbFieldExport
             { "10483153", "15U AAA" },  // 15U AAA
             { "10483271", "18U AAA" },  // 18U AAA Blue Expos
             { "10483142", "18U AAA" },  // 18U AAA White Mounties
-            { "10453430", "13U A" },    // 13U A Draft pool fake team
-            { "10453431", "15U A" },    // 15U A Draft pool fake team
+            { "10551665", "13U A" },    // Yankees
+            { "10551676", "13U A" },    // Red Sox
+            { "10551666", "13U A" },    // Mariners
+            { "10551679", "13U A" },    // Expos
+            { "10551678", "13U A" },    // Dodgers
+            { "10551668", "13U A" },    // Diamondbacks
+            { "10551677", "13U A" },    // Blue Jays
             { "10548496", "15U A" },    // Yankees
             { "10548495", "15U A" },    // Rockies
             { "10548494", "15U A" },    // Red Sox
