@@ -224,7 +224,7 @@ namespace VcbFieldExport
                     }
                     else
                     {
-                        mPractices.Add(new VcbFieldEvent(location, startTime, endTime, thisTeam, formatted_title));
+                        mPractices.Add(new VcbFieldEvent(location, startTime, endTime, division, thisTeam, formatted_title));
                     }
                 }
             }

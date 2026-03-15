@@ -10,7 +10,7 @@ namespace VcbFieldExport
 {
     internal partial class Program
     {
-        [GeneratedRegex(@"(?<EventType>.+):\s(?<team>.+)")]
+        [GeneratedRegex(@"(?<EventType>.+):\s((13U A )|(15U A )|(18U AA ))?(?<team>.+)")]
         public static partial Regex SummaryRegex();
 
         [GeneratedRegex(@"(?<visitingTeam>.+)\s@\s(?<homeTeam>.+)")]
@@ -64,17 +64,26 @@ namespace VcbFieldExport
             switch (vcbFieldEvent.eventType)
             {
                 case VcbFieldEvent.Type.Practice:
-                    googleCalendarEvent.Summary = "Practice: " + vcbFieldEvent.homeTeam;
+                    if (vcbFieldEvent.division == "13U A" || vcbFieldEvent.division == "15U A" || vcbFieldEvent.division == "18U AA") {
+                        // Teams in these divisions don't have have the division name in their team name,
+                        // so add it to the event summary information
+                        googleCalendarEvent.Summary = $"Practice: {vcbFieldEvent.division} {vcbFieldEvent.homeTeam}";
+                    }
+                    else {
+                        // Teams in other divisions do have the division name in their team name (e.g. "26U Mounties")
+                        // so we don't want to include the division name
+                        googleCalendarEvent.Summary = $"Practice: {vcbFieldEvent.homeTeam}";
+                    }
                     googleCalendarEvent.Description = vcbFieldEvent.description;
                     break;
 
                 case VcbFieldEvent.Type.Game:
-                    googleCalendarEvent.Summary = "Game: " + vcbFieldEvent.division;
+                    googleCalendarEvent.Summary = $"Game: {vcbFieldEvent.division}";
                     googleCalendarEvent.Description = $"{vcbFieldEvent.visitingTeam} @ {vcbFieldEvent.homeTeam}";
                     break;
 
                 case VcbFieldEvent.Type.PlayoffGame:
-                    googleCalendarEvent.Summary = "Playoffs: " + vcbFieldEvent.division + " " + vcbFieldEvent.description;
+                    googleCalendarEvent.Summary = $"Playoffs: {vcbFieldEvent.division} {vcbFieldEvent.description}";
                     googleCalendarEvent.Description = $"{vcbFieldEvent.visitingTeam} @ {vcbFieldEvent.homeTeam}";
                     break;
            }
