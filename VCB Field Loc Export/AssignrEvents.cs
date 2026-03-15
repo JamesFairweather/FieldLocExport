@@ -382,8 +382,9 @@ namespace VcbFieldExport
                 { "COMBA", "Comba" }
             }},
             { "26U", new Dictionary<string, string> {
-                { "Vancouver Mounties", "VCB 26U Mounties" },
-                { "Vancouver Expos", "VCB 26U Expos" },
+                { "Vancouver Mounties", "26U Mounties" },
+                { "Vancouver Expos", "26U Expos" },
+                { "Vancouver Vipers", "26U Vipers" }
             }},
         };
     }
