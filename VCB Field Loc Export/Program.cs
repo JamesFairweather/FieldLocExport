@@ -58,7 +58,7 @@ namespace VcbFieldExport
             new Field(new DateTime(2026, 03, 01), new DateTime(2026, 10, 31), "77851187", "Hillcrest Park SW (VCB)"),
             new Field(new DateTime(2026, 03, 01), new DateTime(2026, 10, 31), "77851191", "Nanaimo Park N (VCB)"),
             new Field(new DateTime(2026, 03, 01), new DateTime(2026, 10, 31), "77851192", "Nanaimo Park SE (VCB)"),
-            // new Field(new DateTime(2025, 04, 01), new DateTime(2025, 10, 31), "74242257", "Nanaimo Park batting cage"), disabled for 2026.  Need a new Org-wide location created for this resource
+            new Field(new DateTime(2026, 03, 01), new DateTime(2026, 10, 31), "78025343", "Nanaimo Park batting cage (VCB)"),
             new Field(new DateTime(2026, 03, 01), new DateTime(2026, 9, 30),  "77851193", "Trafalgar Park (VCB)"),
         };
 
