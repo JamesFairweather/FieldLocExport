@@ -112,7 +112,7 @@ namespace VcbFieldExport
 
             // Update the Google field calendars with the TeamSnap calendars.
             GoogleEvents googleEvents = new(teamSnap.getGames(), teamSnap.getPractices(), logger);
-            googleEvents.Reconcile(credentials.Google, fieldInfo);
+            googleEvents.Reconcile(credentials.Google, fieldInfo, false);
 
             //logger.WriteLine();
             //logger.WriteLine("Checking Little Mountain Baseball's Assignr schedule for consistency");

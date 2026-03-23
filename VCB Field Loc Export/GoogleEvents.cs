@@ -201,7 +201,7 @@ namespace VcbFieldExport
             return results;
         }
 
-        public void Reconcile(Google.Apis.Auth.OAuth2.ClientSecrets? credentials, List<Field> fieldInfo)
+        public void Reconcile(Google.Apis.Auth.OAuth2.ClientSecrets? credentials, List<Field> fieldInfo, bool clearAllExistingEvents)
         {
             if (credentials == null)
             {
@@ -219,7 +219,9 @@ namespace VcbFieldExport
                 CalendarService calendarService;
 
                 // Clear a calendar of all existing events
-                // GetGoogleCalendarService(field.googleId, credentials).Calendars.Clear("primary").Execute();
+                if (clearAllExistingEvents) {
+                    GetGoogleCalendarService(field.googleId, credentials).Calendars.Clear("primary").Execute();
+                }
 
                 List<VcbFieldEvent> currentEvents = fetchEvents(field.googleId, credentials, out calendarService);
 
