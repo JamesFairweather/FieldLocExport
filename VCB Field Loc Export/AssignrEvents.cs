@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using static Google.Apis.Requests.BatchRequest;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.ComponentModel;
 using System.Xml.Linq;
+using static Google.Apis.Requests.BatchRequest;
 
 namespace VcbFieldExport
 {
@@ -313,34 +314,37 @@ namespace VcbFieldExport
         Dictionary<string, Dictionary<string, string>> ASSIGNR_TO_PUBLIC_NAMEMAP = new Dictionary<string, Dictionary<string, string>> {
             { "Majors", new Dictionary<string, string> {
                 {"Majors Royals", "MAJ1 MAIN ST PHYSIO ROYALS" },
-                {"Majors Twins", "MAJ2 HOLBORN TWINS" },
-                {"Majors Mariners", "MAJ3 ANTHEM MARINERS" },
-                {"Majors Legion", "MAJ4 LEGION" },
-                {"Majors Cardinals", "MAJ5 DWELL CARDINALS" },
-                {"Majors Rangers", "MAJ6 DAKOTA HOMES RANGERS" },
-                {"Majors Angels", "MAJ7 UNCLE BILLS PLUMBING ANGELS" },
+                {"Majors Twins", "MAJ7 UNCLE BILLS PLUMBING TWINS" },
+                {"Majors Mariners", "MAJ3 HOLBORN MARINERS" },
+                {"Majors Legion", "MAJ4 LEGION ATHLETICS" },
+                {"Majors Angels", "MAJ5 BEASTVAN ANGELS" },
+                {"Majors Dodgers", "MAJ6 DODGERS" },
+                {"Majors Marlins", "MAJ2 DAKOTA HOMES MARLINS" },
             }},
             { "Minors A", new Dictionary<string, string> {
-                { "Minor A Orioles", "MINA1 TEAM KERR ORIOLES" },
-                { "Minor A Padres", "MINA2 PEA-HESU PADRES" },
-                { "Minor A Giants", "MINA3 INSPIRE DENTAL GIANTS" },
-                { "Minor A Pirates", "MINA4 BEASTVAN PIRATES" },
-                { "Minor A Diamondbacks", "MINA5 Stillwater Counselling DBACKS" },
-                { "Minor A Brewers", "MINA6 BREWERS" },
-                { "Minor A Rockies", "MINA7 ROCKIES" },
+                { "Minor A Orioles", "MINA9 ORIOLES" },
+                { "Minor A Padres", "MINA2 PADRES" },
+                { "Minor A Giants", "MINA8 INSPIRE DENTAL GIANTS" },
+                { "Minor A Pirates", "MINA6 WHITE SPOT PIRATES" },
+                { "Minor A Diamondbacks", "MINA1 TEAM KERR DIAMONDBACKS" },
+                { "Minor A Brewers", "MINA3 BELL ALLIANCE BREWERS" },
+                { "Minor A Rockies", "MINA5 WHITE SPOT ROCKIES" },
+                { "Minor A Cardinals", "MINA4 WHITE SPOT CARDINALS" },
+                { "Minor A Rangers", "MINA7 WHITE SPOT RANGERS" }
             }},
             { "Minors B", new Dictionary<string, string> {
-                { "Minor B Ironpigs", "MINB1 AJ Tigers Ironpigs" },
-                { "Minor B Chihuahuas", "MINB2 Chihuahuas" },
-                { "Minor B Isotopes", "MINB3 Isotopes" },
-                { "Minor B Knights", "MINB4 Pristine Labour Knights" },
-                { "Minor B Jumbo Shrimp", "MINB5 Jumbo Shrimp" },
-                { "Minor B WooSox", "MINB6 WooSox" },
-                { "Minor B Bulls", "MINB7 Bulls" },
-                { "Minor B Bees", "MINB8 Bees" },
-                { "Minor B Bison", "MINB9 Bison" },
-                { "Minor B Canadians", "MINB10 CLEAR HR CANADIANS" },
+                { "Minor B Ironpigs", "MINB7 IRON PIGS" },
+                { "Minor B Chihuahuas", "MINB3 DULUX PAINTS CHIHUAHUAS" },
+                { "Minor B Isotopes", "MINB10 ISOTOPES" },
+                { "Minor B Knights", "MINB6 PRISTINE LABOUR KNIGHTS" },
+                { "Minor B Jumbo Shrimp", "MINB4 JUMBO SHRIMP" },
+                { "Minor B WooSox", "MINB1 CPA DEVELOPMENT WOOSOX" },
+                { "Minor B Bulls", "MINB9 BULLS" },
+                { "Minor B Bees", "MINB2 MAHNGER HOMES BEES" },
+                { "Minor B Bison", "MINB8 SHOPPERS BISONS" },
+                { "Minor B Canadians", "MINB12 CANADIANS" },
                 { "Minor B River Cats", "MINB11 RIVER CATS" },
+                { "Minor B Stripers", "MINB5 AJ TIGERS STRIPERS" },
             }},
             { "13U A", new Dictionary<string, string> {
             }},
