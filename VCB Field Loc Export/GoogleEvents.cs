@@ -8,7 +8,7 @@ using Google.Apis.Auth.OAuth2.Responses;
 
 namespace VcbFieldExport
 {
-    internal partial class Program
+    internal partial class FieldSync
     {
         [GeneratedRegex(@"(?<EventType>.+):\s((13U A )|(15U A )|(18U AA ))?(?<team>.+)")]
         public static partial Regex SummaryRegex();
@@ -145,7 +145,7 @@ namespace VcbFieldExport
                 {
                     VcbFieldEvent vcbFieldEvent = new VcbFieldEvent();
                     vcbFieldEvent.location = location;
-                    Match match = Program.SummaryRegex().Match(eventItem.Summary);
+                    Match match = FieldSync.SummaryRegex().Match(eventItem.Summary);
                     if (match.Success)
                     {
                         switch (match.Groups["EventType"].Value)
@@ -165,7 +165,7 @@ namespace VcbFieldExport
                         }
                         else {
                             // Game: get the teams from the event description property
-                            match = Program.DescriptionRegex().Match(eventItem.Description);
+                            match = FieldSync.DescriptionRegex().Match(eventItem.Description);
                             if (match.Success) {
                                 vcbFieldEvent.homeTeam = match.Groups["homeTeam"].Value ?? string.Empty;
                                 vcbFieldEvent.visitingTeam = match.Groups["visitingTeam"].Value ?? string.Empty;

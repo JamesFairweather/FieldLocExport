@@ -38,7 +38,7 @@ namespace VcbFieldExport
         }
     };
 
-    internal partial class Program
+    internal partial class FieldSync
     {
         // TODO for 2026: use date ranges for spring regular-season, spring playoffs, and summer seasons
         // so I don't need to keep updating the code to handle different cases as we move through the year
