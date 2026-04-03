@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.4.11626.88 stable
+VisualStudioVersion = 18.4.11626.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VCB Field Loc Export", "VCB Field Loc Export\VCB Field Loc Export.csproj", "{E9FDC138-CB59-435E-8145-CE65A57DFF9D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoAssign", "AutoAssign\AutoAssign.csproj", "{45CDE5C2-FD67-47E3-B953-58D40CFF1648}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{79795A69-6ADF-43E9-BF20-F3ABDCFB18B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{45CDE5C2-FD67-47E3-B953-58D40CFF1648}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45CDE5C2-FD67-47E3-B953-58D40CFF1648}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45CDE5C2-FD67-47E3-B953-58D40CFF1648}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79795A69-6ADF-43E9-BF20-F3ABDCFB18B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79795A69-6ADF-43E9-BF20-F3ABDCFB18B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79795A69-6ADF-43E9-BF20-F3ABDCFB18B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79795A69-6ADF-43E9-BF20-F3ABDCFB18B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
