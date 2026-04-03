@@ -358,6 +358,8 @@ namespace VcbFieldExport
                 { "Minor B River Cats", "MINB11 RIVER CATS" },
                 { "Minor B Stripers", "MINB5 AJ TIGERS STRIPERS" },
             }},
+            { "12 Selects", new Dictionary<string, string> {
+            }},
             { "13U A", new Dictionary<string, string> {
             }},
             { "13U AA", new Dictionary<string, string> {
