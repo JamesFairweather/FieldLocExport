@@ -15,31 +15,7 @@ namespace AutoAssign
     // As well as the assignment Id (e.g. 77267314)
     // It's not clear to me how these parameters are being passed back to the service from the stream I can see in Chrome
 
-    internal class Token
-    {
-        Token()
-        {
-            AccessToken = string.Empty;
-            TokenType = string.Empty;
-            ExpiresIn = 0;
-            Scope = string.Empty;
-            Created = 0;
-        }
-
-        [JsonProperty("access_token")]
-        public string AccessToken { get; set; }
-
-        [JsonProperty("token_type")]
-        public string TokenType { get; set; }
-
-        [JsonProperty("expires_in")]
-        public int ExpiresIn { get; set; }
-
-        [JsonProperty("scope")]
-        public string Scope { get; set; }
-        [JsonProperty("created_at")]
-        public int Created { get; set; }
-    }
+    
 
     public class Assignr
     {
@@ -95,7 +71,17 @@ namespace AutoAssign
         {
             Console.WriteLine("Hello, World!");
 
+            Credentials? credentials;
+            using (StreamReader reader = new StreamReader("../Shared/credentials.json")) {
+                credentials = JsonConvert.DeserializeObject<Credentials>(reader.ReadToEnd());
+            }
+
+            if (credentials == null) {
+                throw new Exception("Failed to read the service credentials");
+            }
+
             Assignr assignr = new();
+            assignr.Authenticate(credentials.Assignr);
 
             return 0;
         }
