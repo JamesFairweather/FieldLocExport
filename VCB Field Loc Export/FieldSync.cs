@@ -60,7 +60,7 @@ namespace VcbFieldExport
             StreamWriter logger = new StreamWriter(logFileName, false);
 
             Credentials? credentials;
-            using (StreamReader reader = new StreamReader("credentials.json")) {
+            using (StreamReader reader = new StreamReader("../Shared/credentials.json")) {
                 credentials = JsonConvert.DeserializeObject<Credentials>(reader.ReadToEnd());
             }
 
