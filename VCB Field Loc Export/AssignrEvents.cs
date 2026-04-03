@@ -206,7 +206,12 @@ namespace VcbFieldExport
                     }
 
                     if (!includePlayoffGames && game.game_type == "Playoffs") {
-                        // Ignore playoff games for Little Mountain, these games are not in SportsEngine
+                        // Playoff games at Little Mountain are not in SportsEngine, so ignore them
+                        continue;
+                    }
+
+                    if (game.game_type == "Tournament") {
+                        // Tournament games are not in the SportsEngine schedule, so ignore them
                         continue;
                     }
 
