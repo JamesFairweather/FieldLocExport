@@ -53,6 +53,7 @@ namespace VcbFieldExport
     {
         Dictionary<string, string> TeamIdToDivision = new Dictionary<string, string>
         {
+            { "10470165", "VCB" },      // VCB organization
             { "10453427", "13U AA" },   // 13U AA
             { "10480810", "13U AAA" },  // 13U AAA
             { "10453428", "15U AA" },   // 15U AA Expos Blue
