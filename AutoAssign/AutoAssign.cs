@@ -109,7 +109,8 @@ namespace AutoAssign
 
     internal class User
     {
-        public User() {
+        public User()
+        {
             name = string.Empty;
             request = false;
         }
@@ -120,11 +121,12 @@ namespace AutoAssign
 
     internal class AssignmentsResponse
     {
-        public AssignmentsResponse() {
+        public AssignmentsResponse()
+        {
             users = new();
         }
 
-        public List <User> users { get; set; }
+        public List<User> users { get; set; }
     }
 
     public class Assignr
@@ -176,11 +178,13 @@ namespace AutoAssign
         {
             HttpRequestMessage msg = new HttpRequestMessage(method, uri);
             msg.Headers.Add("accept", "application/vnd.assignr.v2.hal+json");
-            if (useSessionToken) {
+            if (useSessionToken)
+            {
                 // Using a non-public API
                 msg.Headers.Add("Cookie", $"_assignr_session={mSessionToken}");
             }
-            else {
+            else
+            {
                 // Using the public API
                 msg.Headers.Add("authorization", $"Bearer {mBearerToken}");
             }
@@ -248,9 +252,10 @@ namespace AutoAssign
 
                         // assignments.users.ForEach();
                         int reqCount = 0;
-                        foreach(User user in assignments.users)
+                        foreach (User user in assignments.users)
                         {
-                            if (user.request) {
+                            if (user.request)
+                            {
                                 logger.Write($",\"{user.name}\"");
                                 ++reqCount;
                             }
@@ -287,27 +292,63 @@ namespace AutoAssign
     {
         static int Main(string[] args)
         {
-            Credentials? credentials;
-            using (StreamReader reader = new StreamReader("../Shared/credentials.json")) {
-                credentials = JsonConvert.DeserializeObject<Credentials>(reader.ReadToEnd());
+            //Credentials? credentials;
+            //using (StreamReader reader = new StreamReader("../Shared/credentials.json")) {
+            //    credentials = JsonConvert.DeserializeObject<Credentials>(reader.ReadToEnd());
+            //}
+
+            //if (credentials == null) {
+            //    throw new Exception("Failed to read the service credentials");
+            //}
+
+            //StreamWriter logger = new StreamWriter("gamesToAssign.csv", false);
+
+            //Assignr assignr = new();
+            //assignr.Authenticate(credentials.Assignr, credentials.AssignrSessionToken);
+
+            //string ASSIGNR_ID_LMB = "627";
+
+            //// Get all the games that are published and need to be assigned
+            //assignr.FetchUnassignedGames(logger, ASSIGNR_ID_LMB);
+
+            //logger.Close();
+
+            var games = new List<RGame>
+        {
+            new RGame
+            {
+                GameId = "G1",
+                Requests = new Dictionary<string, List<string>>
+                {
+                    ["A"] = new List<string> { "R1", "R2" },
+                    ["B"] = new List<string> { "R1", "R3" }
+                }
+            },
+            new RGame
+            {
+                GameId = "G2",
+                Requests = new Dictionary<string, List<string>>
+                {
+                    ["A"] = new List<string> { "R2", "R3" },
+                    ["B"] = new List<string> { "R1", "R3" }
+                }
             }
+        };
 
-            if (credentials == null) {
-                throw new Exception("Failed to read the service credentials");
+            var pastAssignments = new Dictionary<string, int>
+            {
+                ["R1"] = 10,
+                ["R2"] = 4,
+                ["R3"] = 2,
+                ["R4"] = 0
+            };
+
+            var assignments = RefereeAssigner.AssignReferees(games, pastAssignments);
+
+            foreach (var kvp in assignments.OrderBy(k => k.Key.GameId).ThenBy(k => k.Key.Position))
+            {
+                Console.WriteLine($"{kvp.Key.GameId} {kvp.Key.Position} -> {kvp.Value ?? "unfilled"}");
             }
-
-            StreamWriter logger = new StreamWriter("gamesToAssign.csv", false);
-
-            Assignr assignr = new();
-            assignr.Authenticate(credentials.Assignr, credentials.AssignrSessionToken);
-
-            string ASSIGNR_ID_LMB = "627";
-
-            // Get all the games that are published and need to be assigned
-            assignr.FetchUnassignedGames(logger, ASSIGNR_ID_LMB);
-
-            logger.Close();
-
 
             return 0;
         }
