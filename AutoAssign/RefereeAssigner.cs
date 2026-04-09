@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class Game
+public class RGame
 {
     public string GameId { get; set; } = "";
     public Dictionary<string, List<string>> Requests { get; set; } = new();
@@ -131,7 +131,7 @@ public class RefereeAssigner
     }
 
     public static Dictionary<(string GameId, string Position), string?> AssignReferees(
-        List<Game> games,
+        List<RGame> games,
         Dictionary<string, int> pastAssignmentCounts)
     {
         string[] positions = { "A", "B" };
