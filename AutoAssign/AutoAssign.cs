@@ -5,17 +5,19 @@ using static System.Net.WebRequestMethods;
 
 namespace AutoAssign
 {
-    // To get game requests, we can use an undocumented API call:
-    // https://littlemountainbaseball.assignr.com/assign/games/{gameId}/edit
-    // This returns a small form in HTML format, but it's easily parsed.  Goto form->table->Pending Requests->find the tag data-game-id="{gameId}" data-assignment-id="{out_requestId_Plate}" e.g. 77199786
-    // Then, we can do a get on this URL: https://littlemountainbaseball.assignr.com/assign/assignments/77199786.json
-    // returns a JSON object with all users, each one indicating whether they've submitted a request for that game.  All the people who requested the game are listed at the top.
-    // There isn't a public API to assign an official, but there is one to unassign all officials: /v2/games/{id}/unassign
-    // To assign an official: 
+    // TODOs
+    // 1.  It would be a bit of a time-saver to have a process that enters the assignments.
+    // There isn't an API to do this, but there is one to unassign all officials: /v2/games/{id}/unassign
+    // To assign an official, we can use a web call instead:
     // PUT https://littlemountainbaseball.assignr.com/assign/games/{gameId}
     // Have to pass a User ID (mine is 340011)
     // As well as the assignment Id (e.g. 77267314)
-    // It's not clear to me how these parameters are being passed back to the service from the stream I can see in Chrome
+    // It's not clear to me how these parameters are being passed back to the service from the
+    // stream I can see in Chrome though.  
+
+    // 2.  Export a list of officials who submitted one or more requests for the assigning period,
+    // along with the total number of assignments requested and assignments from previous periods.
+    // This should be pretty simple to do.
 
     internal class Game
     {
