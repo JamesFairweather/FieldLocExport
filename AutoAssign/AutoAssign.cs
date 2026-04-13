@@ -292,27 +292,30 @@ namespace AutoAssign
     {
         static int Main(string[] args)
         {
-            //Credentials? credentials;
-            //using (StreamReader reader = new StreamReader("../Shared/credentials.json")) {
-            //    credentials = JsonConvert.DeserializeObject<Credentials>(reader.ReadToEnd());
-            //}
+            Credentials? credentials;
+            using (StreamReader reader = new StreamReader("../Shared/credentials.json"))
+            {
+                credentials = JsonConvert.DeserializeObject<Credentials>(reader.ReadToEnd());
+            }
 
-            //if (credentials == null) {
-            //    throw new Exception("Failed to read the service credentials");
-            //}
+            if (credentials == null)
+            {
+                throw new Exception("Failed to read the service credentials");
+            }
 
-            //StreamWriter logger = new StreamWriter("gamesToAssign.csv", false);
+            StreamWriter logger = new StreamWriter("gamesToAssign.csv", false);
 
-            //Assignr assignr = new();
-            //assignr.Authenticate(credentials.Assignr, credentials.AssignrSessionToken);
+            Assignr assignr = new();
+            assignr.Authenticate(credentials.Assignr, credentials.AssignrSessionToken);
 
-            //string ASSIGNR_ID_LMB = "627";
+            string ASSIGNR_ID_LMB = "627";
 
-            //// Get all the games that are published and need to be assigned
-            //assignr.FetchUnassignedGames(logger, ASSIGNR_ID_LMB);
+            // Get all the games that are published and need to be assigned
+            assignr.FetchUnassignedGames(logger, ASSIGNR_ID_LMB);
 
-            //logger.Close();
+            logger.Close();
 
+            /*
             var games = new List<RGame>
         {
             new RGame
@@ -349,6 +352,7 @@ namespace AutoAssign
             {
                 Console.WriteLine($"{kvp.Key.GameId} {kvp.Key.Position} -> {kvp.Value ?? "unfilled"}");
             }
+            */
 
             return 0;
         }
