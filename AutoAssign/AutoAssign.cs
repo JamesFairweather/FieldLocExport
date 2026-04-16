@@ -7,18 +7,15 @@ using static System.Net.WebRequestMethods;
 namespace AutoAssign
 {
     // TODOs
-    // 1.  It would be a bit of a time-saver to have a process that enters the assignments.
-    // There isn't an API to do this, but there is one to unassign all officials: /v2/games/{id}/unassign
-    // To assign an official, we can use a web call instead:
+    // * Add the ability to enter the assignments from a .CSV file.
+    // This is the web call used to assign someone:
     // PUT https://littlemountainbaseball.assignr.com/assign/games/{gameId}
-    // Have to pass a User ID (mine is 340011)
-    // As well as the assignment Id (e.g. 77267314)
+    // Requires two parameters
+    //   * User ID (mine is 340011)
+    //   * The assignment Id (e.g. 77267314)
     // It's not clear to me how these parameters are being passed back to the service from the
-    // stream I can see in Chrome though.  
-
-    // 2.  Export a list of officials who submitted one or more requests for the assigning period,
-    // along with the total number of assignments requested and assignments from previous periods.
-    // This should be pretty simple to do.
+    // stream I can see in Chrome though (are they using URL parameters or are they passed in
+    // message body)?
 
     internal class Game
     {
@@ -63,7 +60,15 @@ namespace AutoAssign
         {
             firstName = string.Empty;
             lastName = string.Empty;
+            id = 0;
         }
+
+        // this is the public Id, and the one used when entering assignments
+        public int id { get; set; }
+
+        // There's also an account_id property, which is unique to each user and different from
+        // Id, but I don't think it's relevant for this tool
+        // public string account_id { get; set; }
 
         [JsonProperty("first_name")]
         public string firstName { get; set; }
@@ -148,10 +153,12 @@ namespace AutoAssign
     {
         public PendingAssignment()
         {
+            id = 0;
             name = string.Empty;
             request = false;
         }
 
+        public int id { get; set; }
         public string name { get; set; }
         public bool request { get; set; }
     }
@@ -169,9 +176,10 @@ namespace AutoAssign
 
     public class UserData
     {
-        public UserData(string _name, int _req, int _assignments)
+        public UserData(string _name, int id, int _req, int _assignments)
         {
             name = _name;
+            Id = id;
             requests = _req;
             assignments = _assignments;
         }
@@ -184,6 +192,9 @@ namespace AutoAssign
         // number of assignments so far this season this official has been assigned to
         // (existing assignments could be in the past or future)
         public int assignments { get; set; }
+
+        // Assignr user Id - needed to assign an official to a game.
+        public int Id { get; set; }
     }
 
     public class Assignr
@@ -299,7 +310,7 @@ namespace AutoAssign
 
                             if (existingUser == null)
                             {
-                                mUserData.Add(new(assignment.details.official.fullName(), 0, 1));
+                                mUserData.Add(new(assignment.details.official.fullName(), assignment.details.official.id, 0, 1));
                             }
                             else
                             {
@@ -332,7 +343,7 @@ namespace AutoAssign
                                 UserData? existingUser = mUserData.Find(usr => usr.name == user.name);
 
                                 if (existingUser == null) {
-                                    mUserData.Add(new UserData(user.name, 1, 0));
+                                    mUserData.Add(new UserData(user.name, user.id, 1, 0));
                                 }
                                 else {
                                     existingUser.requests++;
@@ -406,12 +417,12 @@ namespace AutoAssign
             // it to whoever has worked the fewest number.
             logger.WriteLine();
             logger.WriteLine();
-            logger.WriteLine("Name,RequestCount,AssignmentCount");
+            logger.WriteLine("Name,AssignrId,RequestCount,AssignmentCount");
 
             foreach (var umpire in assignr.UserData())
             {
                 if (umpire.requests != 0) {
-                    logger.WriteLine($"\"{umpire.name}\",{umpire.requests},{umpire.assignments}");
+                    logger.WriteLine($"\"{umpire.name}\",{umpire.Id},{umpire.requests},{umpire.assignments}");
                 }
             }
 
