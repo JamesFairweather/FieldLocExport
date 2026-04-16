@@ -1,5 +1,6 @@
 ﻿
 using Newtonsoft.Json;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using static System.Net.WebRequestMethods;
 
@@ -56,6 +57,35 @@ namespace AutoAssign
         public Venue venue { get; set; }
     }
 
+    internal class Official
+    {
+        public Official()
+        {
+            firstName = string.Empty;
+            lastName = string.Empty;
+        }
+
+        [JsonProperty("first_name")]
+        public string firstName { get; set; }
+
+        [JsonProperty("last_name")]
+        public string lastName { get; set; }
+
+        public string fullName()
+        {
+            return $"{lastName}, {firstName}";
+        }
+    }
+
+    internal class AssignmentDetails
+    {
+        public AssignmentDetails()
+        {
+            official = new();
+        }
+        public Official official { get; set; }
+    }
+
     internal class Assignment
     {
         public Assignment()
@@ -64,11 +94,16 @@ namespace AutoAssign
             assigned = false;
 
             position = string.Empty;
+
+            details = new();
         }
 
         public int id { get; set; }
         public bool assigned { get; set; }
         public string position { get; set; }
+
+        [JsonProperty("_embedded")]
+        public AssignmentDetails details { get; set; }
     }
 
 
@@ -109,9 +144,9 @@ namespace AutoAssign
         public GamesList games { get; set; }
     }
 
-    internal class User
+    internal class PendingAssignment
     {
-        public User()
+        public PendingAssignment()
         {
             name = string.Empty;
             request = false;
@@ -125,10 +160,30 @@ namespace AutoAssign
     {
         public AssignmentsResponse()
         {
-            users = new();
+            pending = new();
         }
 
-        public List<User> users { get; set; }
+        [JsonProperty("users")]
+        public List<PendingAssignment> pending { get; set; }
+    }
+
+    public class UserData
+    {
+        public UserData(string _name, int _req, int _assignments)
+        {
+            name = _name;
+            requests = _req;
+            assignments = _assignments;
+        }
+
+        public string name { get; set; }
+
+        // total number of requests this official entered for this assigning period
+        public int requests { get; set; }
+     
+        // number of assignments so far this season this official has been assigned to
+        // (existing assignments could be in the past or future)
+        public int assignments { get; set; }
     }
 
     public class Assignr
@@ -136,6 +191,7 @@ namespace AutoAssign
         public Assignr()
         {
             mHttpClient = new();
+            mUserData = new();
         }
 
         public void Authenticate(Google.Apis.Auth.OAuth2.ClientSecrets? credentials, string assignrSessionToken)
@@ -209,7 +265,8 @@ namespace AutoAssign
 
             while (currentPage <= totalPages)
             {
-                string gamesUri = $"https://api.assignr.com/api/v2/sites/{siteId}/games/unassigned?page={currentPage}&search[start_date]={DateTime.Today.ToString("yyyy-MM-dd")}&search[end_date]={DateTime.Today.AddDays(14).ToString("yyyy-MM-dd")}";
+                // Fetch all the games from the start of the season to the current date plus 14 days
+                string gamesUri = $"https://api.assignr.com/api/v2/sites/{siteId}/games?page={currentPage}&search[start_date]=2026-01-01&search[end_date]={DateTime.Today.AddDays(14).ToString("yyyy-MM-dd")}";
 
                 string jsonResponse = HttpMessage(HttpMethod.Get, gamesUri);
 
@@ -237,8 +294,18 @@ namespace AutoAssign
                     {
                         if (assignment.assigned)
                         {
-                            // ignore any positions that have already been assigned.  The API still returns the game
-                            // if at least one position is still unassigned.
+                            // increment the number of assignments this umpire has had already this season
+                            UserData? existingUser = mUserData.Find(usr => usr.name == assignment.details.official.fullName());
+
+                            if (existingUser == null)
+                            {
+                                mUserData.Add(new(assignment.details.official.fullName(), 0, 1));
+                            }
+                            else
+                            {
+                                existingUser.assignments++;
+                            }
+
                             continue;
                         }
 
@@ -252,14 +319,24 @@ namespace AutoAssign
 
                         AssignmentsResponse assignments = JsonConvert.DeserializeObject<AssignmentsResponse>(assignmentsResponse) ?? new();
 
-                        // assignments.users.ForEach();
                         int reqCount = 0;
-                        foreach (User user in assignments.users)
+                        foreach (PendingAssignment user in assignments.pending)
                         {
                             if (user.request)
                             {
                                 logger.Write($",\"{user.name}\"");
                                 ++reqCount;
+
+                                // increment the number of requests this official has submitted for this
+                                // assigning period
+                                UserData? existingUser = mUserData.Find(usr => usr.name == user.name);
+
+                                if (existingUser == null) {
+                                    mUserData.Add(new UserData(user.name, 1, 0));
+                                }
+                                else {
+                                    existingUser.requests++;
+                                }
                             }
                         }
 
@@ -284,10 +361,19 @@ namespace AutoAssign
 
                 ++currentPage;
             }
+
+            Console.WriteLine($"Name,Requests for this period,Assignments this season");
         }
+
+        public List<UserData> UserData()
+        {
+            return mUserData;
+        }
+
         HttpClient mHttpClient;
         string? mBearerToken;
         string? mSessionToken;
+        List<UserData> mUserData;
     }
 
     internal partial class AutoAssign
@@ -314,6 +400,20 @@ namespace AutoAssign
 
             // Get all the games that are published and need to be assigned
             assignr.FetchUnassignedGames(logger, ASSIGNR_ID_LMB);
+
+            // Dump the number of requested games & assignments for this official for this year
+            // When there is more than one official who could be assigned to a game, I'll give
+            // it to whoever has worked the fewest number.
+            logger.WriteLine();
+            logger.WriteLine();
+            logger.WriteLine("Name,RequestCount,AssignmentCount");
+
+            foreach (var umpire in assignr.UserData())
+            {
+                if (umpire.requests != 0) {
+                    logger.WriteLine($"\"{umpire.name}\",{umpire.requests},{umpire.assignments}");
+                }
+            }
 
             logger.Close();
 
