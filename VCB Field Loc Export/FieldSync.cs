@@ -83,7 +83,7 @@ namespace VcbFieldExport
 
             AssignrEvents assignr = new(logger);
             assignr.Authenticate(credentials.Assignr);
-            assignr.FetchEventsFromService(ASSINGR_ID_VCB, false);
+            assignr.FetchEventsFromService(ASSINGR_ID_VCB, true);
             // TODO for 2026: implement a better way of managing playoff games
             //teamSnap.addPlayoffPlaceHolderGames(assignr.getGames().FindAll(x => {
             //    // Playoff games will only be in TeamSnap if both teams are known, so add
@@ -100,7 +100,7 @@ namespace VcbFieldExport
             logger.WriteLine();
 
             // Update the Google field calendars with the TeamSnap calendars.
-            GoogleEvents googleEvents = new(teamSnap.getGames(), teamSnap.getPractices(), logger);
+            GoogleEvents googleEvents = new(teamSnap.getGames(), assignr.getGames(), teamSnap.getPractices(), logger);
             googleEvents.Reconcile(credentials.Google, fieldInfo, false);
 
             logger.WriteLine();

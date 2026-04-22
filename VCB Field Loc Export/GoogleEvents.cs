@@ -22,10 +22,11 @@ namespace VcbFieldExport
         List<VcbFieldEvent> mNewEventList;
         StreamWriter mLogger;
 
-        public GoogleEvents(List<VcbFieldEvent> games, List<VcbFieldEvent> practices, StreamWriter logger)
+        public GoogleEvents(List<VcbFieldEvent> games, List<VcbFieldEvent> assignrGames, List<VcbFieldEvent> practices, StreamWriter logger)
         {
             mNewEventList = new List<VcbFieldEvent>(games.Count + practices.Count);
             mNewEventList.AddRange(games);
+            mNewEventList.AddRange(assignrGames.FindAll(x => x.eventType == VcbFieldEvent.Type.PlayoffGame));
             mNewEventList.AddRange(practices);
             this.mLogger = logger;
         }

@@ -254,6 +254,10 @@ namespace VcbFieldExport
             }
 
             foreach (var game in mGames) {
+                if (game.eventType == VcbFieldEvent.Type.PlayoffGame) {
+                    // Assignr's playoff games are not in TeamSnap, so ignore them.
+                    continue;
+                }
                 if (IGNORED_GAMES.Find(e => e.location == game.location && e.startTime == game.startTime) == null) {
                     ++inconsistentGames;
                     mLogger.WriteLine($"An Assignr game is not on the public game schedule: {game.startTime.ToLocalTime().ToString("g")} at {game.location}: {game.division} {game.visitingTeam} @ {game.homeTeam}.");
