@@ -322,7 +322,7 @@ namespace VcbFieldExport
                 { "Minor B Knights", "MINB6 PRISTINE LABOUR KNIGHTS" },
                 { "Minor B Jumbo Shrimp", "MINB4 JUMBO SHRIMP" },
                 { "Minor B WooSox", "MINB1 CPA DEVELOPMENT WOOSOX" },
-                { "Minor B Bulls", "MINB9 BULLS" },
+                { "Minor B Bulls", "MINB9 ET GROUP BULLS" },
                 { "Minor B Bees", "MINB2 MAHNGER HOMES BEES" },
                 { "Minor B Bison", "MINB8 SHOPPERS BISONS" },
                 { "Minor B Canadians", "MINB12 CANADIANS" },
