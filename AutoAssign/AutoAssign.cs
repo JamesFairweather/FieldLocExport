@@ -376,6 +376,48 @@ namespace AutoAssign
             Console.WriteLine($"Name,Requests for this period,Assignments this season");
         }
 
+        public void Assign()
+        {
+            // Take the assignments from a spreadsheet or .CSV file and push them to the
+            // online database.  For each game, we need the two assignment Ids, as well as the 
+            // Ids of the users to be assigned to each assignment.
+
+            // This is the form data passed in the http request body
+            /*
+            ------WebKitFormBoundaryTIuxvJDmv6R4mkp4
+            Content-Disposition: form-data; name="_method"
+
+            patch
+            ------WebKitFormBoundaryTIuxvJDmv6R4mkp4
+            Content-Disposition: form-data; name="game[assignments_attributes][0][user_id]"
+
+            1899180 <- Leo McTaggart
+            ------WebKitFormBoundaryTIuxvJDmv6R4mkp4
+            Content-Disposition: form-data; name="game[assignments_attributes][0][lock_version]"
+
+            2 <- IDK what this means.  Normally it's 0.  Probably related to how many different people have been assigned?
+              Would it matter if I didn't pass it?
+            ------WebKitFormBoundaryTIuxvJDmv6R4mkp4
+            Content-Disposition: form-data; name="game[assignments_attributes][0][id]"
+
+            77190176 <- Game ID 27362731 Plate Assignment
+            ------WebKitFormBoundaryTIuxvJDmv6R4mkp4
+            Content-Disposition: form-data; name="game[assignments_attributes][1][user_id]"
+
+            1499805 <- Hector Lopez
+            ------WebKitFormBoundaryTIuxvJDmv6R4mkp4
+            Content-Disposition: form-data; name="game[assignments_attributes][1][lock_version]"
+
+            4 <- IDK what this means
+            ------WebKitFormBoundaryTIuxvJDmv6R4mkp4
+            Content-Disposition: form-data; name="game[assignments_attributes][1][id]"
+
+            77190177 <- Game ID 27362731 Base Assignment
+            ------WebKitFormBoundaryTIuxvJDmv6R4mkp4--
+            */
+        }
+
+
         public List<UserData> UserData()
         {
             return mUserData;
