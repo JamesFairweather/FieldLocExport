@@ -274,7 +274,7 @@ namespace AutoAssign
             int totalPages = int.MaxValue;
             int currentPage = 1;
 
-            logger.WriteLine("Age Group,Date,Time,Venue,Position,Req1,Req2,Req3,Req4,Req5,Req6,Req7,Req8,Req9,Req10,Req11,Req12,Req13,Req14,Req15,Req16,Req17,Req18,Req19,Req20");
+            logger.WriteLine("Age Group,Date,Time,Venue,Position,Assigned Umpire,Req1,Req2,Req3,Req4,Req5,Req6,Req7,Req8,Req9,Req10,Req11,Req12,Req13,Req14,Req15,Req16,Req17,Req18,Req19,Req20");
 
             while (currentPage <= totalPages)
             {
@@ -320,7 +320,7 @@ namespace AutoAssign
                             continue;
                         }
 
-                        logger.Write($"{game.age_group},{game.localized_date},{game.localized_time},{game.details.venue.name},{assignment.position}");
+                        logger.Write($"{game.age_group},{game.localized_date},{game.localized_time},{game.details.venue.name},{assignment.position},");
 
                         // Assignr's API doesn't allow us to retrieve game requests, which seriously sucks.  I can still get them
                         // using a web session though.
