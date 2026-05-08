@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
+using System.Security.AccessControl;
 using System.Text.RegularExpressions;
 
 namespace VcbFieldExport
@@ -158,6 +159,7 @@ namespace VcbFieldExport
                     string formatted_title_for_multi_team = e.data.Find(x => x.name == "formatted_title_for_multi_team")?.value ?? string.Empty;
                     string opponent_name = e.data.Find(x => x.name == "opponent_name")?.value ?? string.Empty;
                     string teamId = e.data.Find(x => x.name == "team_id")?.value ?? string.Empty;
+                    string label = e.data.Find(x => x.name == "label")?.value ?? string.Empty;
 
                     int index = formatted_title_for_multi_team.IndexOf(formatted_title);
                     if (index == -1)
@@ -176,32 +178,25 @@ namespace VcbFieldExport
                         throw new Exception($"Team {thisTeam} does not have a mapping to a division.  Please update the map.");
                     }
 
+                    if (!isGame && label == "Playoffs")
+                    {
+                        // Placeholders for house playoff games in TeamSnap are complicated.  Each team has a copy
+                        // of the playoff placeholder games in the data that comes from the API.  I could just add
+                        // the first instance and track based on the formatted_title, but instead I'll be lazy and
+                        // won't verify playoff games are synced properly between Assignr & TeamSnap.  There are not
+                        // a lot of them and moving one around won't be done quietly, I don't think.
+                        //
+                        // The Google calendar event will come from the Assignr schedule instead of TeamSnap.
+                        continue;
+                    }
+
                     if (isGame)
                     {
                         string homeTeam = isHomeGame ? thisTeam : opponent_name;
                         string visitingTeam = isHomeGame ? opponent_name : thisTeam;
 
+                        // could change this to PlayoffGame
                         VcbFieldEvent.Type gameType = VcbFieldEvent.Type.Game;
-
-                        // For 13UA, 15UA, and 18UAA:
-                        // Games scheduled after the end of the regular season and before the end of the playoffs are
-                        // playoff games.  Games after the end of the playoffs are summer ball games, but for the
-                        // purposes of our game calendar, we'll treat them as regular-season games.
-                        // These dates should be in a separate configuration file, not buried in code...  I'll fix that
-                        // for 2026.
-                        DateTime RegularSeasonEnd_13UA = new(2025, 5, 28);
-                        DateTime PlayoffsEnd_13UA = new(2025, 6, 15);
-                        DateTime RegularSeasonEnd_15UA = new(2025, 6, 12);
-                        DateTime PlayoffsEnd_15UA = new(2025, 6, 23);
-                        DateTime RegularSeasonEnd_18UAA = new(2025, 6, 16);
-                        DateTime PlayoffsEnd_18UAA = new(2025, 6, 27);
-
-                        if ((division == "15U A" && startTime > RegularSeasonEnd_13UA && startTime <= PlayoffsEnd_13UA) ||
-                            (division == "13U A" && startTime > RegularSeasonEnd_15UA && startTime <= PlayoffsEnd_15UA) ||
-                            (division == "18U AA" && startTime > RegularSeasonEnd_18UAA && startTime <= PlayoffsEnd_18UAA))
-                        {
-                            gameType = VcbFieldEvent.Type.PlayoffGame;
-                        }
 
                         if (isHomeGame) {
                             mGames.Add(new VcbFieldEvent(gameType, location, startTime, division, homeTeam, visitingTeam, string.Empty, true));
