@@ -63,6 +63,22 @@ namespace AutoAssign
             lastName = string.Empty;
             id = 0;
         }
+        public Official(string firstName, string lastName)
+        {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            id = 0;
+        }
+
+        public static Official FromCsv(string csvLine)
+        {
+            string[] values = csvLine.Split(',');
+            Official official = new Official();
+            official.id = Convert.ToInt32(values[0]);
+            official.lastName = values[1];
+            official.firstName = values[2];
+            return official;
+        }
 
         // this is the public Id, and the one used when entering assignments
         public int id { get; set; }
@@ -458,6 +474,11 @@ namespace AutoAssign
                 throw new Exception("Failed to read the service credentials");
             }
 
+            mUmpires = System.IO.File.ReadAllLines("2026 Umpires.csv")
+                .Skip(1)
+                .Select(v => Official.FromCsv(v))
+                .ToList();
+
             Command fetchCommand = new("fetch", "Fetch all pending game requests from Assignr");
             fetchCommand.SetAction(parseResult => FetchRequests());
             Command assignCommand = new("assign", "Push all assignments to Assignr");
@@ -543,5 +564,6 @@ namespace AutoAssign
         }
 
         static Credentials? mCredentials;
+        static List<Official>? mUmpires;
     }
 }
