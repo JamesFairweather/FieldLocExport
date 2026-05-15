@@ -1,5 +1,6 @@
 ﻿
 using Newtonsoft.Json;
+using System.CommandLine;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using static System.Net.WebRequestMethods;
@@ -376,6 +377,11 @@ namespace AutoAssign
             Console.WriteLine($"Name,Requests for this period,Assignments this season");
         }
 
+        public void ExportGameRequests()
+        {
+            // TODO
+        }
+
         public void Assign()
         {
             // Take the assignments from a spreadsheet or .CSV file and push them to the
@@ -429,30 +435,54 @@ namespace AutoAssign
         List<UserData> mUserData;
     }
 
+    // Thsi program should have two commands:
+    // FetchRequests - pulls the requests from Assignr and creates two or maybe three files
+    //  - the list of requests
+    //  - stats
+    //  - proposed assignments for each game - this is the file I would update & modify if necessary, and the one that would be
+    //    read back
+    // UploadAssignments
+    //  - read the assignments file and push them to Assignr.
+
     internal partial class AutoAssign
     {
-        static int Main(string[] args)
+        static async Task<int> Main(string[] args)
         {
-            Credentials? credentials;
             using (StreamReader reader = new StreamReader("../Shared/credentials.json"))
             {
-                credentials = JsonConvert.DeserializeObject<Credentials>(reader.ReadToEnd());
+                mCredentials = JsonConvert.DeserializeObject<Credentials>(reader.ReadToEnd());
             }
 
-            if (credentials == null)
+            if (mCredentials == null)
             {
                 throw new Exception("Failed to read the service credentials");
             }
 
+            Command fetchCommand = new("fetch", "Fetch all pending game requests from Assignr");
+            fetchCommand.SetAction(parseResult => FetchRequests());
+            Command assignCommand = new("assign", "Push all assignments to Assignr");
+
+            RootCommand rootCommand = new("Fetch requests or update Assignr");
+
+            rootCommand.Subcommands.Add(fetchCommand);
+            // rootCommand.Subcommands.Add(assignCommand);
+
+            ParseResult parseResult = rootCommand.Parse(args);
+            return await parseResult.InvokeAsync();
+        }
+
+        static async Task<int> FetchRequests() {
             StreamWriter logger = new StreamWriter("gamesToAssign.csv", false);
 
             Assignr assignr = new();
-            assignr.Authenticate(credentials.Assignr, credentials.AssignrSessionToken);
+            assignr.Authenticate(mCredentials.Assignr, mCredentials.AssignrSessionToken);
 
             string ASSIGNR_ID_LMB = "627";
 
             // Get all the games that are published and need to be assigned
             assignr.FetchUnassignedGames(logger, ASSIGNR_ID_LMB);
+
+            assignr.ExportGameRequests();
 
             // Dump the number of requested games & assignments for this official for this year
             // When there is more than one official who could be assigned to a game, I'll give
@@ -511,5 +541,7 @@ namespace AutoAssign
 
             return 0;
         }
+
+        static Credentials? mCredentials;
     }
 }
