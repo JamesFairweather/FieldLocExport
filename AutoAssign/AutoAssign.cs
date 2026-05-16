@@ -29,6 +29,11 @@ namespace AutoAssign
             cancelled = false;
             published = false;
             details = new();
+
+            assignedPlateUmpire = new();
+            assignedBaseUmpire = new();
+            plateRequests = new ();
+            baseRequests = new();
         }
 
         public string localized_date { get; set; }
@@ -40,6 +45,12 @@ namespace AutoAssign
 
         [JsonProperty("_embedded")]
         public GameInfo details { get; set; }
+
+        public Official assignedPlateUmpire;
+        public Official assignedBaseUmpire;
+
+        public List<Official> plateRequests;
+        public List<Official> baseRequests;
     }
 
     internal class GameInfo
@@ -55,19 +66,17 @@ namespace AutoAssign
         public Venue venue { get; set; }
     }
 
-    internal class Official
+    public class Official
     {
         public Official()
         {
+            id = 0;
             firstName = string.Empty;
             lastName = string.Empty;
-            id = 0;
-        }
-        public Official(string firstName, string lastName)
-        {
-            this.firstName = firstName;
-            this.lastName = lastName;
-            id = 0;
+            plateAssignments = 0;
+            baseAssignments = 0;
+            plateRequestCount = 0;
+            baseRequestCount = 0;
         }
 
         public static Official FromCsv(string csvLine)
@@ -97,6 +106,14 @@ namespace AutoAssign
         {
             return $"{lastName}, {firstName}";
         }
+
+        // completed or accepted assignments
+        public int plateAssignments { get; set; }
+        public int baseAssignments { get; set; }
+
+        // Requests for the current block of assignments
+        public int plateRequestCount { get; set; }
+        public int baseRequestCount { get; set; }
     }
 
     internal class AssignmentDetails
@@ -191,35 +208,13 @@ namespace AutoAssign
         public List<PendingAssignment> pending { get; set; }
     }
 
-    public class UserData
-    {
-        public UserData(string _name, int id, int _req, int _assignments)
-        {
-            name = _name;
-            Id = id;
-            requests = _req;
-            assignments = _assignments;
-        }
-
-        public string name { get; set; }
-
-        // total number of requests this official entered for this assigning period
-        public int requests { get; set; }
-     
-        // number of assignments so far this season this official has been assigned to
-        // (existing assignments could be in the past or future)
-        public int assignments { get; set; }
-
-        // Assignr user Id - needed to assign an official to a game.
-        public int Id { get; set; }
-    }
-
     public class Assignr
     {
         public Assignr()
         {
             mHttpClient = new();
-            mUserData = new();
+            mGameList = new();
+            mUmpires = new();
         }
 
         public void Authenticate(Google.Apis.Auth.OAuth2.ClientSecrets? credentials, string assignrSessionToken)
@@ -286,12 +281,10 @@ namespace AutoAssign
         }
 
 
-        public void FetchUnassignedGames(StreamWriter logger, string siteId)
+        public void FetchUnassignedGames(string siteId)
         {
             int totalPages = int.MaxValue;
             int currentPage = 1;
-
-            logger.WriteLine("Age Group,Date,Time,Venue,Position,Assigned Umpire,Req1,Req2,Req3,Req4,Req5,Req6,Req7,Req8,Req9,Req10,Req11,Req12,Req13,Req14,Req15,Req16,Req17,Req18,Req19,Req20");
 
             while (currentPage <= totalPages)
             {
@@ -323,79 +316,134 @@ namespace AutoAssign
                         if (assignment.assigned)
                         {
                             // increment the number of assignments this umpire has had already this season
-                            UserData? existingUser = mUserData.Find(usr => usr.name == assignment.details.official.fullName());
+                            Official? umpire = mUmpires.Find(e => e.id == assignment.details.official.id);
 
-                            if (existingUser == null)
+                            if (umpire == null)
                             {
-                                mUserData.Add(new(assignment.details.official.fullName(), assignment.details.official.id, 0, 1));
-                            }
-                            else
-                            {
-                                existingUser.assignments++;
+                                throw new Exception($"Assignr returned an unrecognized official Id {assignment.details.official.id}");
                             }
 
-                            continue;
+                            if (assignment.position == "Plate Umpire")
+                            {
+                                ++umpire.plateAssignments;
+                                game.assignedPlateUmpire = umpire;
+                            }
+                            else if (assignment.position == "Base Umpire")
+                            {
+                                ++umpire.baseAssignments;
+                                game.assignedBaseUmpire = umpire;
+                            }
                         }
-
-                        logger.Write($"{game.age_group},{game.localized_date},{game.localized_time},{game.details.venue.name},{assignment.position},");
-
-                        // Assignr's API doesn't allow us to retrieve game requests, which seriously sucks.  I can still get them
-                        // using a web session though.
-                        string assignmentsUri = $"https://littlemountainbaseball.assignr.com/assign/assignments/{assignment.id}.json";
-
-                        string assignmentsResponse = HttpMessage(HttpMethod.Get, assignmentsUri, true);
-
-                        AssignmentsResponse assignments = JsonConvert.DeserializeObject<AssignmentsResponse>(assignmentsResponse) ?? new();
-
-                        int reqCount = 0;
-                        foreach (PendingAssignment user in assignments.pending)
+                        else
                         {
-                            if (user.request)
+                            // Assignr's API doesn't allow us to retrieve game requests,
+                            // but we can still get them using a web API, which requires
+                            // a different authorization token (happily this token seems
+                            // to not have an expiration time).
+                            string assignmentsUri = $"https://littlemountainbaseball.assignr.com/assign/assignments/{assignment.id}.json";
+
+                            string assignmentsResponse = HttpMessage(HttpMethod.Get, assignmentsUri, true);
+
+                            AssignmentsResponse assignments = JsonConvert.DeserializeObject<AssignmentsResponse>(assignmentsResponse) ?? new();
+
+                            foreach (PendingAssignment user in assignments.pending)
                             {
-                                logger.Write($",\"{user.name}\"");
-                                ++reqCount;
+                                if (user.request)
+                                {
+                                    Official? umpire = mUmpires.Find(e => e.id == user.id);
 
-                                // increment the number of requests this official has submitted for this
-                                // assigning period
-                                UserData? existingUser = mUserData.Find(usr => usr.name == user.name);
+                                    if (umpire == null)
+                                    {
+                                        throw new Exception($"Assignr returned an unrecognized official Id for this game request");
+                                    }
 
-                                if (existingUser == null) {
-                                    mUserData.Add(new UserData(user.name, user.id, 1, 0));
+                                    if (assignment.position == "Plate Umpire")
+                                    {
+                                        ++umpire.plateRequestCount;
+                                        game.plateRequests.Add(umpire);
+                                    }
+                                    else if (assignment.position == "Base Umpire")
+                                    {
+                                        ++umpire.baseRequestCount;
+                                        game.baseRequests.Add(umpire);
+                                    }
                                 }
-                                else {
-                                    existingUser.requests++;
-                                }
                             }
                         }
-
-                        if (reqCount > 20)
-                        {
-                            throw new Exception("More than 20 requests were received for this game.  Increase the max count");
-                        }
-
-                        string extraCommas = string.Empty;
-                        for (; reqCount < 20; ++reqCount)
-                        {
-                            extraCommas += ",";
-                        }
-
-                        // I may need to add commas
-                        logger.WriteLine(extraCommas);
-
                     }
 
-                    // get a list of requests for each unassigned position
+                    mGameList.Add(game);
                 }
 
                 ++currentPage;
             }
-
-            Console.WriteLine($"Name,Requests for this period,Assignments this season");
         }
 
-        public void ExportGameRequests()
+        // For each game with at least one unassigned position, dump it to a CSV file along with any
+        // pending requests for each position.
+        public void WriteRequestsToFile()
         {
-            // TODO
+            StreamWriter sw = new StreamWriter("gamesToAssign.csv", false);
+
+            sw.WriteLine("Age Group,Date,Time,Venue,Position,Assigned Umpire,Req1,Req2,Req3,Req4,Req5,Req6,Req7,Req8,Req9,Req10,Req11,Req12,Req13,Req14,Req15,Req16,Req17,Req18,Req19,Req20");
+
+            foreach(Game game in mGameList)
+            {
+                if (game.assignedPlateUmpire.id == 0) {
+                    sw.Write($"{game.age_group},{game.localized_date},{game.localized_time},{game.details.venue.name},Plate Umpire,,");
+
+                    foreach (Official umpire in game.plateRequests)
+                    {
+                        sw.Write($"\"{umpire.fullName()}\",");
+                    }
+
+                    // trailing commas
+                    for (int i = game.plateRequests.Count; i < 20; ++i)
+                    {
+                        sw.Write(",");
+                    }
+                    sw.WriteLine();
+                }
+
+                if (game.assignedBaseUmpire.id == 0)
+                {
+                    sw.Write($"{game.age_group},{game.localized_date},{game.localized_time},{game.details.venue.name},Base Umpire,,");
+
+                    foreach (Official umpire in game.baseRequests)
+                    {
+                        sw.Write($"\"{umpire.fullName()}\",");
+                    }
+
+                    for (int i = game.baseRequests.Count; i < 20; ++i)
+                    {
+                        sw.Write(",");
+                    }
+                    sw.WriteLine();
+                }
+            }
+
+            sw.Close();
+        }
+
+        // Dump the number of requested games & assignments for this official for this year
+        // When there is more than one official who could be assigned to a game, I'll give
+        // it to whoever has worked the fewest number.
+        public void WriteUmpireRequestsToFile()
+        {
+            StreamWriter sw = new StreamWriter("gameRequestsByUmpire.csv", false);
+
+            sw.WriteLine("Name,Total requests for this block,Previous plate assignments,Previous base assignments");
+
+            foreach (Official umpire in mUmpires)
+            {
+                int totalRequests = umpire.plateRequestCount + umpire.baseRequestCount;
+                if (totalRequests != 0)
+                {
+                    sw.WriteLine($"\"{umpire.lastName}, {umpire.firstName}\",{totalRequests},{umpire.plateAssignments},{umpire.baseAssignments}");
+                }
+            }
+
+            sw.Close();
         }
 
         public void Assign()
@@ -440,15 +488,24 @@ namespace AutoAssign
         }
 
 
-        public List<UserData> UserData()
+        public List<Official> Officials()
         {
-            return mUserData;
+            return mUmpires;
+        }
+
+        public void LoadUmpireDatabase(string fileName)
+        {
+            mUmpires = System.IO.File.ReadAllLines(fileName)
+                .Skip(1)
+                .Select(v => Official.FromCsv(v))
+                .ToList();
         }
 
         HttpClient mHttpClient;
         string? mBearerToken;
         string? mSessionToken;
-        List<UserData> mUserData;
+        List<Official> mUmpires;    // should probably be a dictionary
+        List<Game> mGameList;
     }
 
     // Thsi program should have two commands:
@@ -474,11 +531,6 @@ namespace AutoAssign
                 throw new Exception("Failed to read the service credentials");
             }
 
-            mUmpires = System.IO.File.ReadAllLines("2026 Umpires.csv")
-                .Skip(1)
-                .Select(v => Official.FromCsv(v))
-                .ToList();
-
             Command fetchCommand = new("fetch", "Fetch all pending game requests from Assignr");
             fetchCommand.SetAction(parseResult => FetchRequests());
             Command assignCommand = new("assign", "Push all assignments to Assignr");
@@ -493,33 +545,18 @@ namespace AutoAssign
         }
 
         static async Task<int> FetchRequests() {
-            StreamWriter logger = new StreamWriter("gamesToAssign.csv", false);
-
             Assignr assignr = new();
             assignr.Authenticate(mCredentials.Assignr, mCredentials.AssignrSessionToken);
 
             string ASSIGNR_ID_LMB = "627";
 
-            // Get all the games that are published and need to be assigned
-            assignr.FetchUnassignedGames(logger, ASSIGNR_ID_LMB);
+            // Load the umpire database
+            assignr.LoadUmpireDatabase("2026 Umpires.csv");
 
-            assignr.ExportGameRequests();
-
-            // Dump the number of requested games & assignments for this official for this year
-            // When there is more than one official who could be assigned to a game, I'll give
-            // it to whoever has worked the fewest number.
-            logger.WriteLine();
-            logger.WriteLine();
-            logger.WriteLine("Name,AssignrId,RequestCount,AssignmentCount");
-
-            foreach (var umpire in assignr.UserData())
-            {
-                if (umpire.requests != 0) {
-                    logger.WriteLine($"\"{umpire.name}\",{umpire.Id},{umpire.requests},{umpire.assignments}");
-                }
-            }
-
-            logger.Close();
+            // Get all the games that are published and have been assigned or need to be assigned
+            assignr.FetchUnassignedGames(ASSIGNR_ID_LMB);
+            assignr.WriteRequestsToFile();
+            assignr.WriteUmpireRequestsToFile();
 
             /*
             var games = new List<RGame>
@@ -564,6 +601,5 @@ namespace AutoAssign
         }
 
         static Credentials? mCredentials;
-        static List<Official>? mUmpires;
     }
 }
