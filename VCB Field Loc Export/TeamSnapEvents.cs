@@ -93,6 +93,12 @@ namespace VcbFieldExport
             { "10547272", "26U" },      // Expos
             { "10547273", "26U" },      // Mounties
             { "10547274", "26U" },      // Vipers
+            { "10652957", "13U A" },    // 13U A Summer Mounties (tryout)
+            { "10652956", "15U A" },    // 15U A Summer Mounties (tryout)
+            { "10652955", "18U AA" },   // 18U AA Summer Mounties (tryout)
+            { "10649691", "13U A" },    // 13U A Summer Mounties
+            { "10649690", "15U A" },    // 15U A Summer Mounties
+            { "10649689", "18U AA" },   // 18U AA Summer Mounties
         };
 
         public TeamSnapEvents(StreamWriter logger)
