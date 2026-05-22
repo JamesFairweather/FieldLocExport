@@ -1,91 +1,29 @@
 Age Group,Date,Time,Venue,Position,Assigned Umpire,Req1,Req2,Req3,Req4,Req5,Req6,Req7,Req8,Req9,Req10,Req11,Req12,Req13,Req14,Req15,Req16,Req17,Req18,Req19,Req20
-Majors,Apr 25 2026,12:00 PM,Hillcrest Park,Supervisor,,,,,,,,,,,,,,,,,,,,,
-Minors B,May 23 2026,11:00 AM,Challenger,Plate Umpire,,"Cocke, Elliott","Dolgin, Erez","Hall, Miles","Hiemstra, Sebastian","Le, Nathan","Lee, Peyton","MacDonald-Skala, Viggo","McCulloch, Oswyn","McTaggart, Leo","Rose, John","Sandhu, Jordan","Sato, Zain","Ventresca, Michael",,,,,,,
-Minors B,May 23 2026,11:00 AM,Challenger,Base Umpire,,"Hiemstra, Sebastian","Le, Nathan","MacDonald-Skala, Viggo","Rose, John","Ventresca, Michael",,,,,,,,,,,,,,,
-Minors B,May 23 2026,2:00 PM,Challenger,Plate Umpire,,"Chen, Sean","Lee, Paul","MacDonald-Skala, Viggo","McCulloch, Oswyn","Rose, John","Sato, Zain","Ventresca, Michael",,,,,,,,,,,,,
-Minors B,May 23 2026,2:00 PM,Challenger,Base Umpire,,"Chen, Sean","MacDonald-Skala, Viggo","Rose, John","Ventresca, Michael",,,,,,,,,,,,,,,,
-Minors B,May 23 2026,5:00 PM,Challenger,Plate Umpire,,"Archambault, Hudson","Bayntun, Liam","Hatchard, Ethan","MacDonald-Skala, Viggo","Ventresca, Michael",,,,,,,,,,,,,,,
-Minors B,May 23 2026,5:00 PM,Challenger,Base Umpire,,"Archambault, Hudson","Bayntun, Liam","MacDonald-Skala, Viggo","Stamm, Mikkale","Ventresca, Michael",,,,,,,,,,,,,,,
-Minors B,May 23 2026,10:00 AM,Columbia Park,Plate Umpire,,"Bayntun, Liam","Le, Nathan","MacDonald-Skala, Viggo","McCulloch, Oswyn","McTaggart, Leo","Ventresca, Michael",,,,,,,,,,,,,,
-Minors B,May 23 2026,10:00 AM,Columbia Park,Base Umpire,,"Bayntun, Liam","Le, Nathan","MacDonald-Skala, Viggo","Pettersson, Oskar","Ventresca, Michael",,,,,,,,,,,,,,,
-Minors B,May 23 2026,1:00 PM,Columbia Park,Plate Umpire,,"McCulloch, Oswyn","McTaggart, Leo","Ventresca, Michael",,,,,,,,,,,,,,,,,
-Minors B,May 23 2026,1:00 PM,Columbia Park,Base Umpire,,"Ventresca, Michael",,,,,,,,,,,,,,,,,,,
-Minors B,May 23 2026,4:00 PM,Columbia Park,Plate Umpire,,"Hatchard, Ethan","Ventresca, Michael",,,,,,,,,,,,,,,,,,
-Minors B,May 23 2026,4:00 PM,Columbia Park,Base Umpire,,"Ventresca, Michael",,,,,,,,,,,,,,,,,,,
-Minors A,May 23 2026,12:00 PM,Hillcrest Park,Plate Umpire,,,,,,,,,,,,,,,,,,,,,
-Majors,May 23 2026,3:00 PM,Hillcrest Park,Plate Umpire,,"Grimsrud-Ronse, Tyson",,,,,,,,,,,,,,,,,,,
-Majors,May 23 2026,3:00 PM,Hillcrest Park,Base Umpire,,"Bellefeuille, Nicholas","Hatchard, Ethan",,,,,,,,,,,,,,,,,,
-Majors,May 23 2026,6:00 PM,Hillcrest Park,Plate Umpire,,"Fairweather, Cole",,,,,,,,,,,,,,,,,,,
-Majors,May 23 2026,6:00 PM,Hillcrest Park,Base Umpire,,"Bellefeuille, Nicholas","Hatchard, Ethan",,,,,,,,,,,,,,,,,,
-Minors B,May 24 2026,2:00 PM,Challenger,Plate Umpire,,"Arai, Tatsuki","Hatchard, Ethan","Le, Nathan","MacDonald-Skala, Viggo","McCulloch, Oswyn","Rose, John","Sandhu, Jordan","Ventresca, Michael","Wong, Sam",,,,,,,,,,,
-Minors B,May 24 2026,2:00 PM,Challenger,Base Umpire,,"Arai, Tatsuki","Le, Nathan","MacDonald-Skala, Viggo","Rose, John","Ventresca, Michael","Wong, Sam",,,,,,,,,,,,,,
-Minors B,May 24 2026,5:00 PM,Challenger,Plate Umpire,,"Archambault, Hudson","Bayntun, Liam","Hatchard, Ethan","Hiemstra, Sebastian","Le, Nathan","MacDonald-Skala, Viggo","McCulloch, Oswyn","Sandhu, Jordan","Ventresca, Michael","Wong, Sam",,,,,,,,,,
-Minors B,May 24 2026,5:00 PM,Challenger,Base Umpire,,"Archambault, Hudson","Bayntun, Liam","Hiemstra, Sebastian","Le, Nathan","MacDonald-Skala, Viggo","Ventresca, Michael","Wong, Sam",,,,,,,,,,,,,
-Minors B,May 24 2026,10:00 AM,Columbia Park,Plate Umpire,,"Arai, Tatsuki","Hatchard, Ethan","Huang, Kaia","MacDonald-Skala, Viggo","McCulloch, Oswyn","Sandhu, Jordan","Wong, Sam",,,,,,,,,,,,,
-Minors B,May 24 2026,10:00 AM,Columbia Park,Base Umpire,,"Arai, Tatsuki","Ferris, Easton","MacDonald-Skala, Viggo","Stamm, Mikkale","Wong, Sam",,,,,,,,,,,,,,,
-Minors A,May 24 2026,12:00 PM,Hillcrest Park,Plate Umpire,,"Avinashi, Milan","Black-Milligan, Arthur","Fairweather, Cole","Hatchard, Ethan",,,,,,,,,,,,,,,,
-Minors A,May 24 2026,12:00 PM,Hillcrest Park,Base Umpire,,"Hatchard, Ethan",,,,,,,,,,,,,,,,,,,
-Minors A,May 24 2026,3:00 PM,Hillcrest Park,Plate Umpire,,"Black-Milligan, Arthur","Fairweather, Cole","Hatchard, Ethan",,,,,,,,,,,,,,,,,
-Minors A,May 24 2026,3:00 PM,Hillcrest Park,Base Umpire,,"Hatchard, Ethan",,,,,,,,,,,,,,,,,,,
-Minors A,May 24 2026,6:00 PM,Hillcrest Park,Plate Umpire,,"Fairweather, Cole","Hatchard, Ethan",,,,,,,,,,,,,,,,,,
-Minors A,May 24 2026,6:00 PM,Hillcrest Park,Base Umpire,,"Hatchard, Ethan",,,,,,,,,,,,,,,,,,,
-Minors A,May 24 2026,1:00 PM,Oak Park,Plate Umpire,,"Fairweather, Cole","Hatchard, Ethan",,,,,,,,,,,,,,,,,,
-Minors A,May 24 2026,1:00 PM,Oak Park,Base Umpire,,"Hatchard, Ethan",,,,,,,,,,,,,,,,,,,
-Minors B,May 24 2026,4:00 PM,Oak Park,Plate Umpire,,"Bayntun, Liam","Hatchard, Ethan","Huang, Kaia","Le, Nathan","MacDonald-Skala, Viggo","McCulloch, Oswyn","Wong, Sam",,,,,,,,,,,,,
-Minors B,May 24 2026,4:00 PM,Oak Park,Base Umpire,,"Bayntun, Liam","Le, Nathan","MacDonald-Skala, Viggo","Wong, Sam",,,,,,,,,,,,,,,,
-Majors,May 25 2026,6:00 PM,Hillcrest Park,Plate Umpire,,"Fairweather, Cole","Froelich, Ari",,,,,,,,,,,,,,,,,,
-Majors,May 25 2026,6:00 PM,Hillcrest Park,Base Umpire,,"Bellefeuille, Nicholas","Froelich, Ari","Hatchard, Ethan",,,,,,,,,,,,,,,,,
-Majors,May 25 2026,6:00 PM,Oak Park,Plate Umpire,,"Fairweather, Cole","Hesse, Markus","Jackson, Caleb",,,,,,,,,,,,,,,,,
-Majors,May 25 2026,6:00 PM,Oak Park,Base Umpire,,"Hesse, Markus",,,,,,,,,,,,,,,,,,,
-Minors A,May 26 2026,6:00 PM,Hillcrest Park,Plate Umpire,,"Avinashi, Milan","Fairweather, Cole","Hatchard, Ethan","Waddell, Matthew",,,,,,,,,,,,,,,,
-Minors A,May 26 2026,6:00 PM,Hillcrest Park,Base Umpire,,"Hatchard, Ethan",,,,,,,,,,,,,,,,,,,
-Minors A,May 26 2026,6:00 PM,Oak Park,Plate Umpire,,"Fairweather, Cole","Hatchard, Ethan",,,,,,,,,,,,,,,,,,
-Minors A,May 26 2026,6:00 PM,Oak Park,Base Umpire,,"Hatchard, Ethan",,,,,,,,,,,,,,,,,,,
-Majors,May 27 2026,6:00 PM,Hillcrest Park,Plate Umpire,,"Fairweather, Cole","Stuart, Mason",,,,,,,,,,,,,,,,,,
-Majors,May 27 2026,6:00 PM,Hillcrest Park,Base Umpire,,"Barkar, Fio","Bellefeuille, Nicholas","Hatchard, Ethan",,,,,,,,,,,,,,,,,
-Minors A,May 28 2026,6:00 PM,Hillcrest Park,Plate Umpire,,"Cocke, Elliott","Hatchard, Ethan",,,,,,,,,,,,,,,,,,
-Minors A,May 28 2026,6:00 PM,Hillcrest Park,Base Umpire,,"Cocke, Elliott","Hatchard, Ethan",,,,,,,,,,,,,,,,,,
-Minors A,May 28 2026,6:00 PM,Oak Park,Plate Umpire,,"Avinashi, Milan","Hatchard, Ethan",,,,,,,,,,,,,,,,,,
-Minors A,May 28 2026,6:00 PM,Oak Park,Base Umpire,,"Hatchard, Ethan",,,,,,,,,,,,,,,,,,,
-Majors,May 29 2026,6:00 PM,Hillcrest Park,Plate Umpire,,"Fairweather, Cole","Hui, Sawyer",,,,,,,,,,,,,,,,,,
-Majors,May 29 2026,6:00 PM,Hillcrest Park,Base Umpire,,"Bellefeuille, Nicholas",,,,,,,,,,,,,,,,,,,
-Minors A,May 29 2026,6:00 PM,Oak Park,Base Umpire,,"Fairweather, Cole","Hall, Miles",,,,,,,,,,,,,,,,,,
-
-
-Name,AssignrId,RequestCount,AssignmentCount
-"Stuart, Mason",1020588,1,6
-"Hui, Sawyer",904071,1,7
-"Barkar, Fio",1883863,1,6
-"Froelich, Ari",1018110,2,2
-"Hatchard, Ethan",1498680,26,19
-"Grimsrud-Ronse, Tyson",1899169,1,4
-"McTaggart, Leo",1899180,3,6
-"Cocke, Elliott",1511553,3,3
-"Wong, Sam",2122385,8,4
-"Bayntun, Liam",2122359,8,5
-"Sandhu, Jordan",2122379,4,5
-"Chen, Sean",2122360,2,4
-"MacDonald-Skala, Viggo",2122369,16,4
-"Fairweather, Cole",2122363,12,14
-"Black-Milligan, Arthur",1899163,2,2
-"Waddell, Matthew",2127213,1,6
-"Lee, Peyton",2112769,1,5
-"Lee, Paul",2112768,1,6
-"Dolgin, Erez",2122362,1,4
-"Hesse, Markus",1023078,2,7
-"Ventresca, Michael",2122382,16,2
-"Rose, John",2122377,6,4
-"Hiemstra, Sebastian",2122366,4,8
-"Arai, Tatsuki",2122356,4,2
-"Hall, Miles",1899170,2,3
-"McCulloch, Oswyn",2122370,8,2
-"Le, Nathan",2122368,10,2
-"Bellefeuille, Nicholas",1899161,5,1
-"Pettersson, Oskar",2122376,1,2
-"Sato, Zain",1899183,2,3
-"Jackson, Caleb",961597,1,1
-"Huang, Kaia",2142854,2,1
-"Archambault, Hudson",2122357,4,1
-"Avinashi, Milan",1899159,3,4
-"Stamm, Mikkale",2122380,2,1
-"Ferris, Easton",2122364,1,0
+Minors A,May 23 2026,1:00 PM,Oak Park,Plate Umpire,,,,,,,,,,,,,,,,,,,,,,
+Minors A,May 23 2026,1:00 PM,Oak Park,Base Umpire,,,,,,,,,,,,,,,,,,,,,,
+Minors B,May 30 2026,8:30 AM,Challenger,Plate Umpire,,"Chen, Sean","Hiemstra, Sebastian","Mah Ming, Matthew","Sandhu, Jordan",,,,,,,,,,,,,,,,,
+Minors B,May 30 2026,8:30 AM,Challenger,Base Umpire,,"Chen, Sean","Hiemstra, Sebastian","Mah Ming, Matthew",,,,,,,,,,,,,,,,,,
+Minors B,May 30 2026,11:15 AM,Challenger,Plate Umpire,,"Black, Brooks","Forbes, Sid","Hall, Miles","Hiemstra, Sebastian","Moss, Maclean","Rose, John","Sandhu, Jordan","Ventresca, Michael",,,,,,,,,,,,,
+Minors B,May 30 2026,11:15 AM,Challenger,Base Umpire,,"Dolgin, Erez","Rose, John","Stamm, Mikkale","Ventresca, Michael",,,,,,,,,,,,,,,,,
+Minors B,May 30 2026,6:30 PM,Challenger,Plate Umpire,,"Bayntun, Liam","Chen, Sean","Hiemstra, Sebastian","Le, Nathan","Morris, George","Ross, Connor","Ventresca, Michael",,,,,,,,,,,,,,
+Minors B,May 30 2026,6:30 PM,Challenger,Base Umpire,,"Bayntun, Liam","Chen, Sean","Dolgin, Erez","Hall, Miles","Hiemstra, Sebastian","Le, Nathan","Pettersson, Oskar","Stamm, Mikkale","Ventresca, Michael",,,,,,,,,,,,
+Minors B,May 30 2026,10:00 AM,Columbia Park,Plate Umpire,,"Black, Brooks","Mah Ming, Matthew","McTaggart, Leo",,,,,,,,,,,,,,,,,,
+Minors B,May 30 2026,10:00 AM,Columbia Park,Base Umpire,,"Mah Ming, Matthew",,,,,,,,,,,,,,,,,,,,
+Majors,May 30 2026,9:00 AM,Hillcrest Park,Plate Umpire,,,,,,,,,,,,,,,,,,,,,,
+Majors,May 30 2026,9:00 AM,Hillcrest Park,Base Umpire,,"Bellefeuille, Nicholas",,,,,,,,,,,,,,,,,,,,
+Majors,May 30 2026,11:30 AM,Hillcrest Park,Plate Umpire,,"Davis, Jordan","Fairweather, Cole",,,,,,,,,,,,,,,,,,,
+Majors,May 30 2026,11:30 AM,Hillcrest Park,Base Umpire,,"Bellefeuille, Nicholas","Davis, Jordan",,,,,,,,,,,,,,,,,,,
+Minors B,May 31 2026,2:00 PM,Challenger,Plate Umpire,,"Black, Brooks","Dolgin, Erez","Hall, Miles","Hiemstra, Sebastian","Le, Nathan","MacDonald-Skala, Viggo","Ross, Connor","Sandhu, Jordan","Ventresca, Michael","Zeck, Alex",,,,,,,,,,,
+Minors B,May 31 2026,2:00 PM,Challenger,Base Umpire,,"Hiemstra, Sebastian","Le, Nathan","MacDonald-Skala, Viggo","Ozaki, Jin","Stamm, Mikkale","Ventresca, Michael",,,,,,,,,,,,,,,
+Minors B,May 31 2026,5:00 PM,Challenger,Plate Umpire,,"Bayntun, Liam","Le, Nathan","MacDonald-Skala, Viggo","Sandhu, Jordan","Ventresca, Michael","Zeck, Alex",,,,,,,,,,,,,,,
+Minors B,May 31 2026,5:00 PM,Challenger,Base Umpire,,"Bayntun, Liam","Dolgin, Erez","Le, Nathan","MacDonald-Skala, Viggo","Ventresca, Michael",,,,,,,,,,,,,,,,
+Majors,May 31 2026,9:00 AM,Hillcrest Park,Plate Umpire,,"Fairweather, Cole",,,,,,,,,,,,,,,,,,,,
+Majors,May 31 2026,9:00 AM,Hillcrest Park,Base Umpire,,"Bellefeuille, Nicholas",,,,,,,,,,,,,,,,,,,,
+Minors A,May 31 2026,12:00 PM,Hillcrest Park,Plate Umpire,,"Fairweather, Cole","Lazarte, Matias","Lopez, Hector","Suto, Sam","Weibel, Davis",,,,,,,,,,,,,,,,
+Minors A,May 31 2026,12:00 PM,Hillcrest Park,Base Umpire,,"Hall, Miles","Lazarte, Matias",,,,,,,,,,,,,,,,,,,
+Minors A,May 31 2026,3:00 PM,Hillcrest Park,Plate Umpire,,"Fairweather, Cole","Hibbard, Calder","Suto, Sam",,,,,,,,,,,,,,,,,,
+Minors A,May 31 2026,3:00 PM,Hillcrest Park,Base Umpire,,"Hibbard, Calder","McTaggart, Leo",,,,,,,,,,,,,,,,,,,
+Minors A,May 31 2026,6:00 PM,Hillcrest Park,Plate Umpire,,"Fairweather, Cole","Suto, Sam",,,,,,,,,,,,,,,,,,,
+Minors A,May 31 2026,6:00 PM,Hillcrest Park,Base Umpire,,"Hall, Miles",,,,,,,,,,,,,,,,,,,,
+Minors A,May 31 2026,1:00 PM,Oak Park,Plate Umpire,,"Fairweather, Cole",,,,,,,,,,,,,,,,,,,,
+Minors A,May 31 2026,1:00 PM,Oak Park,Base Umpire,,,,,,,,,,,,,,,,,,,,,,
