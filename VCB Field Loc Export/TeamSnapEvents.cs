@@ -196,6 +196,12 @@ namespace VcbFieldExport
                         continue;
                     }
 
+                    // VCB 18U AAA Blue Expos has two games hosted at Hillcrest Park
+                    // where they are the away team.
+                    // July 18 2026, 12:00/2:30 PM
+                    // Opponent: North Shore
+                    int gameId = int.Parse(e.data[0].value);
+
                     if (isGame)
                     {
                         string homeTeam = isHomeGame ? thisTeam : opponent_name;
@@ -204,7 +210,7 @@ namespace VcbFieldExport
                         // could change this to PlayoffGame
                         VcbFieldEvent.Type gameType = VcbFieldEvent.Type.Game;
 
-                        if (isHomeGame) {
+                        if (isHomeGame || (gameId == 363932349 || gameId == 363932409)) {
                             mGames.Add(new VcbFieldEvent(gameType, location, startTime, division, homeTeam, visitingTeam, string.Empty, true));
                         }
 
