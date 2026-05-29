@@ -281,15 +281,17 @@ namespace AutoAssign
         }
 
 
-        public void FetchUnassignedGames(string siteId)
+        public void FetchUnassignedGames()
         {
             int totalPages = int.MaxValue;
             int currentPage = 1;
 
+            const string ASSIGNR_ID_LMB = "627";
+
             while (currentPage <= totalPages)
             {
                 // Fetch all the games from the start of the season to the current date plus 14 days
-                string gamesUri = $"https://api.assignr.com/api/v2/sites/{siteId}/games?page={currentPage}&search[start_date]=2026-01-01&search[end_date]={DateTime.Today.AddDays(14).ToString("yyyy-MM-dd")}";
+                string gamesUri = $"https://api.assignr.com/api/v2/sites/{ASSIGNR_ID_LMB}/games?page={currentPage}&search[start_date]=2026-01-01&search[end_date]={DateTime.Today.AddDays(28).ToString("yyyy-MM-dd")}";
 
                 string jsonResponse = HttpMessage(HttpMethod.Get, gamesUri);
 
