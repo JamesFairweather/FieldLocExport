@@ -177,6 +177,13 @@ namespace VcbFieldExport
                         continue;
                     }
 
+                    if (game.game_type == "Postseason")
+                    {
+                        // Little Mountain Postseason games are not in SportsEngine, there's no point in
+                        // adding them to the Assignr game list
+                        continue;
+                    }
+
                     // Add client-side filter for games on a specific field here, if you want.  The Assignr
                     // service does not support querying on a specific venue, so this is the best we can do
                     //if (game._embedded.venue.name != "Hillcrest South") {

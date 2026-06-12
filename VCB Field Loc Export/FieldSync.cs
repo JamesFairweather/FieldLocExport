@@ -103,16 +103,23 @@ namespace VcbFieldExport
             GoogleEvents googleEvents = new(teamSnap.getGames(), assignr.getGames(), teamSnap.getPractices(), logger);
             googleEvents.Reconcile(credentials.Google, fieldInfo, false);
 
-            logger.WriteLine();
-            logger.WriteLine("Checking Little Mountain Baseball's Assignr schedule for consistency");
+            // Check Little Mountain Baseball's SportsEngine schedule against Assignr.
+            // Playoffs & post-season games aren't in the SportsEngine schedule
+            DateTime regularSeasonStart = new DateTime(2026, 4, 1);
+            DateTime regularSeasonEnd = new DateTime(2026, 5, 31);
 
-            SportsEngine sportsEngine = new SportsEngine();
-            sportsEngine.authenticate(credentials.Sportsengine);
-            sportsEngine.fetchEvents();
+            if (DateTime.Now >= regularSeasonStart && DateTime.Now <= regularSeasonEnd) {
+                logger.WriteLine();
+                logger.WriteLine("Checking Little Mountain Baseball's Assignr schedule for consistency");
 
-            assignr.clearEvents();
-            assignr.FetchEventsFromService(ASSIGNR_ID_LMB, false);
-            errors += assignr.Reconcile(sportsEngine.getGames());
+                SportsEngine sportsEngine = new SportsEngine();
+                sportsEngine.authenticate(credentials.Sportsengine);
+                sportsEngine.fetchEvents();
+
+                assignr.clearEvents();
+                assignr.FetchEventsFromService(ASSIGNR_ID_LMB, false);
+                errors += assignr.Reconcile(sportsEngine.getGames());
+            }
 
             logger.Close();
 
