@@ -342,6 +342,7 @@ namespace VcbFieldExport
             }},
             { "13U AA", new Dictionary<string, string> {
                 { "Vancouver Mounties", "VCB 13U AA" },
+                { "South Burnaby", "South Burnaby/New West" },
             }},
             { "13U AAA", new Dictionary<string, string> {
                 { "Vancouver Mounties", "VCB 13U AAA" },
