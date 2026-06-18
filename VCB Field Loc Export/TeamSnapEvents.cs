@@ -93,12 +93,11 @@ namespace VcbFieldExport
             { "10547272", "26U" },      // Expos
             { "10547273", "26U" },      // Mounties
             { "10547274", "26U" },      // Vipers
-            { "10652957", "13U A" },    // 13U A Summer Mounties (tryout)
-            { "10652956", "15U A" },    // 15U A Summer Mounties (tryout)
-            { "10652955", "18U AA" },   // 18U AA Summer Mounties (tryout)
             { "10649691", "13U A" },    // 13U A Summer Mounties
-            { "10649690", "15U A" },    // 15U A Summer Mounties
+            { "10682592", "15U A" },    // VCB Mounties 15U A Summer
+            { "10682591", "15U A" },    // VCB Expos 15U A Summer
             { "10649689", "18U AA" },   // 18U AA Summer Mounties
+            { "10652955", "18U AA" },   // 18U AA Summer Expos
         };
 
         public TeamSnapEvents(StreamWriter logger)
